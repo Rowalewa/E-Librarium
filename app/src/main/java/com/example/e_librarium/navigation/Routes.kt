@@ -1,0 +1,16 @@
+package com.example.e_librarium.navigation
+
+const val ROUTE_ADD_BOOKS = "addBooks"
+const val ROUTE_BOOKS_HOME = "booksHome"
+const val ROUTE_EDIT_BOOKS = "editBooks"
+const val ROUTE_BORROW_BOOKS = "borrowBooks"
+const val ROUTE_BORROW_HOME = "borrowHome"
+const val ROUTE_CLIENT_LOGIN = "clientLogIn"
+const val ROUTE_CLIENT_REGISTER = "clientRegister"
+const val ROUTE_CLIENT_HOME = "clientsHome"
+const val ROUTE_HOME = "home"
+const val ROUTE_RETURN_BOOKS = "returnBooks"
+const val ROUTE_RETURN_HOME = "returningHome"
+const val ROUTE_STAFF_LOGIN = "staffLogIn"
+const val ROUTE_STAFF_REGISTER = "staffRegister"
+const val ROUTE_STAFF_HOME = "staffHome"
