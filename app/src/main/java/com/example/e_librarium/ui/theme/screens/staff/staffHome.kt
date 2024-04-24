@@ -66,7 +66,8 @@ fun StaffHomeScreen(navController: NavController){
         Box {
             Image(
                 painter = painterResource(id = R.drawable.library_desk),
-                contentDescription = null)
+                contentDescription = null,
+                modifier = Modifier.height(400.dp))
         }
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },
