@@ -1,14 +1,18 @@
 package com.example.e_librarium.ui.theme.screens.clients
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -24,6 +28,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,14 +47,18 @@ fun ClientLogInScreen(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
     ){
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "PLEASE LOG IN HERE CLIENT",
+            text = " LOG IN ",
             fontSize = 30.sp,
             color = Color.Red,
             fontWeight = FontWeight.ExtraBold,
-            fontFamily = FontFamily.Cursive
+            fontFamily = FontFamily.Monospace,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.width(150.dp)
+                .background(color = Color.Black, shape = CutCornerShape(10.dp))
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
             value =email ,
             onValueChange = {email=it},

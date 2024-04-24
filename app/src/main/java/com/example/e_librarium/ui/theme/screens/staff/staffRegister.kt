@@ -1,10 +1,12 @@
 package com.example.e_librarium.ui.theme.screens.staff
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -53,12 +55,13 @@ fun StaffRegisterScreen(navController: NavController){
             .padding(16.dp)
     ){
         Text(
-            text = "PLEASE REGISTER HERE STAFF",
+            text = " REGISTER ",
             fontFamily = FontFamily.Serif,
             fontSize = 30.sp,
             fontWeight = FontWeight.ExtraBold,
             color = Color.Blue,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.background(color = Color.Red, shape = CutCornerShape(10.dp))
         )
         OutlinedTextField(
             value = email,

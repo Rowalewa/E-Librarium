@@ -59,7 +59,7 @@ class AuthViewModel (
                         } else {
                             progress.dismiss()
                             Toast.makeText(context, "${dataTask.exception!!.message}", Toast.LENGTH_LONG).show()
-//                            navController.navigate(ROUTE_STAFF_LOGIN)
+                            navController.navigate(ROUTE_STAFF_LOGIN)
                         }
                     }
                 } else {
@@ -85,6 +85,7 @@ class AuthViewModel (
         if (email.isBlank() || pass.isBlank() || confpass.isBlank()) {
             progress.dismiss()
             Toast.makeText(context, "Email and Password should not be blank", Toast.LENGTH_LONG).show()
+            navController.navigate(ROUTE_CLIENT_REGISTER)
             return
         }else if (pass != confpass) {
             progress.dismiss()
@@ -152,7 +153,7 @@ class AuthViewModel (
             } else {
                 progress.dismiss()
                 Toast.makeText(context,"${it.exception!!.message}", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_STAFF_LOGIN)
+                navController.navigate(ROUTE_STAFF_HOME)
             }
         }
     }

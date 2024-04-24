@@ -1,10 +1,13 @@
 package com.example.e_librarium.ui.theme.screens.clients
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -53,12 +56,14 @@ fun ClientRegisterScreen(navController: NavController){
             .padding(16.dp)
     ){
         Text(
-            text = "PLEASE REGISTER HERE CLIENT",
+            text = "REGISTER ",
             fontFamily = FontFamily.Serif,
             fontSize = 30.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue,
-            textAlign = TextAlign.Center
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.background(color = Color.Red, shape = CutCornerShape(10.dp))
+                .width(200.dp)
         )
         OutlinedTextField(
             value = email,
