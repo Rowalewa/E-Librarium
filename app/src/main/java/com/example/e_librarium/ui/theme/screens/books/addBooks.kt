@@ -17,8 +17,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,9 +43,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import kotlin.math.E
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBooksScreen(navController: NavHostController){
+    val  bookStatus = listOf("Available", "Borrowed", "Reserved")
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var selectedText by remember {
+        mutableStateOf(bookStatus[0])
+    }
     val context = LocalContext.current
     var bookTitle by remember { mutableStateOf(TextFieldValue("")) }
     var bookAuthor by remember { mutableStateOf(TextFieldValue("")) }
@@ -49,7 +63,7 @@ fun AddBooksScreen(navController: NavHostController){
     var bookPublicationDate by remember { mutableStateOf(TextFieldValue("")) }
     var bookCondition by remember { mutableStateOf(TextFieldValue("")) }
     var bookShelfNumber by remember { mutableStateOf(TextFieldValue("")) }
-    var bookStatus by remember { mutableStateOf(TextFieldValue("")) }
+//    var bookStatus by remember { mutableStateOf(TextFieldValue("")) }
     var bookSynopsis by remember { mutableStateOf(TextFieldValue("")) }
     var bookEdition by remember { mutableStateOf(TextFieldValue("")) }
     var bookLanguage by remember { mutableStateOf(TextFieldValue("")) }
@@ -224,29 +238,51 @@ fun AddBooksScreen(navController: NavHostController){
                 ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
-        OutlinedTextField(
-            value = bookStatus,
-            onValueChange = { bookStatus = it },
-            label = { Text(text = "Book Status *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
+        ExposedDropdownMenuBox(expanded = isExpanded,
+            onExpandedChange = {isExpanded= !isExpanded}
+        ) {
+            TextField(
+                modifier = Modifier.menuAnchor(),
+                value = selectedText,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)}
+            )
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded=false}) {
+                bookStatus.forEachIndexed { index, text ->
+                    DropdownMenuItem(
+                        text = { Text(text = text) },
+                        onClick = { selectedText = bookStatus[index] },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+
+        }
+        Text(text = "Currently Selected: $selectedText")
+//        OutlinedTextField(
+//            value = bookStatus,
+//            onValueChange = { bookStatus = it },
+//            label = { Text(text = "Book Status *") },
+//            colors = TextFieldDefaults.colors(
+//                focusedTextColor = Color.Blue,
+//                unfocusedTextColor = Color.Cyan,
+//                focusedContainerColor = Color.White,
+//                unfocusedContainerColor = Color.White,
+//                disabledContainerColor = Color.White,
+//                focusedLabelColor = Color.Green,
+//                unfocusedLabelColor = Color.Magenta,
+//            ),
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(
+//                    start = 10.dp,
+//                    end = 10.dp,
+//                    bottom = 0.dp,
+//                    top = 0.dp
+//                ),
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+//        )
         OutlinedTextField(
             value = bookSynopsis,
             onValueChange = { bookSynopsis = it },
@@ -449,7 +485,7 @@ fun AddBooksScreen(navController: NavHostController){
             bookAcquisitionMethod.text.trim(),
             bookCondition.text.trim(),
             bookShelfNumber.text.trim(),
-            bookStatus.text.trim(),
+            selectedText.trim(),
             bookSynopsis.text.trim()
         )
     }
@@ -556,6 +592,49 @@ fun ImagePicker(
 
         }
     }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Dropdown(){
+    val  bookStatusOptions = listOf("Available", "Borrowed", "Reserved")
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var selectedText by remember {
+        mutableStateOf(bookStatusOptions[0])
+    }
+    Column (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        ExposedDropdownMenuBox(expanded = isExpanded,
+            onExpandedChange = {isExpanded= !isExpanded}
+        ) {
+            TextField(
+                modifier = Modifier.menuAnchor(),
+                value = selectedText,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)}
+            )
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded=false}) {
+                bookStatusOptions.forEachIndexed { index, text ->
+                    DropdownMenuItem(
+                        text = { Text(text = text) },
+                        onClick = { selectedText = bookStatusOptions[index] },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+
+        }
+        Text(text = "Currently Selected: $selectedText")
+
+
+    }
+
 }
 
 @Preview(
