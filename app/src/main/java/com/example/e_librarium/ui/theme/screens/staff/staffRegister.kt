@@ -114,18 +114,17 @@ fun StaffRegisterScreen(navController: NavController){
                     top = 0.dp,
                     bottom = 0.dp
                 )
-                .border(width = Dp.Hairline, color = Color.Black)
-                .background(color = Color.White)
+                .border(width = Dp.Hairline, color = Color.White)
         ){
             Text(
                 text = "Gender:",
                 modifier = Modifier
                     .align(Alignment.CenterVertically),
-                color = Color.Black
+                color = Color.White
             )
             ExposedDropdownMenuBox(
                 expanded = isGenderExpanded,
-                onExpandedChange = { isGenderExpanded = !isGenderExpanded }
+                onExpandedChange = { isGenderExpanded =! isGenderExpanded }
             ) {
                 TextField(
                     modifier = Modifier
@@ -175,14 +174,13 @@ fun StaffRegisterScreen(navController: NavController){
                     top = 0.dp,
                     bottom = 0.dp
                 )
-                .border(width = Dp.Hairline, color = Color.Black)
-                .background(color = Color.White)
+                .border(width = Dp.Hairline, color = Color.White)
         ){
             Text(
                 text = "Marriage Status:",
                 modifier = Modifier
                     .align(Alignment.CenterVertically),
-                color = Color.Black
+                color = Color.White
             )
             ExposedDropdownMenuBox(
                 expanded = isMarriageStatusExpanded,
