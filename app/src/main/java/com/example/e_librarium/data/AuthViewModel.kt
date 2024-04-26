@@ -4,6 +4,7 @@ package com.example.e_librarium.data
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.net.Uri
 import android.widget.Toast
 import androidx.navigation.NavController
 import com.example.e_librarium.models.Clients
@@ -18,6 +19,7 @@ import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
 import com.example.e_librarium.navigation.ROUTE_STAFF_REGISTER
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 
 class AuthViewModel (
     var navController: NavController,
@@ -34,14 +36,16 @@ class AuthViewModel (
     fun staffsignup(
         fullName: String,
         gender: String,
-        marriageStatus: String,
+        maritalStatus: String,
         phoneNumber: String,
+        dateOfBirth: String,
         email: String,
         pass: String,
         confpass: String,
+        staffProfilePictureUri: Uri
     ) {
         progress.show()
-        if (fullName.isBlank() || gender.isBlank() || marriageStatus.isBlank() || phoneNumber.isBlank() || email.isBlank() || pass.isBlank() || confpass.isBlank()) {
+        if (fullName.isBlank() || gender.isBlank() || maritalStatus.isBlank() || phoneNumber.isBlank() || dateOfBirth.isBlank() || email.isBlank() || pass.isBlank() || confpass.isBlank()) {
             progress.dismiss()
             Toast.makeText(context, "Fill all the Fields Please \uD83D\uDE42", Toast.LENGTH_LONG).show()
             return
@@ -57,19 +61,41 @@ class AuthViewModel (
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val staffdata = Staff(fullName, gender, marriageStatus, phoneNumber, email, pass, mAuth.currentUser!!.uid)
-                    val regRef = FirebaseDatabase.getInstance().getReference().child("Staff").child(mAuth.currentUser!!.uid)
-                    regRef.setValue(staffdata).addOnCompleteListener { dataTask ->
-                        if (dataTask.isSuccessful) {
-                            progress.dismiss()
-                            Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
-                            navController.navigate(ROUTE_BOOKS_HOME)
-                        } else {
-                            progress.dismiss()
-                            Toast.makeText(context, "${dataTask.exception!!.message}", Toast.LENGTH_LONG).show()
-                            navController.navigate(ROUTE_STAFF_LOGIN)
+                    val storageRef = FirebaseStorage.getInstance().reference
+                    val profilePicRef = storageRef.child("staff_profile_pictures/${mAuth.currentUser!!.uid}")
+                    profilePicRef.putFile(staffProfilePictureUri)
+                        .addOnSuccessListener { _ ->
+                            profilePicRef.downloadUrl.addOnSuccessListener { uri ->
+                                // Once the image is uploaded, save the user data including the image URL
+                                val staffdata = Staff(
+                                    fullName,
+                                    gender,
+                                    maritalStatus,
+                                    phoneNumber,
+                                    dateOfBirth,
+                                    email,
+                                    pass,
+                                    mAuth.currentUser!!.uid,
+                                    uri.toString() // Save the image URL in the user data
+                                )
+                                val regRef = FirebaseDatabase.getInstance().getReference().child("Staff").child(mAuth.currentUser!!.uid)
+                                regRef.setValue(staffdata).addOnCompleteListener { dataTask ->
+                                    if (dataTask.isSuccessful) {
+                                        progress.dismiss()
+                                        Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
+                                        navController.navigate(ROUTE_BOOKS_HOME)
+                                    } else {
+                                        progress.dismiss()
+                                        Toast.makeText(context, "${dataTask.exception!!.message}", Toast.LENGTH_LONG).show()
+                                        navController.navigate(ROUTE_STAFF_LOGIN)
+                                    }
+                                }
+                            }
                         }
-                    }
+                        .addOnFailureListener { e ->
+                            progress.dismiss()
+                            Toast.makeText(context, "Failed to upload image: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
                 } else {
                     progress.dismiss()
                     val errorMessage = task.exception?.message ?: "Could not Register, Retry"
@@ -85,14 +111,19 @@ class AuthViewModel (
     }
 
     fun clientsignup(
+        fullName: String,
+        gender: String,
+        maritalStatus: String,
+        phoneNumber: String,
+        dateOfBirth: String,
         email: String,
         pass: String,
         confpass: String,
     ) {
         progress.show()
-        if (email.isBlank() || pass.isBlank() || confpass.isBlank()) {
+        if (fullName.isBlank() || gender.isBlank() || maritalStatus.isBlank() || phoneNumber.isBlank() || dateOfBirth.isBlank() || email.isBlank() || pass.isBlank() || confpass.isBlank()) {
             progress.dismiss()
-            Toast.makeText(context, "Email and Password should not be blank", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_LONG).show()
             navController.navigate(ROUTE_CLIENT_REGISTER)
             return
         }else if (pass != confpass) {
@@ -100,10 +131,12 @@ class AuthViewModel (
             Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
             navController.navigate(ROUTE_CLIENT_REGISTER)
             return
+        } else if (phoneNumber.length != 10){
+            Toast.makeText(context, "Invalid Phone Number", Toast.LENGTH_LONG).show()
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val clientdata = Clients(email, pass, mAuth.currentUser!!.uid)
+                    val clientdata = Clients(fullName, gender, maritalStatus, phoneNumber, dateOfBirth, email, pass, mAuth.currentUser!!.uid)
                     val regRef = FirebaseDatabase.getInstance().getReference().child("Client").child(mAuth.currentUser!!.uid)
                     regRef.setValue(clientdata).addOnCompleteListener { dataTask ->
                         if (dataTask.isSuccessful) {

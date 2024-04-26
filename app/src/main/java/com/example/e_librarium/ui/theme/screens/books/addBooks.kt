@@ -807,49 +807,6 @@ fun ImagePicker(
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Dropdown(){
-    val  bookStatusOptions = listOf("Available", "Borrowed", "Reserved")
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
-    var selectedText by remember {
-        mutableStateOf(bookStatusOptions[0])
-    }
-    Column (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        ExposedDropdownMenuBox(expanded = isExpanded,
-            onExpandedChange = {isExpanded= !isExpanded}
-        ) {
-            TextField(
-                modifier = Modifier.menuAnchor(),
-                value = selectedText,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)}
-            )
-            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded=false}) {
-                bookStatusOptions.forEachIndexed { index, text ->
-                    DropdownMenuItem(
-                        text = { Text(text = text) },
-                        onClick = { selectedText = bookStatusOptions[index] },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                    )
-                }
-            }
-
-        }
-        Text(text = "Currently Selected: $selectedText")
-
-
-    }
-
-}
 
 @Preview(
     showSystemUi = true,

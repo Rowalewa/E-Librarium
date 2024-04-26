@@ -1,5 +1,7 @@
 [versions]
 agp = "8.3.2"
+appcompat = "1.6.1"
+coreKtxVersion = "1.13.0"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -16,7 +18,9 @@ firebaseDatabase = "20.3.1"
 firebaseStorage = "20.3.0"
 
 [libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v1130 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
