@@ -61,12 +61,14 @@ class AuthViewModel (
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val staffid = System.currentTimeMillis().toString()
                     val storageRef = FirebaseStorage.getInstance().reference
                     val profilePicRef = storageRef.child("staff_profile_pictures/${mAuth.currentUser!!.uid}")
                     profilePicRef.putFile(staffProfilePictureUri)
                         .addOnSuccessListener { _ ->
                             profilePicRef.downloadUrl.addOnSuccessListener { uri ->
                                 // Once the image is uploaded, save the user data including the image URL
+                                val staffProfilePictureUrl = uri.toString()
                                 val staffdata = Staff(
                                     fullName,
                                     gender,
@@ -75,8 +77,9 @@ class AuthViewModel (
                                     dateOfBirth,
                                     email,
                                     pass,
-                                    mAuth.currentUser!!.uid,
-                                    uri.toString() // Save the image URL in the user data
+                                    staffProfilePictureUrl, // Save the image URL in the user data
+                                    staffid
+
                                 )
                                 val regRef = FirebaseDatabase.getInstance().getReference().child("Staff").child(mAuth.currentUser!!.uid)
                                 regRef.setValue(staffdata).addOnCompleteListener { dataTask ->
@@ -137,12 +140,13 @@ class AuthViewModel (
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val clientid = System.currentTimeMillis().toString()
                     val storageRef = FirebaseStorage.getInstance().reference
-                    val profilePicRef =
-                        storageRef.child("client_profile_pictures/${mAuth.currentUser!!.uid}")
+                    val profilePicRef = storageRef.child("client_profile_pictures/${mAuth.currentUser!!.uid}")
                     profilePicRef.putFile(clientProfilePictureUri)
                         .addOnSuccessListener { _ ->
                             profilePicRef.downloadUrl.addOnSuccessListener { uri ->
+                                val clientProfilePictureUrl = uri.toString()
                                 val clientdata = Clients(
                                     fullName,
                                     gender,
@@ -151,8 +155,9 @@ class AuthViewModel (
                                     dateOfBirth,
                                     email,
                                     pass,
-                                    mAuth.currentUser!!.uid,
-                                    uri.toString()
+                                    clientProfilePictureUrl,
+                                    clientid
+
                                 )
                                 val regRef =
                                     FirebaseDatabase.getInstance().getReference().child("Client")
