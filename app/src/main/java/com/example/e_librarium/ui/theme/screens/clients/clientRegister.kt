@@ -1,6 +1,14 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.e_librarium.ui.theme.screens.clients
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -10,8 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
@@ -34,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -95,6 +106,7 @@ fun ClientRegisterScreen(navController: NavController){
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = true)
     ){
         Text(
             text = "REGISTER ",
@@ -103,7 +115,8 @@ fun ClientRegisterScreen(navController: NavController){
             fontWeight = FontWeight.ExtraBold,
             color = Color.Black,
             textAlign = TextAlign.Center,
-            modifier = Modifier.background(color = Color.Red, shape = CutCornerShape(10.dp))
+            modifier = Modifier
+                .background(color = Color.Red, shape = CutCornerShape(10.dp))
                 .width(200.dp)
         )
         OutlinedTextField(
@@ -319,36 +332,20 @@ fun ClientRegisterScreen(navController: NavController){
                 .fillMaxWidth()
                 .padding(8.dp)
         )
-        Button(onClick = {
-            val myRegister = AuthViewModel(navController, context)
-            myRegister.clientsignup(
-                fullName.text.trim(),
-                gender.trim(),
-                maritalStatus.trim(),
-                phoneNumber.text.trim(),
-                dateOfBirth.text.trim(),
-                email.text.trim(),
-                pass.text.trim(),
-                confpass.text.trim()
-            ) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                ),
-            colors = ButtonDefaults.buttonColors(Color.Cyan)) {
-            Text(
-                text ="Register",
-                color = Color.Black,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 20.sp,
-                fontFamily = FontFamily.Serif
-            )
+        ImagePicker(
+            Modifier,
+            context,
+            navController,
+            fullName.text.trim(),
+            gender.trim(),
+            maritalStatus.trim(),
+            phoneNumber.text.trim(),
+            dateOfBirth.text.trim(),
+            email.text.trim(),
+            pass.text.trim(),
+            confpass.text.trim(),
 
-        }
+        )
         Spacer(modifier = Modifier.height(10.dp))
         Text(text = "Already have an account?")
         Button(onClick = { navController.navigate(ROUTE_CLIENT_LOGIN) },
@@ -368,6 +365,107 @@ fun ClientRegisterScreen(navController: NavController){
                 fontSize = 20.sp,
                 fontFamily = FontFamily.Serif
             )
+
+        }
+    }
+
+}
+@Composable
+fun ImagePicker(
+    modifier: Modifier,
+    context: Context,
+    navController: NavController,
+    fullName: String,
+    gender: String,
+    maritalStatus: String,
+    phoneNumber: String,
+    dateOfBirth: String,
+    email: String,
+    pass: String,
+    confpass: String
+) {
+    var hasImage by remember { mutableStateOf(false) }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            hasImage = uri != null
+            imageUri = uri
+        }
+    )
+
+    Column(modifier = Modifier) {
+        if (hasImage && imageUri != null) {
+            val bitmap = MediaStore.Images.Media.
+            getBitmap(context.contentResolver,imageUri)
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = "Selected image",
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    top = 0.dp,
+                    bottom = 0.dp
+                ))
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    imagePicker.launch("image/*")
+                }
+            ) {
+                Text(
+                    text = "Select Profile Picture Image"
+                )
+            }
+            Button(onClick = {
+                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
+                val productRepository = AuthViewModel(navController,context)
+                productRepository.clientsignup(
+                    fullName,
+                    gender,
+                    maritalStatus,
+                    phoneNumber,
+                    dateOfBirth,
+                    email,
+                    pass,
+                    confpass,
+                    imageUri!!
+                )
+
+            },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Cyan)
+            ) {
+                Text(
+                    text = "Register",
+                    color = Color.Black,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+            }
+//            Button(onClick = {
+//                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
+//
+////                navController.navigate(ROUTE_VIEW_UPLOAD_SCREEN)
+//
+//            }) {
+//                Text(text = "view uploads")
+//            }
 
         }
     }

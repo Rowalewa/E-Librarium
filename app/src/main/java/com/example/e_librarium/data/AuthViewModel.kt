@@ -119,6 +119,7 @@ class AuthViewModel (
         email: String,
         pass: String,
         confpass: String,
+        clientProfilePictureUri: Uri
     ) {
         progress.show()
         if (fullName.isBlank() || gender.isBlank() || maritalStatus.isBlank() || phoneNumber.isBlank() || dateOfBirth.isBlank() || email.isBlank() || pass.isBlank() || confpass.isBlank()) {
@@ -136,19 +137,51 @@ class AuthViewModel (
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val clientdata = Clients(fullName, gender, maritalStatus, phoneNumber, dateOfBirth, email, pass, mAuth.currentUser!!.uid)
-                    val regRef = FirebaseDatabase.getInstance().getReference().child("Client").child(mAuth.currentUser!!.uid)
-                    regRef.setValue(clientdata).addOnCompleteListener { dataTask ->
-                        if (dataTask.isSuccessful) {
-                            progress.dismiss()
-                            Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
-                            navController.navigate(ROUTE_BORROW_HOME)
-                        } else {
-                            progress.dismiss()
-                            Toast.makeText(context, "${dataTask.exception!!.message}", Toast.LENGTH_LONG).show()
-                            navController.navigate(ROUTE_CLIENT_LOGIN)
+                    val storageRef = FirebaseStorage.getInstance().reference
+                    val profilePicRef =
+                        storageRef.child("client_profile_pictures/${mAuth.currentUser!!.uid}")
+                    profilePicRef.putFile(clientProfilePictureUri)
+                        .addOnSuccessListener { _ ->
+                            profilePicRef.downloadUrl.addOnSuccessListener { uri ->
+                                val clientdata = Clients(
+                                    fullName,
+                                    gender,
+                                    maritalStatus,
+                                    phoneNumber,
+                                    dateOfBirth,
+                                    email,
+                                    pass,
+                                    mAuth.currentUser!!.uid,
+                                    uri.toString()
+                                )
+                                val regRef =
+                                    FirebaseDatabase.getInstance().getReference().child("Client")
+                                        .child(mAuth.currentUser!!.uid)
+                                regRef.setValue(clientdata).addOnCompleteListener { dataTask ->
+                                    if (dataTask.isSuccessful) {
+                                        progress.dismiss()
+                                        Toast.makeText(
+                                            context,
+                                            "Registered Successfully",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        navController.navigate(ROUTE_BORROW_HOME)
+                                    } else {
+                                        progress.dismiss()
+                                        Toast.makeText(
+                                            context,
+                                            "${dataTask.exception!!.message}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        navController.navigate(ROUTE_CLIENT_LOGIN)
+                                    }
+                                }
+                            }
                         }
-                    }
+                        .addOnFailureListener { e ->
+                            progress.dismiss()
+                            Toast.makeText(context, "Failed to upload image: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
                 } else {
                     progress.dismiss()
                     val errorMessage = task.exception?.message ?: "Could not Register, Retry"

@@ -329,36 +329,6 @@ fun StaffRegisterScreen(navController: NavController){
                 .fillMaxWidth()
                 .padding(8.dp)
         )
-//        Button(onClick = {
-//            val myRegister = AuthViewModel(navController, context)
-//            myRegister.staffsignup(
-//                fullName.text.trim(),
-//                gender.trim(),
-//                maritalStatus.trim(),
-//                phoneNumber.text.trim(),
-//                dateOfBirth.text.trim(),
-//                email.text.trim(),
-//                pass.text.trim(),
-//                confpass.text.trim()
-//            ) },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(
-//                    start = 20.dp,
-//                    end = 20.dp,
-//                    top = 0.dp,
-//                    bottom = 0.dp
-//                ),
-//            colors = ButtonDefaults.buttonColors(Color.Cyan)) {
-//            Text(
-//                text ="Register",
-//                color = Color.Black,
-//                fontWeight = FontWeight.ExtraBold,
-//                fontSize = 20.sp,
-//                fontFamily = FontFamily.Serif
-//            )
-//
-//        }
         ImagePicker(
             Modifier,
             context,
@@ -503,7 +473,7 @@ fun ImagePicker(
 @Preview(
     showSystemUi = true,
     showBackground = true,
-    name = "Staff Register Screen Preview"
+    name = "Staff Register Screen Preview \uD83E\uDE77"
 )
 @Composable
 fun StaffRegisterPreview(){

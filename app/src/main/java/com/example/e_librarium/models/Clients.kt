@@ -8,6 +8,7 @@ class Clients {
     var dateOfBirth: String = ""
     var email: String = ""
     var pass: String = ""
+    var clientProfilePictureUrl: String = ""
     var clientid: String = ""
 
     constructor(
@@ -18,6 +19,7 @@ class Clients {
         dateOfBirth: String,
         email: String,
         pass: String,
+        clientProfilePictureUrl: String,
         clientid: String
     ){
         this.fullName = fullName
@@ -27,6 +29,7 @@ class Clients {
         this.dateOfBirth = dateOfBirth
         this.email = email
         this.pass = pass
+        this.clientProfilePictureUrl = clientProfilePictureUrl
         this.clientid = clientid
     }
 
