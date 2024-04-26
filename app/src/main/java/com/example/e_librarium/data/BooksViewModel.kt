@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.e_librarium.data
 
 import android.app.ProgressDialog
@@ -55,11 +57,16 @@ class BooksViewModel (
                 bookISBNNumber.isBlank() || bookPublisher.isBlank() || bookPublicationDate.isBlank() ||
                 bookEdition.isBlank()|| bookLanguage.isBlank()|| bookNumberOfPages.isBlank()|| bookAcquisitionMethod.isBlank()||
                 bookYearOfPublication.isBlank()|| bookShelfNumber.isBlank()|| bookStatus.isBlank()|| bookSynopsis.isBlank()
-            ){
+            ) {
                 progress.dismiss()
                 Toast.makeText(context, "Fill all the fields please", Toast.LENGTH_LONG).show()
                 // making a toast appear at the center of screen without using a variable
                 navController.navigate(ROUTE_ADD_BOOKS)
+            } else if (bookISBNNumber.length != 10 && bookISBNNumber.length != 13){
+                progress.dismiss()
+                Toast.makeText(context, "Invalid ISBN Number", Toast.LENGTH_LONG).show()
+                navController.navigate(ROUTE_ADD_BOOKS)
+//
             } else if (it.isSuccessful){
                 progress.dismiss()
                 // Proceed to store other data into the db
