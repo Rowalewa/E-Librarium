@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 class AuthViewModel (
     var navController: NavController,
-    var context: Context
+    private var context: Context
 ){
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var progress: ProgressDialog = ProgressDialog(context)
@@ -32,24 +32,32 @@ class AuthViewModel (
     }
 
     fun staffsignup(
+        fullName: String,
+        gender: String,
+        marriageStatus: String,
+        phoneNumber: String,
         email: String,
         pass: String,
         confpass: String,
     ) {
         progress.show()
-        if (email.isBlank() || pass.isBlank() || confpass.isBlank()) {
+        if (fullName.isBlank() || gender.isBlank() || marriageStatus.isBlank() || phoneNumber.isBlank() || email.isBlank() || pass.isBlank() || confpass.isBlank()) {
             progress.dismiss()
-            Toast.makeText(context, "Email and Password should not be blank", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Fill all the Fields Please \uD83D\uDE42", Toast.LENGTH_LONG).show()
             return
         }else if (pass != confpass) {
             progress.dismiss()
             Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
             navController.navigate(ROUTE_STAFF_REGISTER)
             return
+        } else if (phoneNumber.length != 10){
+            progress.dismiss()
+            Toast.makeText(context, "Invalid Phone Number", Toast.LENGTH_LONG).show()
+            return
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val staffdata = Staff(email, pass, mAuth.currentUser!!.uid)
+                    val staffdata = Staff(fullName, gender, marriageStatus, phoneNumber, email, pass, mAuth.currentUser!!.uid)
                     val regRef = FirebaseDatabase.getInstance().getReference().child("Staff").child(mAuth.currentUser!!.uid)
                     regRef.setValue(staffdata).addOnCompleteListener { dataTask ->
                         if (dataTask.isSuccessful) {
