@@ -169,22 +169,67 @@ fun BookItem(
                 modifier = Modifier.size(400.dp)
                     .padding(18.dp)
             )
-            Text(text = "Book Title: $bookTitle", color = Color.Black)
-            Text(text = "Book Author: $bookAuthor", color = Color.Black)
-            Text(text = "Book Year of Publication: $bookYearOfPublication", color = Color.Black)
-            Text(text = "Book Price: $bookPrice", color = Color.Black)
-            Text(text = "Book ISBN Number: $bookISBNNumber", color = Color.Black)
-            Text(text = "Book Publisher: $bookPublisher", color = Color.Black)
-            Text(text = "Book Publication Date: $bookPublicationDate", color = Color.Black)
-            Text(text = "Book Genre: $bookGenre", color = Color.Black)
-            Text(text = "Book Edition: $bookEdition", color = Color.Black)
-            Text(text = "Book Language: $bookLanguage", color = Color.Black)
-            Text(text = "Book Number of Pages: $bookNumberOfPages", color = Color.Black)
-            Text(text = "Book Acquisition Method: $bookAcquisitionMethod", color = Color.Black)
-            Text(text = "Book Condition: $bookCondition", color = Color.Black)
-            Text(text = "Book Shelf Number: $bookShelfNumber", color = Color.Black)
-            Text(text = "Book Status: $bookStatus", color = Color.Black)
-            Text(text = "Book Synopsis: $bookSynopsis", color = Color.Black)
+            Text(
+                 text = "Book Title: $bookTitle",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Author: $bookAuthor",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Year of Publication: $bookYearOfPublication",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Price: $bookPrice",
+                color = Color.Black
+            )
+            Text(
+                text = "Book ISBN Number: $bookISBNNumber",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Publisher: $bookPublisher",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Publication Date: $bookPublicationDate",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Genre: $bookGenre",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Edition: $bookEdition",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Language: $bookLanguage",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Number of Pages: $bookNumberOfPages",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Acquisition Method: $bookAcquisitionMethod",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Condition: $bookCondition",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Shelf Number: $bookShelfNumber",
+                color = Color.Black)
+            Text(
+                text = "Book Status: $bookStatus",
+                color = Color.Black)
+            Text(
+                text = "Book Synopsis: $bookSynopsis",
+                color = Color.Black)
             Row(
                 modifier = Modifier.background(color = Color.Yellow)
             ) {
