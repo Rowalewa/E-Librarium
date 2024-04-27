@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.navigation.ROUTE_CLIENT_LOGIN
 import com.example.e_librarium.navigation.ROUTE_CLIENT_REGISTER
+import com.example.e_librarium.navigation.ROUTE_HOME
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
@@ -70,6 +71,26 @@ fun ClientHomeScreen(navController: NavController){
             Text(
                 text = "Sign Up",
                 color = Color.Blue,
+                fontSize = 20.sp,
+                fontStyle = FontStyle.Normal,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Serif
+            )
+        }
+        Button(onClick = { navController.navigate(ROUTE_HOME) },
+            colors = ButtonDefaults.buttonColors(Color.Blue),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    top = 0.dp,
+                    bottom = 0.dp
+                )
+        ) {
+            Text(
+                text = "Back to Home Screen",
+                color = Color.Green,
                 fontSize = 20.sp,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Bold,

@@ -152,7 +152,12 @@ fun AddBooksScreen(navController: NavHostController){
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.verticalScroll(rememberScrollState())
+        modifier = Modifier
+            .verticalScroll(
+                rememberScrollState(),
+                enabled = true,
+                reverseScrolling = true
+            )
     ){
         Text(
             text = "Add Books",
