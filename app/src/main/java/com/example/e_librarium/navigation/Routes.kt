@@ -3,6 +3,7 @@ package com.example.e_librarium.navigation
 const val ROUTE_ADD_BOOKS = "addBooks"
 const val ROUTE_BOOKS_HOME = "booksHome"
 const val ROUTE_EDIT_BOOKS = "editBooks"
+const val ROUTE_VIEW_BOOKS = "viewBooks"
 const val ROUTE_BORROW_BOOKS = "borrowBooks"
 const val ROUTE_BORROW_HOME = "borrowHome"
 const val ROUTE_CLIENT_LOGIN = "clientLogIn"

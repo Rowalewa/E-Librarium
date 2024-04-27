@@ -7,11 +7,16 @@ import android.content.Context
 import android.net.Uri
 import android.view.Gravity
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavHostController
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
 class BooksViewModel (
@@ -103,6 +108,68 @@ class BooksViewModel (
             }else{
                 progress.dismiss()
                 Toast.makeText(context, "ERROR: ${it.exception!!.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+//    fun viewBooks(
+//        books: MutableState<List<Books>>
+//    ) {
+//        val ref = FirebaseDatabase.getInstance().getReference().child("Books")
+//
+//        ref.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val bookList = mutableListOf<Books>()
+//                for (snap in snapshot.children) {
+//                    val value = snap.getValue(Books::class.java)
+//                    value?.let {
+//                        bookList.add(it)
+//                    }
+//                }
+//                books.value = bookList
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
+
+
+    fun viewBooks(
+        book: MutableState<Books>,
+        books: SnapshotStateList<Books>
+    ): SnapshotStateList<Books> {
+        val ref = FirebaseDatabase.getInstance().getReference().child("Books")
+
+//        progress.show()
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+//                progress.dismiss()
+                books.clear()
+                for (snap in snapshot.children) {
+                    val value = snap.getValue(Books::class.java)
+                    book.value = value!!
+                    books.add(value)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+        return books
+    }
+
+    fun deleteBook(bookId: String) {
+        val delRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+//        progress.show()
+        delRef.removeValue().addOnCompleteListener {
+//            progress.dismiss()
+            if (it.isSuccessful) {
+                Toast.makeText(context, "Book deleted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, it.exception!!.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.ui.theme.screens.books.AddBooksScreen
 import com.example.e_librarium.ui.theme.screens.books.BooksHomeScreen
 import com.example.e_librarium.ui.theme.screens.books.EditBooksScreen
+import com.example.e_librarium.ui.theme.screens.books.ViewBooksScreen
 import com.example.e_librarium.ui.theme.screens.borrowing.BorrowBooksScreen
 import com.example.e_librarium.ui.theme.screens.borrowing.BorrowHomeScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientHomeScreen
@@ -39,6 +40,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable(ROUTE_EDIT_BOOKS){
             EditBooksScreen(navController)  // need for edit
+        }
+        composable(ROUTE_VIEW_BOOKS){
+            ViewBooksScreen(navController)  // need for edit
         }
         composable(ROUTE_BORROW_BOOKS){
             BorrowBooksScreen(navController)  // need for edit
