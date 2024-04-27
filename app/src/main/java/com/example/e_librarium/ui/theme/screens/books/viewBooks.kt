@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -151,31 +153,10 @@ fun BookItem(
             top = 0.dp,
             end = 20.dp,
             bottom = 0.dp
-        ),
+        )
+        .clip(shape = CutCornerShape(20.dp))
+        ,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Column(
-            modifier = Modifier
-                .background(color = Color.Blue)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Book Title: $bookTitle")
-            Text(text = "Book Author: $bookAuthor")
-            Text(text = "Book Year of Publication: $bookYearOfPublication")
-            Text(text = "Book Price: $bookPrice")
-            Text(text = "Book ISBN Number: $bookISBNNumber")
-            Text(text = "Book Publisher: $bookPublisher")
-            Text(text = "Book Publication Date: $bookPublicationDate")
-            Text(text = "Book Genre: $bookGenre")
-            Text(text = "Book Edition: $bookEdition")
-            Text(text = "Book Language: $bookLanguage")
-            Text(text = "Book Number of Pages: $bookNumberOfPages")
-            Text(text = "Book Acquisition Method: $bookAcquisitionMethod")
-            Text(text = "Book Condition: $bookCondition")
-            Text(text = "Book Shelf Number: $bookShelfNumber")
-            Text(text = "Book Status: $bookStatus")
-            Text(text = "Book Synopsis: $bookSynopsis")
-        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -185,8 +166,25 @@ fun BookItem(
             Image(
                 painter = rememberAsyncImagePainter(bookImageUrl),
                 contentDescription = null,
-                modifier = Modifier.size(128.dp)
+                modifier = Modifier.size(400.dp)
+                    .padding(18.dp)
             )
+            Text(text = "Book Title: $bookTitle", color = Color.Black)
+            Text(text = "Book Author: $bookAuthor", color = Color.Black)
+            Text(text = "Book Year of Publication: $bookYearOfPublication", color = Color.Black)
+            Text(text = "Book Price: $bookPrice", color = Color.Black)
+            Text(text = "Book ISBN Number: $bookISBNNumber", color = Color.Black)
+            Text(text = "Book Publisher: $bookPublisher", color = Color.Black)
+            Text(text = "Book Publication Date: $bookPublicationDate", color = Color.Black)
+            Text(text = "Book Genre: $bookGenre", color = Color.Black)
+            Text(text = "Book Edition: $bookEdition", color = Color.Black)
+            Text(text = "Book Language: $bookLanguage", color = Color.Black)
+            Text(text = "Book Number of Pages: $bookNumberOfPages", color = Color.Black)
+            Text(text = "Book Acquisition Method: $bookAcquisitionMethod", color = Color.Black)
+            Text(text = "Book Condition: $bookCondition", color = Color.Black)
+            Text(text = "Book Shelf Number: $bookShelfNumber", color = Color.Black)
+            Text(text = "Book Status: $bookStatus", color = Color.Black)
+            Text(text = "Book Synopsis: $bookSynopsis", color = Color.Black)
             Row(
                 modifier = Modifier.background(color = Color.Yellow)
             ) {
@@ -224,7 +222,7 @@ fun BookItem(
                     Text(text = "Update")
                 }
             }
-            Spacer(modifier = Modifier.height(40.dp))
         }
     }
+    Spacer(modifier = Modifier.height(40.dp))
 }
