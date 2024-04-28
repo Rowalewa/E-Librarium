@@ -5,6 +5,7 @@ package com.example.e_librarium.data
 import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
@@ -289,14 +290,15 @@ class BooksViewModel (
     fun deleteBook(bookId: String) {
         val delRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
 //        progress.show()
-        delRef.removeValue().addOnCompleteListener {
+        delRef.removeValue().addOnCompleteListener {task ->
 //            progress.dismiss()
-            if (it.isSuccessful) {
+            if (task.isSuccessful) {
+                Log.d("DeleteBook", "Book deleted")
                 Toast.makeText(context, "Book deleted", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, it.exception!!.message, Toast.LENGTH_SHORT).show()
+                Log.e("DeleteBook", "Error deleting book", task.exception)
+                Toast.makeText(context, "Error deleting book: ${task.exception?.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
-
 }
