@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
+import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
@@ -37,6 +38,14 @@ fun BooksHomeScreen(navController: NavController){
         ) {
             Text(text = "View Books")
         }
+//        Button(onClick = { navController.navigate("$ROUTE_EDIT_BOOKS/{bookId}") },
+//            modifier = Modifier.fillMaxWidth(),
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = Color.Blue
+//            )
+//        ) {
+//            Text(text = "Edit Books")
+//        }
         Button(onClick = {
             val myStaffLogout = AuthViewModel(navController, context)
             myStaffLogout.stafflogout()

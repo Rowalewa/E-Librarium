@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -33,10 +31,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
+import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
 fun ViewBooksScreen(navController: NavHostController){
@@ -58,9 +59,9 @@ fun ViewBooksScreen(navController: NavHostController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "All Books",
+                text = "BOOKS",
                 fontSize = 30.sp,
-                fontFamily = FontFamily.Cursive,
+                fontFamily = FontFamily.Serif,
                 color = Color.Red
             )
 
@@ -166,7 +167,8 @@ fun BookItem(
             Image(
                 painter = rememberAsyncImagePainter(bookImageUrl),
                 contentDescription = null,
-                modifier = Modifier.size(400.dp)
+                modifier = Modifier
+                    .size(400.dp)
                     .padding(18.dp)
             )
             Text(
@@ -252,7 +254,7 @@ fun BookItem(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-//                navController.navigate("$ROUTE_UPDATE_PRODUCT/$id")
+                navController.navigate("$ROUTE_EDIT_BOOKS/$bookId")
                     },
                     modifier = Modifier
                         .width(200.dp)

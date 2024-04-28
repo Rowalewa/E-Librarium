@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -159,6 +160,59 @@ class BooksViewModel (
             }
         })
         return books
+    }
+
+    fun updateBook(
+        bookTitle: String,
+        bookAuthor: String,
+        bookYearOfPublication: String,
+        bookPrice: String,
+        bookISBNNumber: String,
+        bookPublisher: String,
+        bookPublicationDate: String,
+        bookGenre: String,
+        bookEdition: String,
+        bookLanguage: String,
+        bookNumberOfPages: String,
+        bookAcquisitionMethod: String,
+        bookCondition: String,
+        bookShelfNumber: String,
+        bookStatus: String,
+        bookSynopsis: String,
+        bookImageUrl: String,
+        bookId: String
+    ) {
+        val updateRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+//        progress.show()
+        val updateData = Books(
+            bookTitle,
+            bookAuthor,
+            bookYearOfPublication,
+            bookPrice,
+            bookISBNNumber,
+            bookPublisher,
+            bookPublicationDate,
+            bookGenre,
+            bookEdition,
+            bookLanguage,
+            bookNumberOfPages,
+            bookAcquisitionMethod,
+            bookCondition,
+            bookShelfNumber,
+            bookStatus,
+            bookSynopsis,
+            bookImageUrl,
+            bookId
+        )
+        updateRef.setValue(updateData).addOnCompleteListener {
+//            progress.dismiss()
+            if (it.isSuccessful) {
+                Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                navController.navigate(ROUTE_VIEW_BOOKS)
+            } else {
+                Toast.makeText(context, it.exception!!.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun deleteBook(bookId: String) {
