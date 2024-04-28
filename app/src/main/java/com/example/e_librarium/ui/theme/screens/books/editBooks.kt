@@ -69,7 +69,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
         val context = LocalContext.current
         val bookTitle by remember { mutableStateOf("") }
         val bookAuthor by remember { mutableStateOf("") }
-        val bookPrice by remember { mutableStateOf("") }
+        var bookPrice by remember { mutableStateOf("") }
         val bookPublisher by remember { mutableStateOf("") }
         val bookPublicationDate by remember { mutableStateOf("") }
         val bookShelfNumber by remember { mutableStateOf("") }
@@ -181,7 +181,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                 mBookTitle = TextFieldValue(book!!.bookTitle)
                 mBookAuthor = TextFieldValue(book.bookAuthor)
                 mBookYearOfPublication = TextFieldValue(book.bookYearOfPublication)
-                mBookPrice = TextFieldValue(book.bookPrice)
+                bookPrice = book.bookPrice
                 mBookISBNNumber = TextFieldValue(book.bookISBNNumber)
                 mBookPublisher = TextFieldValue(book.bookPublisher)
                 mBookPublicationDate = TextFieldValue(book.bookPublicationDate)
