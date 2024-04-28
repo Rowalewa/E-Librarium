@@ -1,6 +1,12 @@
 package com.example.e_librarium.ui.theme.screens.books
 
+import android.content.Context
+import android.net.Uri
+import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -31,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.ui.theme.ELibrariumTheme
@@ -54,7 +62,8 @@ import com.google.firebase.database.ValueEventListener
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditBooksScreen(navController: NavHostController, bookId: String){
-    Column(modifier = Modifier.fillMaxSize()
+    Column(modifier = Modifier
+        .fillMaxSize()
         .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = true),
         horizontalAlignment = Alignment.CenterHorizontally) {
         val context = LocalContext.current
@@ -732,33 +741,28 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
 //            id = currentBook.id
 //        )
 
-//        Button(onClick = {
-//            //-----------WRITE THE UPDATE LOGIC HERE---------------//
-//            val booksRepository = BooksViewModel(navController, context)
-//            booksRepository.updateBook(
-//                mBookTitle.text.trim(),
-//                mBookAuthor.text.trim(),
-//                mBookYearOfPublication.text.trim(),
-//                mBookPrice.text.trim(),
-//                mBookISBNNumber.text.trim(),
-//                mBookPublisher.text.trim(),
-//                mBookPublicationDate.text.trim(),
-//                mBookGenre.trim(),
-//                mBookEdition.text.trim(),
-//                mBookLanguage.text.trim(),
-//                mBookNumberOfPages.text.trim(),
-//                mBookAcquisitionMethod.trim(),
-//                mBookCondition.trim(),
-//                mBookShelfNumber.text.trim(),
-//                mBookStatus.trim(),
-//                mBookSynopsis.text.trim(),
-//                bookId
-//            )
-
-
-//        }) {
-//            Text(text = "Update")
-//        }
+        ImageUploader(
+            Modifier,
+            context,
+            navController,
+            mBookTitle.text.trim(),
+            mBookAuthor.text.trim(),
+            mBookYearOfPublication.text.trim(),
+            mBookPrice.text.trim(),
+            mBookISBNNumber.text.trim(),
+            mBookPublisher.text.trim(),
+            mBookPublicationDate.text.trim(),
+            mBookGenre.trim(),
+            mBookEdition.text.trim(),
+            mBookLanguage.text.trim() ,
+            mBookNumberOfPages.text.trim(),
+            mBookAcquisitionMethod.trim() ,
+            mBookCondition.trim(),
+            mBookShelfNumber.text.trim(),
+            mBookStatus.trim(),
+            mBookSynopsis.text.trim(),
+            bookId
+        )
 
         Button(onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
             colors = ButtonDefaults.buttonColors(Color.Blue),
@@ -779,9 +783,113 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
         }
 
     }
-
 }
 
+@Composable
+fun ImageUploader(
+    modifier: Modifier = Modifier,
+    context: Context,
+    navController: NavHostController,
+    bookTitle: String,
+    bookAuthor: String,
+    bookYearOfPublication: String,
+    bookPrice: String,
+    bookISBNNumber: String,
+    bookPublisher: String,
+    bookPublicationDate: String,
+    bookGenre: String,
+    bookEdition: String,
+    bookLanguage: String,
+    bookNumberOfPages: String,
+    bookAcquisitionMethod: String,
+    bookCondition: String,
+    bookShelfNumber: String,
+    bookStatus: String,
+    bookSynopsis: String,
+    bookId: String
+) {
+    var hasImage by remember { mutableStateOf(false) }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            hasImage = uri != null
+            imageUri = uri
+        }
+    )
+
+    Column(modifier = Modifier) {
+        if (hasImage && imageUri != null) {
+            val bitmap = MediaStore.Images.Media.
+            getBitmap(context.contentResolver,imageUri)
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = "Selected image",
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    top = 0.dp,
+                    bottom = 0.dp
+                ))
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    imagePicker.launch("image/*")
+                }
+            ) {
+                Text(
+                    text = "Select Image"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(onClick = {
+                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
+                val bookRepository = BooksViewModel(navController,context)
+                bookRepository.updateBook(
+                    bookId,
+                    bookTitle,
+                    bookAuthor,
+                    bookYearOfPublication,
+                    bookPrice,
+                    bookISBNNumber,
+                    bookPublisher,
+                    bookPublicationDate,
+                    bookGenre,
+                    bookEdition,
+                    bookLanguage,
+                    bookNumberOfPages,
+                    bookAcquisitionMethod,
+                    bookCondition,
+                    bookShelfNumber,
+                    bookStatus,
+                    bookSynopsis,
+                    imageUri
+                )
+
+            }) {
+                Text(text = "Upload")
+            }
+            Button(onClick = {
+                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
+
+//                navController.navigate(ROUTE_VIEW_UPLOAD_SCREEN)
+
+            }) {
+                Text(text = "view uploads")
+            }
+
+        }
+    }
+}
 @Preview(
     showSystemUi = true,
     showBackground = true,

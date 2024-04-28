@@ -163,6 +163,7 @@ class BooksViewModel (
     }
 
     fun updateBook(
+        bookId: String,
         bookTitle: String,
         bookAuthor: String,
         bookYearOfPublication: String,
@@ -179,15 +180,14 @@ class BooksViewModel (
         bookShelfNumber: String,
         bookStatus: String,
         bookSynopsis: String,
-        bookImageUrl: String,
-        bookId: String
+        filePath: Uri?
     ) {
-        val updateRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
-//        progress.show()
+        val storageReference = FirebaseStorage.getInstance().getReference().child("Books/$bookId")
+
         val updateData = Books(
             bookTitle,
             bookAuthor,
-            bookYearOfPublication,
+            bookCondition,
             bookPrice,
             bookISBNNumber,
             bookPublisher,
@@ -197,23 +197,94 @@ class BooksViewModel (
             bookLanguage,
             bookNumberOfPages,
             bookAcquisitionMethod,
-            bookCondition,
+            bookYearOfPublication,
             bookShelfNumber,
             bookStatus,
             bookSynopsis,
-            bookImageUrl,
+            "", // Placeholder for bookImageUrl
             bookId
         )
-        updateRef.setValue(updateData).addOnCompleteListener {
-//            progress.dismiss()
-            if (it.isSuccessful) {
-                Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
-                navController.navigate(ROUTE_VIEW_BOOKS)
-            } else {
-                Toast.makeText(context, it.exception!!.message, Toast.LENGTH_SHORT).show()
+
+        // Update book details in Firebase Realtime Database
+        if (filePath != null) {
+        val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+        dbRef.setValue(updateData).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // If an image file is provided, update the image in Firebase Storage
+                    filePath.let { fileUri ->
+                        storageReference.putFile(fileUri).addOnCompleteListener { storageTask ->
+                            if (storageTask.isSuccessful) {
+                                storageReference.downloadUrl.addOnSuccessListener { uri ->
+                                    val imageUrl = uri.toString()
+                                    updateData.bookImageUrl = imageUrl
+                                    dbRef.setValue(updateData) // Update the book entry with the image URL
+                                }
+                            } else {
+                                Toast.makeText(context, "Upload Failure", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+
+                    // Show success message
+                    Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                    navController.navigate(ROUTE_VIEW_BOOKS)
+                } else {
+                    // Handle database update error
+                    Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
+        } else{
+            val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val book = snapshot.getValue(Books::class.java)
+                    val existingImageUrl = book?.bookImageUrl ?: ""
+
+                    val updateData = Books(
+                        bookTitle,
+                        bookAuthor,
+                        bookCondition,
+                        bookPrice,
+                        bookISBNNumber,
+                        bookPublisher,
+                        bookPublicationDate,
+                        bookGenre,
+                        bookEdition,
+                        bookLanguage,
+                        bookNumberOfPages,
+                        bookAcquisitionMethod,
+                        bookYearOfPublication,
+                        bookShelfNumber,
+                        bookStatus,
+                        bookSynopsis,
+                        existingImageUrl, // Retain the existing image URL if filePath is null
+                        bookId
+                    )
+
+                    dbRef.setValue(updateData).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Show success message
+                            Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                            navController.navigate(ROUTE_VIEW_BOOKS)
+                        } else {
+                            // Handle database update error
+                            Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle database error
+                    Toast.makeText(context, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            )
+            Toast.makeText(context, "Success with Image Retained", Toast.LENGTH_LONG).show()
         }
     }
+
+
 
     fun deleteBook(bookId: String) {
         val delRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
