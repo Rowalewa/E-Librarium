@@ -114,30 +114,6 @@ class BooksViewModel (
         }
     }
 
-//    fun viewBooks(
-//        books: MutableState<List<Books>>
-//    ) {
-//        val ref = FirebaseDatabase.getInstance().getReference().child("Books")
-//
-//        ref.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                val bookList = mutableListOf<Books>()
-//                for (snap in snapshot.children) {
-//                    val value = snap.getValue(Books::class.java)
-//                    value?.let {
-//                        bookList.add(it)
-//                    }
-//                }
-//                books.value = bookList
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
-
-
     fun viewBooks(
         book: MutableState<Books>,
         books: SnapshotStateList<Books>

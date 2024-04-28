@@ -53,6 +53,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -880,10 +881,9 @@ fun ImageUploader(
             }
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
-
-//                navController.navigate(ROUTE_VIEW_UPLOAD_SCREEN)
-
-            }) {
+                navController.navigate(ROUTE_VIEW_BOOKS)
+            },
+            ) {
                 Text(text = "view uploads")
             }
 
