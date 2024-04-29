@@ -3,8 +3,10 @@ package com.example.e_librarium.ui.theme.screens.clients
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -29,12 +31,26 @@ import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
 fun ClientHomeScreen(navController: NavController){
+    Box {
+        Image(painter = painterResource(id = R.drawable.penta_color),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box {
             Image(painter = painterResource(id = R.drawable.client_home_image_alpha),
-                contentDescription = null)
+                contentDescription = null,
+                modifier = Modifier.size(400.dp)
+                    .padding(
+                        start = 0.dp,
+                        end = 0.dp,
+                        top = 20.dp,
+                        bottom = 20.dp
+                    )
+            )
         }
         Button(onClick = { navController.navigate(ROUTE_CLIENT_LOGIN) },
             colors = ButtonDefaults.buttonColors(Color.Blue),

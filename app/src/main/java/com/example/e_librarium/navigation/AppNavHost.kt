@@ -47,8 +47,8 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable(ROUTE_BORROW_BOOKS){
             BorrowBooksScreen(navController)  // need for edit
         }
-        composable(ROUTE_BORROW_HOME){
-            BorrowHomeScreen(navController)
+        composable("$ROUTE_BORROW_HOME/{clientId}"){passedData ->
+            BorrowHomeScreen(navController, passedData.arguments?.getString("clientId")!!)
         }
         composable(ROUTE_CLIENT_LOGIN){
             ClientLogInScreen(navController)

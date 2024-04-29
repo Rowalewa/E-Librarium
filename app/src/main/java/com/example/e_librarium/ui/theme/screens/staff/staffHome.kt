@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -17,6 +18,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -46,7 +48,7 @@ fun StaffHomeScreen(navController: NavController){
 //        else -> "Good evening!"
 //    }
     Box {
-        Image(painter = painterResource(id = R.drawable.curved_wallpaper),
+        Image(painter = painterResource(id = R.drawable.planets_3d),
             contentDescription = null,
             modifier = Modifier.fillMaxSize()
         )
@@ -68,7 +70,8 @@ fun StaffHomeScreen(navController: NavController){
             Image(
                 painter = painterResource(id = R.drawable.library_desk),
                 contentDescription = null,
-                modifier = Modifier.height(400.dp))
+                modifier = Modifier.height(400.dp)
+                    .clip(shape = CutCornerShape(20.dp)))
         }
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },

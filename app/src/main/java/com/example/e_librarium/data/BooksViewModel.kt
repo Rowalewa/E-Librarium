@@ -12,6 +12,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavHostController
 import com.example.e_librarium.models.Books
+import com.example.e_librarium.models.BorrowingBook
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
@@ -277,4 +278,56 @@ class BooksViewModel (
             }
         }
     }
+
+    fun borrowBook(
+        bookId: String,
+        clientId: String,
+        borrowDate: String,
+        returnDate: String
+    ) {
+        val borrowedBookData = BorrowingBook(clientId, bookId, borrowDate, returnDate)
+        val dbRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(bookId)
+
+        dbRef.setValue(borrowedBookData).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Update the book status in the Books node
+                val bookRef = FirebaseDatabase.getInstance().getReference().child("Books").child(bookId)
+                bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun getBorrowedBooksForClient(clientId: String): List<BorrowingBook> {
+        val borrowedBooks = mutableListOf<BorrowingBook>()
+        val dbRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks")
+
+        dbRef.orderByChild("clientId").equalTo(clientId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                borrowedBooks.clear()
+                for (snap in snapshot.children) {
+                    val borrowedBook = snap.getValue(BorrowingBook::class.java)
+                    if (borrowedBook != null) {
+                        borrowedBooks.add(borrowedBook)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle database error
+                Log.e("BorrowedBooks", "Error fetching borrowed books: ${error.message}")
+            }
+        })
+
+        return borrowedBooks
+    }
+
+
 }

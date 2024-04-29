@@ -211,7 +211,7 @@ class AuthViewModel (
             progress.dismiss()
             if (it.isSuccessful){
                 Toast.makeText(context,"Successfully logged in", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_BORROW_HOME)
+                navController.navigate("$ROUTE_BORROW_HOME/{clientId}")
             } else {
                 Toast.makeText(context,"${it.exception!!.message}", Toast.LENGTH_LONG).show()
                 navController.navigate(ROUTE_CLIENT_HOME)
