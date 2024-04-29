@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.books
+package com.example.e_librarium.ui.theme.screens.borrowing
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,28 +32,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.e_librarium.data.BooksViewModel
+import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Books
+import com.example.e_librarium.models.Clients
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
-import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
-import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 
 @Composable
-fun ViewBooksScreen(navController: NavHostController){
+fun ViewClientsScreen(navController: NavHostController){
     Column(modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         val context = LocalContext.current
-        val booksRepository = BooksViewModel(navController, context)
-        val emptyBookState = remember { mutableStateOf(Books("","","","","","","","","","","","","","","","","","")) }
-        val emptyBookListState = remember { mutableStateListOf<Books>() }
+        val clientsRepository = AuthViewModel(navController, context)
+        val emptyClientState = remember { mutableStateOf(Clients("","","","","","","","","")) }
+        val emptyClientListState = remember { mutableStateListOf<Clients>() }
 
-        val books = booksRepository.viewBooks(emptyBookState, emptyBookListState)
+        val books = clientsRepository.viewClients(emptyClientState, emptyClientListState)
 
 
         Column(
@@ -60,7 +59,7 @@ fun ViewBooksScreen(navController: NavHostController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "BOOKS",
+                text = "CLIENTS",
                 fontSize = 30.sp,
                 fontFamily = FontFamily.Serif,
                 color = Color.Red
@@ -96,56 +95,37 @@ fun ViewBooksScreen(navController: NavHostController){
                     top = 0.dp
                 )
             ){
-               items(books){
-                   BookItem(
-                       bookTitle = it.bookTitle,
-                       bookAuthor = it.bookAuthor,
-                       bookYearOfPublication = it.bookYearOfPublication,
-                       bookPrice = it.bookPrice,
-                       bookISBNNumber = it.bookISBNNumber,
-                       bookPublisher = it.bookPublisher,
-                       bookPublicationDate = it.bookPublicationDate,
-                       bookGenre = it.bookGenre,
-                       bookEdition = it.bookEdition,
-                       bookLanguage = it.bookLanguage,
-                       bookNumberOfPages = it.bookNumberOfPages,
-                       bookAcquisitionMethod = it.bookAcquisitionMethod,
-                       bookCondition = it.bookCondition,
-                       bookShelfNumber = it.bookShelfNumber,
-                       bookStatus = it.bookStatus,
-                       bookSynopsis = it.bookSynopsis,
-                       bookImageUrl = it.bookImageUrl,
-                       bookId = it.bookId,
-                       navController = navController,
-                       bookRepository = booksRepository
-                   )
+                items(books){
+                    ClientInstance(
+                        fullName = it.fullName,
+                        gender = it.gender,
+                        maritalStatus = it.maritalStatus,
+                        phoneNumber = it.phoneNumber,
+                        dateOfBirth = it.dateOfBirth,
+                        email = it.email,
+                        clientId = it.clientid,
+                        clientProfilePictureUrl = it.clientProfilePictureUrl,
+                        navController = navController,
+                        clientRepository = clientsRepository
+                    )
                 }
             }
         }
     }
 }
+
 @Composable
-fun BookItem(
-    bookTitle: String,
-    bookAuthor: String,
-    bookYearOfPublication: String,
-    bookPrice: String,
-    bookISBNNumber: String,
-    bookPublisher: String,
-    bookPublicationDate: String,
-    bookGenre: String,
-    bookEdition: String,
-    bookLanguage: String,
-    bookNumberOfPages: String,
-    bookAcquisitionMethod: String,
-    bookCondition: String,
-    bookShelfNumber: String,
-    bookStatus: String,
-    bookSynopsis: String,
-    bookImageUrl: String,
-    bookId: String,
+fun ClientInstance(
+    fullName: String,
+    gender: String,
+    maritalStatus: String,
+    phoneNumber: String,
+    dateOfBirth: String,
+    email: String,
+    clientId: String,
+    clientProfilePictureUrl: String,
     navController: NavHostController,
-    bookRepository:BooksViewModel
+    clientRepository: AuthViewModel
 ) {
 
     Column(modifier = Modifier
@@ -156,8 +136,7 @@ fun BookItem(
             end = 20.dp,
             bottom = 0.dp
         )
-        .clip(shape = CutCornerShape(20.dp))
-        ,
+        .clip(shape = CutCornerShape(20.dp)),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -166,79 +145,43 @@ fun BookItem(
                 .fillMaxWidth()
         ) {
             Image(
-                painter = rememberAsyncImagePainter(bookImageUrl),
+                painter = rememberAsyncImagePainter(clientProfilePictureUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .size(400.dp)
                     .padding(18.dp)
+                    .clip(shape = CircleShape)
             )
             Text(
-                 text = "Book Title: $bookTitle",
+                text = "Client Name: $fullName",
                 color = Color.Black
             )
             Text(
-                text = "Book Author: $bookAuthor",
+                text = "Client Gender: $gender",
                 color = Color.Black
             )
             Text(
-                text = "Book Year of Publication: $bookYearOfPublication",
+                text = "Client Marital Status: $maritalStatus",
                 color = Color.Black
             )
             Text(
-                text = "Book Price: $bookPrice",
+                text = "Client Phone Number: $phoneNumber",
                 color = Color.Black
             )
             Text(
-                text = "Book ISBN Number: $bookISBNNumber",
+                text = "Client Date of Birth: $dateOfBirth",
                 color = Color.Black
             )
             Text(
-                text = "Book Publisher: $bookPublisher",
+                text = "Client Email: $email",
                 color = Color.Black
             )
-            Text(
-                text = "Book Publication Date: $bookPublicationDate",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Genre: $bookGenre",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Edition: $bookEdition",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Language: $bookLanguage",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Number of Pages: $bookNumberOfPages",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Acquisition Method: $bookAcquisitionMethod",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Condition: $bookCondition",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Shelf Number: $bookShelfNumber",
-                color = Color.Black)
-            Text(
-                text = "Book Status: $bookStatus",
-                color = Color.Black)
-            Text(
-                text = "Book Synopsis: $bookSynopsis",
-                color = Color.Black)
             Row(
                 modifier = Modifier.background(color = Color.Yellow)
             ) {
                 Button(
                     onClick = {
-                        bookRepository.deleteBook(bookId)
+                        clientRepository.deleteClient(clientId)
                     },
                     modifier = Modifier
                         .width(150.dp)
@@ -255,7 +198,7 @@ fun BookItem(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-                navController.navigate("$ROUTE_EDIT_BOOKS/{bookId}")
+                        navController.navigate(ROUTE_VIEW_BOOKS)
                     },
                     modifier = Modifier
                         .width(200.dp)
@@ -267,22 +210,8 @@ fun BookItem(
                         ),
                     colors = ButtonDefaults.buttonColors(Color.Blue)
                 ) {
-                    Text(text = "Update")
+                    Text(text = "Borrow")
                 }
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_BORROW_BOOKS) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 0.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    ),
-                colors = ButtonDefaults.buttonColors(Color.Red)
-            ) {
-                Text(text = "Borrow")
             }
         }
     }

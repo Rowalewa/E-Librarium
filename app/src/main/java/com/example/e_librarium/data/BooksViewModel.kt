@@ -290,6 +290,8 @@ class BooksViewModel (
 
         dbRef.setValue(borrowedBookData).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+//                val clientRef = FirebaseDatabase.getInstance().getReference().child("Client").child(clientId)
+//                clientRef.child("gender").setValue("Divorced")
                 // Update the book status in the Books node
                 val bookRef = FirebaseDatabase.getInstance().getReference().child("Books").child(bookId)
                 bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
@@ -305,7 +307,7 @@ class BooksViewModel (
         }
     }
 
-    fun getBorrowedBooksForClient(clientId: String): List<BorrowingBook> {
+    fun getBorrowedBooksForClient(clientId: String, callback: (List<BorrowingBook>) -> Unit) {
         val borrowedBooks = mutableListOf<BorrowingBook>()
         val dbRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks")
 
@@ -318,16 +320,19 @@ class BooksViewModel (
                         borrowedBooks.add(borrowedBook)
                     }
                 }
+                // Call the callback with the fetched data
+                callback(borrowedBooks)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle database error
                 Log.e("BorrowedBooks", "Error fetching borrowed books: ${error.message}")
+                // Call the callback with an empty list or null to indicate failure
+                callback(emptyList())
             }
         })
-
-        return borrowedBooks
     }
+
 
 
 }

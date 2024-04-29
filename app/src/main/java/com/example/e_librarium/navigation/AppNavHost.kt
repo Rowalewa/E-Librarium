@@ -12,6 +12,7 @@ import com.example.e_librarium.ui.theme.screens.books.EditBooksScreen
 import com.example.e_librarium.ui.theme.screens.books.ViewBooksScreen
 import com.example.e_librarium.ui.theme.screens.borrowing.BorrowBooksScreen
 import com.example.e_librarium.ui.theme.screens.borrowing.BorrowHomeScreen
+import com.example.e_librarium.ui.theme.screens.borrowing.ViewClientsScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientHomeScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientLogInScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientRegisterScreen
@@ -49,6 +50,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable("$ROUTE_BORROW_HOME/{clientId}"){passedData ->
             BorrowHomeScreen(navController, passedData.arguments?.getString("clientId")!!)
+        }
+        composable(ROUTE_VIEW_CLIENTS){
+            ViewClientsScreen(navController)  // need for edit
         }
         composable(ROUTE_CLIENT_LOGIN){
             ClientLogInScreen(navController)

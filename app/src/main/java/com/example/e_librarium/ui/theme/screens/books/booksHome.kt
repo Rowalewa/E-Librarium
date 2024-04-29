@@ -17,6 +17,7 @@ import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
+import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENTS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
@@ -49,6 +50,14 @@ fun BooksHomeScreen(navController: NavController){
             )
         ) {
             Text(text = "Borrow Books Screen")
+        }
+        Button(onClick = { navController.navigate(ROUTE_VIEW_CLIENTS) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Blue
+            )
+        ) {
+            Text(text = "View Clients")
         }
 //        Button(onClick = { navController.navigate("$ROUTE_EDIT_BOOKS/{bookId}") },
 //            modifier = Modifier.fillMaxWidth(),

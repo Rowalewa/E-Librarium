@@ -5,8 +5,12 @@ package com.example.e_librarium.data
 import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
+import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.Clients
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
@@ -18,7 +22,10 @@ import com.example.e_librarium.navigation.ROUTE_STAFF_HOME
 import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
 import com.example.e_librarium.navigation.ROUTE_STAFF_REGISTER
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
 class AuthViewModel (
@@ -251,6 +258,46 @@ class AuthViewModel (
 
     fun isloggedin(): Boolean{
         return mAuth.currentUser != null
+    }
+
+    fun viewClients(
+        client: MutableState<Clients>,
+        clients: SnapshotStateList<Clients>
+    ): SnapshotStateList<Clients> {
+        val ref = FirebaseDatabase.getInstance().getReference().child("Client")
+
+//        progress.show()
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+//                progress.dismiss()
+                clients.clear()
+                for (snap in snapshot.children) {
+                    val value = snap.getValue(Clients::class.java)
+                    client.value = value!!
+                    clients.add(value)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+        return clients
+    }
+
+    fun deleteClient(clientId: String) {
+        val delRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
+//        progress.show()
+        delRef.removeValue().addOnCompleteListener {task ->
+//            progress.dismiss()
+            if (task.isSuccessful) {
+                Log.d("Delete Client Account", "Client Account deleted")
+                Toast.makeText(context, "Client Account deleted", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.e("Delete Client Account", "Error deleting Client Account", task.exception)
+                Toast.makeText(context, "Error deleting Client Account: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 }
