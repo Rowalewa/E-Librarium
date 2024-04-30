@@ -3,6 +3,7 @@ package com.example.e_librarium.ui.theme.screens.books
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -175,26 +176,38 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
         var mBookISBNNumber by remember { mutableStateOf(TextFieldValue(bookISBNNumber)) }
         var mBookYearOfPublication by remember { mutableStateOf(TextFieldValue(bookYearOfPublication)) }
 
+        Log.d("Firebase", "Book ID: $bookId")
         val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+        val path = "Books/$bookId"
+        Log.d("Firebase", "Database Reference Path: $path")
+        Log.d("Firebase", "Fetching book with ID: $bookId")
         currentDataRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val book = snapshot.getValue(Books::class.java)
-                mBookTitle = TextFieldValue(book!!.bookTitle)
-                mBookAuthor = TextFieldValue(book.bookAuthor)
-                mBookYearOfPublication = TextFieldValue(book.bookYearOfPublication)
-                bookPrice = book.bookPrice
-                mBookISBNNumber = TextFieldValue(book.bookISBNNumber)
-                mBookPublisher = TextFieldValue(book.bookPublisher)
-                mBookPublicationDate = TextFieldValue(book.bookPublicationDate)
-                mBookGenre = book.bookGenre
-                mBookEdition = TextFieldValue(book.bookEdition)
-                mBookLanguage = TextFieldValue(book.bookLanguage)
-                mBookNumberOfPages = TextFieldValue(book.bookNumberOfPages)
-                mBookAcquisitionMethod = book.bookAcquisitionMethod
-                mBookCondition = book.bookCondition
-                mBookShelfNumber = TextFieldValue(book.bookShelfNumber)
-                mBookStatus = book.bookStatus
-                mBookSynopsis = TextFieldValue(book.bookSynopsis)
+                if (snapshot.exists()) {
+                    val book = snapshot.getValue(Books::class.java)
+                    if (book != null) {
+                    mBookTitle = TextFieldValue(book.bookTitle)
+                    mBookAuthor = TextFieldValue(book.bookAuthor)
+                    mBookYearOfPublication = TextFieldValue(book.bookYearOfPublication)
+                    bookPrice = book.bookPrice
+                    mBookISBNNumber = TextFieldValue(book.bookISBNNumber)
+                    mBookPublisher = TextFieldValue(book.bookPublisher)
+                    mBookPublicationDate = TextFieldValue(book.bookPublicationDate)
+                    mBookGenre = book.bookGenre
+                    mBookEdition = TextFieldValue(book.bookEdition)
+                    mBookLanguage = TextFieldValue(book.bookLanguage)
+                    mBookNumberOfPages = TextFieldValue(book.bookNumberOfPages)
+                    mBookAcquisitionMethod = book.bookAcquisitionMethod
+                    mBookCondition = book.bookCondition
+                    mBookShelfNumber = TextFieldValue(book.bookShelfNumber)
+                    mBookStatus = book.bookStatus
+                    mBookSynopsis = TextFieldValue(book.bookSynopsis)
+                    } else {
+                        Log.e("Firebase", "Failed to parse book data")
+                    }
+                } else {
+                    Log.e("Firebase", "Snapshot does not exist")
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

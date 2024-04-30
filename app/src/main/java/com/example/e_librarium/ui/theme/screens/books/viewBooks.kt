@@ -255,7 +255,7 @@ fun BookItem(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-                navController.navigate("$ROUTE_EDIT_BOOKS/{bookId}")
+                navController.navigate("$ROUTE_EDIT_BOOKS/$bookId")
                     },
                     modifier = Modifier
                         .width(200.dp)
