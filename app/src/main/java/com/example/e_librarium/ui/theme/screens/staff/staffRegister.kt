@@ -9,9 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,7 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -56,6 +60,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
 import com.example.e_librarium.ui.theme.ELibrariumTheme
@@ -99,270 +104,286 @@ fun StaffRegisterScreen(navController: NavController){
     }
     val context = LocalContext.current
 
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = true)
+    Box(
+        modifier = Modifier.fillMaxSize()
     ){
-        Text(
-            text = " REGISTER ",
-            fontFamily = FontFamily.Serif,
-            fontSize = 30.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color.Blue,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.background(color = Color.Red, shape = CutCornerShape(10.dp))
+        Image(painter = painterResource(id = R.drawable.staff_register),
+            contentDescription = "View Clients Image",
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.FillBounds
         )
-        OutlinedTextField(
-            value = fullName,
-            onValueChange = {fullName = it},
-            label = { Text(
-                text = "Enter Your Full Name"
-            )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                )
-                .border(width = Dp.Hairline, color = Color.White)
-        ){
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = true)
+        ) {
             Text(
-                text = "Gender:",
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                color = Color.White
-            )
-            ExposedDropdownMenuBox(
-                expanded = isGenderExpanded,
-                onExpandedChange = { isGenderExpanded =! isGenderExpanded }
-            ) {
-                TextField(
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    value = gender,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isGenderExpanded) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Magenta,
-                        unfocusedTextColor = Color.Red,
-                        focusedContainerColor = Color.Cyan,
-                        unfocusedContainerColor = Color.Green,
-                        disabledContainerColor = Color.White,
-                        focusedLabelColor = Color.Green,
-                        unfocusedLabelColor = Color.Magenta
-                    ),
-                )
-                ExposedDropdownMenu(
-                    expanded = isGenderExpanded,
-                    onDismissRequest = { isGenderExpanded = false }) {
-                    genderOptions.forEachIndexed { index, text ->
-                        DropdownMenuItem(
-                            text = { Text(text = text) },
-                            onClick = { gender = genderOptions[index] },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
-                    }
-                }
-
-            }
-        }
-        Text(text = "Currently Selected: $gender")
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                )
-                .border(width = Dp.Hairline, color = Color.White)
-        ){
-            Text(
-                text = "Marriage Status:",
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                color = Color.White
-            )
-            ExposedDropdownMenuBox(
-                expanded = isMaritalStatusExpanded,
-                onExpandedChange = { isMaritalStatusExpanded = !isMaritalStatusExpanded }
-            ) {
-                TextField(
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    value = maritalStatus,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isMaritalStatusExpanded) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Magenta,
-                        unfocusedTextColor = Color.Red,
-                        focusedContainerColor = Color.Cyan,
-                        unfocusedContainerColor = Color.Green,
-                        disabledContainerColor = Color.White,
-                        focusedLabelColor = Color.Green,
-                        unfocusedLabelColor = Color.Magenta
-                    ),
-                )
-                ExposedDropdownMenu(
-                    expanded = isMaritalStatusExpanded,
-                    onDismissRequest = { isMaritalStatusExpanded = false }) {
-                    maritalStatusOptions.forEachIndexed { index, text ->
-                        DropdownMenuItem(
-                            text = { Text(text = text) },
-                            onClick = { maritalStatus = maritalStatusOptions[index] },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
-                    }
-                }
-
-            }
-        }
-        Text(text = "Currently Selected: $maritalStatus")
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value = phoneNumber,
-            onValueChange = {phoneNumber = it},
-            label = { Text(
-                text = "Enter Your Phone Number"
-            )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        OutlinedTextField(
-            value = dateOfBirth,
-            onValueChange = { dateOfBirth = it },
-            label = { Text("Date of Birth") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { isDateOfBirthExpanded = true }) {
-                    Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
-                }
-            }
-        )
-
-        if (isDateOfBirthExpanded) {
-            val today = Calendar.getInstance()
-            DatePickerDialog(
-                context,
-                { _, year, month, day ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, day)
-                    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                    dateOfBirth = TextFieldValue(sdf.format(selectedDate.time))
-                    isDateOfBirthExpanded = false
-                },
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = {email = it},
-            label = { Text(
-                text = "Enter Email Address"
-            )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        OutlinedTextField(
-            value = pass,
-            onValueChange = {pass = it},
-            label = { Text(
-                text = "Enter Password"
-            )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        OutlinedTextField(
-            value = confpass,
-            onValueChange = {confpass = it},
-            label = { Text(
-                text = "Confirm Password"
-            )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        ImagePicker(
-            Modifier,
-            context,
-            navController,
-            fullName.text.trim(),
-            gender.trim(),
-            maritalStatus.trim(),
-            phoneNumber.text.trim(),
-            dateOfBirth.text.trim(),
-            email.text.trim(),
-            pass.text.trim(),
-            confpass.text.trim(),
-
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "Already have an account?")
-        Button(onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                ),
-            colors = ButtonDefaults.buttonColors(Color.Cyan)) {
-            Text(
-                text ="Log In",
-                color = Color.Black,
+                text = " REGISTER ",
+                fontFamily = FontFamily.Serif,
+                fontSize = 30.sp,
                 fontWeight = FontWeight.ExtraBold,
-                fontSize = 20.sp,
-                fontFamily = FontFamily.Serif
+                color = Color.Blue,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.background(color = Color.Red, shape = CutCornerShape(10.dp))
+            )
+            OutlinedTextField(
+                value = fullName,
+                onValueChange = { fullName = it },
+                label = {
+                    Text(
+                        text = "Enter Your Full Name"
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .border(width = Dp.Hairline, color = Color.White)
+            ) {
+                Text(
+                    text = "Gender:",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    color = Color.White
+                )
+                ExposedDropdownMenuBox(
+                    expanded = isGenderExpanded,
+                    onExpandedChange = { isGenderExpanded = !isGenderExpanded }
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        value = gender,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isGenderExpanded) },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Magenta,
+                            unfocusedTextColor = Color.Red,
+                            focusedContainerColor = Color.Cyan,
+                            unfocusedContainerColor = Color.Green,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color.Green,
+                            unfocusedLabelColor = Color.Magenta
+                        ),
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isGenderExpanded,
+                        onDismissRequest = { isGenderExpanded = false }) {
+                        genderOptions.forEachIndexed { index, text ->
+                            DropdownMenuItem(
+                                text = { Text(text = text) },
+                                onClick = { gender = genderOptions[index] },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
+                    }
+
+                }
+            }
+            Text(text = "Currently Selected: $gender")
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .border(width = Dp.Hairline, color = Color.White)
+            ) {
+                Text(
+                    text = "Marriage Status:",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    color = Color.White
+                )
+                ExposedDropdownMenuBox(
+                    expanded = isMaritalStatusExpanded,
+                    onExpandedChange = { isMaritalStatusExpanded = !isMaritalStatusExpanded }
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        value = maritalStatus,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isMaritalStatusExpanded) },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Magenta,
+                            unfocusedTextColor = Color.Red,
+                            focusedContainerColor = Color.Cyan,
+                            unfocusedContainerColor = Color.Green,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color.Green,
+                            unfocusedLabelColor = Color.Magenta
+                        ),
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isMaritalStatusExpanded,
+                        onDismissRequest = { isMaritalStatusExpanded = false }) {
+                        maritalStatusOptions.forEachIndexed { index, text ->
+                            DropdownMenuItem(
+                                text = { Text(text = text) },
+                                onClick = { maritalStatus = maritalStatusOptions[index] },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
+                    }
+
+                }
+            }
+            Text(text = "Currently Selected: $maritalStatus")
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
+                label = {
+                    Text(
+                        text = "Enter Your Phone Number"
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = dateOfBirth,
+                onValueChange = { dateOfBirth = it },
+                label = { Text("Date of Birth") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { isDateOfBirthExpanded = true }) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+                    }
+                }
             )
 
+            if (isDateOfBirthExpanded) {
+                val today = Calendar.getInstance()
+                DatePickerDialog(
+                    context,
+                    { _, year, month, day ->
+                        val selectedDate = Calendar.getInstance()
+                        selectedDate.set(year, month, day)
+                        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                        dateOfBirth = TextFieldValue(sdf.format(selectedDate.time))
+                        isDateOfBirthExpanded = false
+                    },
+                    today.get(Calendar.YEAR),
+                    today.get(Calendar.MONTH),
+                    today.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = {
+                    Text(
+                        text = "Enter Email Address"
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = pass,
+                onValueChange = { pass = it },
+                label = {
+                    Text(
+                        text = "Enter Password"
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = confpass,
+                onValueChange = { confpass = it },
+                label = {
+                    Text(
+                        text = "Confirm Password"
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            ImagePicker(
+                Modifier,
+                context,
+                navController,
+                fullName.text.trim(),
+                gender.trim(),
+                maritalStatus.trim(),
+                phoneNumber.text.trim(),
+                dateOfBirth.text.trim(),
+                email.text.trim(),
+                pass.text.trim(),
+                confpass.text.trim(),
+
+                )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "Already have an account?")
+            Button(
+                onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Cyan)
+            ) {
+                Text(
+                    text = "Log In",
+                    color = Color.Black,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+
+            }
         }
     }
 
@@ -438,13 +459,13 @@ fun ImagePicker(
 
             },
                 modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                ),
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
             colors = ButtonDefaults.buttonColors(Color.Cyan)
             ) {
                 Text(

@@ -3,7 +3,10 @@ package com.example.e_librarium.ui.theme.screens.borrowing
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,13 +23,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.BorrowingBook
 import com.example.e_librarium.ui.theme.ELibrariumTheme
@@ -60,88 +66,103 @@ fun BorrowBooksScreen(navController: NavHostController){
         mutableStateOf(bookId)
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        OutlinedTextField(
-            value = mBookId,
-            onValueChange = { mBookId = it },
-            label = { Text("Book ID") }
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ){
+        Image(
+            painter = painterResource(id = R.drawable.borrow_books),
+            contentDescription = "Borrow books image",
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.FillBounds
         )
-        OutlinedTextField(
-            value = mClientId,
-            onValueChange = { mClientId = it },
-            label = { Text("Client ID") }
-        )
-        OutlinedTextField(
-            value = borrowDate,
-            onValueChange = { borrowDate = it },
-            label = { Text("Borrow Date") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { isBorrowDateExpanded = true }) {
-                    Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+        Column(modifier = Modifier.padding(16.dp)) {
+            OutlinedTextField(
+                value = mBookId,
+                onValueChange = { mBookId = it },
+                label = { Text("Book ID") }
+            )
+            OutlinedTextField(
+                value = mClientId,
+                onValueChange = { mClientId = it },
+                label = { Text("Client ID") }
+            )
+            OutlinedTextField(
+                value = borrowDate,
+                onValueChange = { borrowDate = it },
+                label = { Text("Borrow Date") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { isBorrowDateExpanded = true }) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+                    }
                 }
-            }
-        )
+            )
 
-        if (isBorrowDateExpanded) {
-            val today = Calendar.getInstance()
-            DatePickerDialog(
-                context,
-                { _, year, month, day ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, day)
-                    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                    borrowDate = TextFieldValue(sdf.format(selectedDate.time))
-                    isBorrowDateExpanded = false
-                },
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-        OutlinedTextField(
-            value = returnDate,
-            onValueChange = { returnDate = it },
-            label = { Text("Return Date") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { isReturnDateExpanded = true }) {
-                    Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+            if (isBorrowDateExpanded) {
+                val today = Calendar.getInstance()
+                DatePickerDialog(
+                    context,
+                    { _, year, month, day ->
+                        val selectedDate = Calendar.getInstance()
+                        selectedDate.set(year, month, day)
+                        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                        borrowDate = TextFieldValue(sdf.format(selectedDate.time))
+                        isBorrowDateExpanded = false
+                    },
+                    today.get(Calendar.YEAR),
+                    today.get(Calendar.MONTH),
+                    today.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+            OutlinedTextField(
+                value = returnDate,
+                onValueChange = { returnDate = it },
+                label = { Text("Return Date") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { isReturnDateExpanded = true }) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+                    }
                 }
-            }
-        )
+            )
 
-        if (isReturnDateExpanded) {
-            val today = Calendar.getInstance()
-            DatePickerDialog(
-                context,
-                { _, year, month, day ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, day)
-                    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                    returnDate = TextFieldValue(sdf.format(selectedDate.time))
-                    isReturnDateExpanded = false
+            if (isReturnDateExpanded) {
+                val today = Calendar.getInstance()
+                DatePickerDialog(
+                    context,
+                    { _, year, month, day ->
+                        val selectedDate = Calendar.getInstance()
+                        selectedDate.set(year, month, day)
+                        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                        returnDate = TextFieldValue(sdf.format(selectedDate.time))
+                        isReturnDateExpanded = false
+                    },
+                    today.get(Calendar.YEAR),
+                    today.get(Calendar.MONTH),
+                    today.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+            Button(
+                onClick = {
+                    booksViewModel.borrowBook(
+                        bookId,
+                        clientId,
+                        borrowDate.text.trim(),
+                        returnDate.text.trim()
+                    )
                 },
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-        Button(
-            onClick = {
-                booksViewModel.borrowBook(bookId, clientId, borrowDate.text.trim(), returnDate.text.trim())
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Borrow Book")
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Borrow Book")
+            }
         }
     }
 }

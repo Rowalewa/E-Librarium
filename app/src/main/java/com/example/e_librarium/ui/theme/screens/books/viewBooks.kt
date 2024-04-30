@@ -2,6 +2,7 @@ package com.example.e_librarium.ui.theme.screens.books
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
@@ -42,83 +46,119 @@ import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
 fun ViewBooksScreen(navController: NavHostController){
-    Column(modifier = Modifier
-        .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        val context = LocalContext.current
-        val booksRepository = BooksViewModel(navController, context)
-        val emptyBookState = remember { mutableStateOf(Books("","","","","","","","","","","","","","","","","","")) }
-        val emptyBookListState = remember { mutableStateListOf<Books>() }
-
-        val books = booksRepository.viewBooks(emptyBookState, emptyBookListState)
-
-
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ){
+        Image(
+            painter = painterResource(id = R.drawable.view_books),
+            contentDescription = "View Books",
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.FillBounds
+        )
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "BOOKS",
-                fontSize = 30.sp,
-                fontFamily = FontFamily.Serif,
-                color = Color.Red
-            )
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Button(onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )) {
-                Text(
-                    text = "Back to Home Screen",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
+            val context = LocalContext.current
+            val booksRepository = BooksViewModel(navController, context)
+            val emptyBookState = remember {
+                mutableStateOf(
+                    Books(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    )
                 )
             }
+            val emptyBookListState = remember { mutableStateListOf<Books>() }
 
-            Spacer(modifier = Modifier.height(10.dp))
-            LazyColumn(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(
-                    start = 0.dp,
-                    end = 0.dp,
-                    bottom = 20.dp,
-                    top = 0.dp
+            val books = booksRepository.viewBooks(emptyBookState, emptyBookListState)
+
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "BOOKS",
+                    fontSize = 30.sp,
+                    fontFamily = FontFamily.Serif,
+                    color = Color.Red
                 )
-            ){
-               items(books){
-                   BookItem(
-                       bookTitle = it.bookTitle,
-                       bookAuthor = it.bookAuthor,
-                       bookYearOfPublication = it.bookYearOfPublication,
-                       bookPrice = it.bookPrice,
-                       bookISBNNumber = it.bookISBNNumber,
-                       bookPublisher = it.bookPublisher,
-                       bookPublicationDate = it.bookPublicationDate,
-                       bookGenre = it.bookGenre,
-                       bookEdition = it.bookEdition,
-                       bookLanguage = it.bookLanguage,
-                       bookNumberOfPages = it.bookNumberOfPages,
-                       bookAcquisitionMethod = it.bookAcquisitionMethod,
-                       bookCondition = it.bookCondition,
-                       bookShelfNumber = it.bookShelfNumber,
-                       bookStatus = it.bookStatus,
-                       bookSynopsis = it.bookSynopsis,
-                       bookImageUrl = it.bookImageUrl,
-                       bookId = it.bookId,
-                       navController = navController,
-                       bookRepository = booksRepository
-                   )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Button(
+                    onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
+                    colors = ButtonDefaults.buttonColors(Color.Blue),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Back to Home Screen",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                LazyColumn(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(
+                        start = 0.dp,
+                        end = 0.dp,
+                        bottom = 20.dp,
+                        top = 0.dp
+                    )
+                ) {
+                    items(books) {
+                        BookItem(
+                            bookTitle = it.bookTitle,
+                            bookAuthor = it.bookAuthor,
+                            bookYearOfPublication = it.bookYearOfPublication,
+                            bookPrice = it.bookPrice,
+                            bookISBNNumber = it.bookISBNNumber,
+                            bookPublisher = it.bookPublisher,
+                            bookPublicationDate = it.bookPublicationDate,
+                            bookGenre = it.bookGenre,
+                            bookEdition = it.bookEdition,
+                            bookLanguage = it.bookLanguage,
+                            bookNumberOfPages = it.bookNumberOfPages,
+                            bookAcquisitionMethod = it.bookAcquisitionMethod,
+                            bookCondition = it.bookCondition,
+                            bookShelfNumber = it.bookShelfNumber,
+                            bookStatus = it.bookStatus,
+                            bookSynopsis = it.bookSynopsis,
+                            bookImageUrl = it.bookImageUrl,
+                            bookId = it.bookId,
+                            navController = navController,
+                            bookRepository = booksRepository
+                        )
+                    }
                 }
             }
         }

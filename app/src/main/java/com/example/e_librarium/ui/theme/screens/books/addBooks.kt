@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -139,570 +140,577 @@ fun AddBooksScreen(navController: NavHostController){
     var bookNumberOfPages by remember { mutableStateOf(TextFieldValue("")) }
     var bookISBNNumber by remember { mutableStateOf(TextFieldValue("")) }
     var bookYearOfPublication by remember { mutableStateOf(TextFieldValue("")) }
-    Box {
-        Image(painter = painterResource(id = R.drawable.add_books),
-            contentDescription = "Add Books Background",
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .verticalScroll(
-                rememberScrollState(),
-                enabled = true,
-                reverseScrolling = true
-            )
+    Box (
+        modifier = Modifier.fillMaxSize()
     ){
-        Text(
-            text = "Add Books",
-            fontSize = 30.sp,
-            color = Color.Blue,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Serif
+        Image(
+            painter = painterResource(id = R.drawable.add_books),
+            contentDescription = "Add Books Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
         )
-        OutlinedTextField(
-            value = bookTitle,
-            onValueChange = { bookTitle = it },
-            label = { Text(text = "Book Title *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookAuthor,
-            onValueChange = { bookAuthor = it },
-            label = { Text(text = "Book Author *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookPrice,
-            onValueChange = { bookPrice = it },
-            label = { Text(text = "Book Price *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookPublisher,
-            onValueChange = { bookPublisher = it },
-            label = { Text(text = "Book Publisher *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookPublicationDate,
-            onValueChange = { bookPublicationDate = it },
-            label = { Text(text = "Book Publication Date *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
+                .verticalScroll(
+                    rememberScrollState(),
+                    enabled = true,
+                    reverseScrolling = true
                 )
-                .border(width = Dp.Hairline, color = Color.Black)
-                .background(color = Color.White)
-        ){
+        ) {
             Text(
-                text = "Book Condition:",
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                color = Color.Magenta
+                text = "Add Books",
+                fontSize = 30.sp,
+                color = Color.Blue,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Serif
             )
-            ExposedDropdownMenuBox(
-                expanded = isOpen,
-                onExpandedChange = { isOpen = !isOpen }
-            ) {
-                TextField(
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    value = bookCondition,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isOpen) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Magenta,
-                        unfocusedTextColor = Color.Red,
-                        focusedContainerColor = Color.Cyan,
-                        unfocusedContainerColor = Color.Green,
-                        disabledContainerColor = Color.White,
-                        focusedLabelColor = Color.Green,
-                        unfocusedLabelColor = Color.Magenta
+            OutlinedTextField(
+                value = bookTitle,
+                onValueChange = { bookTitle = it },
+                label = { Text(text = "Book Title *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
                     ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookAuthor,
+                onValueChange = { bookAuthor = it },
+                label = { Text(text = "Book Author *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookPrice,
+                onValueChange = { bookPrice = it },
+                label = { Text(text = "Book Price *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookPublisher,
+                onValueChange = { bookPublisher = it },
+                label = { Text(text = "Book Publisher *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookPublicationDate,
+                onValueChange = { bookPublicationDate = it },
+                label = { Text(text = "Book Publication Date *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .border(width = Dp.Hairline, color = Color.Black)
+                    .background(color = Color.White)
+            ) {
+                Text(
+                    text = "Book Condition:",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    color = Color.Magenta
                 )
-                ExposedDropdownMenu(
+                ExposedDropdownMenuBox(
                     expanded = isOpen,
-                    onDismissRequest = { isOpen = false }) {
-                    bookConditionOptions.forEachIndexed { index, text ->
-                        DropdownMenuItem(
-                            text = { Text(text = text) },
-                            onClick = { bookCondition = bookConditionOptions[index] },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
-                    }
-                }
-
-            }
-        }
-        Text(text = "Currently Selected: $bookCondition")
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value = bookShelfNumber,
-            onValueChange = { bookShelfNumber = it },
-            label = { Text(text = "Book Shelf Number *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                )
-                .border(width = Dp.Hairline, color = Color.Black)
-                .background(color = Color.White)
-        ){
-            Text(
-                text = "Book Status:",
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                color = Color.Magenta
-            )
-            ExposedDropdownMenuBox(expanded = isExpanded,
-                onExpandedChange = { isExpanded = !isExpanded }
-            ) {
-                TextField(
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
+                    onExpandedChange = { isOpen = !isOpen }
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        value = bookCondition,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isOpen) },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Magenta,
+                            unfocusedTextColor = Color.Red,
+                            focusedContainerColor = Color.Cyan,
+                            unfocusedContainerColor = Color.Green,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color.Green,
+                            unfocusedLabelColor = Color.Magenta
                         ),
-                    value = selectedText,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Magenta,
-                        unfocusedTextColor = Color.Red,
-                        focusedContainerColor = Color.Cyan,
-                        unfocusedContainerColor = Color.Green,
-                        disabledContainerColor = Color.White,
-                        focusedLabelColor = Color.Green,
-                        unfocusedLabelColor = Color.Magenta
-                    ),
-                )
-                ExposedDropdownMenu(
-                    expanded = isExpanded,
-                    onDismissRequest = { isExpanded = false }) {
-                    bookStatus.forEachIndexed { index, text ->
-                        DropdownMenuItem(
-                            text = { Text(text = text) },
-                            onClick = { selectedText = bookStatus[index] },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isOpen,
+                        onDismissRequest = { isOpen = false }) {
+                        bookConditionOptions.forEachIndexed { index, text ->
+                            DropdownMenuItem(
+                                text = { Text(text = text) },
+                                onClick = { bookCondition = bookConditionOptions[index] },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
                     }
-                }
 
+                }
             }
-        }
-        Text(text = "Currently Selected: $selectedText")
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value = bookSynopsis,
-            onValueChange = { bookSynopsis = it },
-            label = { Text(text = "Book Synopsis *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
+            Text(text = "Currently Selected: $bookCondition")
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedTextField(
+                value = bookShelfNumber,
+                onValueChange = { bookShelfNumber = it },
+                label = { Text(text = "Book Shelf Number *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
                 ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookEdition,
-            onValueChange = { bookEdition = it },
-            label = { Text(text = "Book Edition *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookLanguage,
-            onValueChange = { bookLanguage = it },
-            label = { Text(text = "Book Language *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookNumberOfPages,
-            onValueChange = { bookNumberOfPages = it },
-            label = { Text(text = "Book Number Of Pages *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        OutlinedTextField(
-            value = bookISBNNumber,
-            onValueChange = { bookISBNNumber = it },
-            label = { Text(text = "Book ISBN Number *") }, // international standard book number
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
-                ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                )
-                .border(width = Dp.Hairline, color = Color.Black)
-                .background(color = Color.White)
-        ){
-            Text(
-                text = "Book Genre:",
                 modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                color = Color.Magenta
-            )
-            ExposedDropdownMenuBox(expanded = isBookGenreExpanded,
-                onExpandedChange = { isBookGenreExpanded = !isBookGenreExpanded }
-            ) {
-                TextField(
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    value = bookGenre,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isBookGenreExpanded) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Magenta,
-                        unfocusedTextColor = Color.Red,
-                        focusedContainerColor = Color.Cyan,
-                        unfocusedContainerColor = Color.Green,
-                        disabledContainerColor = Color.White,
-                        focusedLabelColor = Color.Green,
-                        unfocusedLabelColor = Color.Magenta
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
                     ),
-                )
-                ExposedDropdownMenu(
-                    expanded = isBookGenreExpanded,
-                    onDismissRequest = { isBookGenreExpanded = false }) {
-                    bookGenreOptions.forEachIndexed { index, text ->
-                        DropdownMenuItem(
-                            text = { Text(text = text) },
-                            onClick = { bookGenre = bookGenreOptions[index] },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
-                    }
-                }
-
-            }
-        }
-        Text(text = "Currently Selected: $bookGenre")
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (
-            modifier = Modifier
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                )
-                .border(width = Dp.Hairline, color = Color.Black)
-                .background(color = Color.White)
-        ){
-            Text(
-                text = "Book Acquisition Method:",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
                 modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                color = Color.Magenta
-            )
-            ExposedDropdownMenuBox(expanded = isBookAcquisitionMethodExpanded,
-                onExpandedChange = { isBookAcquisitionMethodExpanded = !isBookAcquisitionMethodExpanded }
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .border(width = Dp.Hairline, color = Color.Black)
+                    .background(color = Color.White)
             ) {
-                TextField(
+                Text(
+                    text = "Book Status:",
                     modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    value = bookAcquisitionMethod,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isBookAcquisitionMethodExpanded) },
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Magenta,
-                        unfocusedTextColor = Color.Red,
-                        focusedContainerColor = Color.Cyan,
-                        unfocusedContainerColor = Color.Green,
-                        disabledContainerColor = Color.White,
-                        focusedLabelColor = Color.Green,
-                        unfocusedLabelColor = Color.Magenta
-                    ),
+                        .align(Alignment.CenterVertically),
+                    color = Color.Magenta
                 )
-                ExposedDropdownMenu(
-                    expanded = isBookAcquisitionMethodExpanded,
-                    onDismissRequest = { isBookAcquisitionMethodExpanded = false }) {
-                    bookAcquisitionMethodOptions.forEachIndexed { index, text ->
-                        DropdownMenuItem(
-                            text = { Text(text = text) },
-                            onClick = { bookAcquisitionMethod = bookAcquisitionMethodOptions[index] },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
+                ExposedDropdownMenuBox(expanded = isExpanded,
+                    onExpandedChange = { isExpanded = !isExpanded }
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        value = selectedText,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Magenta,
+                            unfocusedTextColor = Color.Red,
+                            focusedContainerColor = Color.Cyan,
+                            unfocusedContainerColor = Color.Green,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color.Green,
+                            unfocusedLabelColor = Color.Magenta
+                        ),
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isExpanded,
+                        onDismissRequest = { isExpanded = false }) {
+                        bookStatus.forEachIndexed { index, text ->
+                            DropdownMenuItem(
+                                text = { Text(text = text) },
+                                onClick = { selectedText = bookStatus[index] },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
                     }
-                }
 
+                }
             }
-        }
-        Text(text = "Currently Selected: $bookAcquisitionMethod")
-        Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
-            value = bookYearOfPublication,
-            onValueChange = { bookYearOfPublication = it },
-            label = { Text(text = "Book Year Of Publication *") },
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Blue,
-                unfocusedTextColor = Color.Cyan,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                disabledContainerColor = Color.White,
-                focusedLabelColor = Color.Green,
-                unfocusedLabelColor = Color.Magenta,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 0.dp,
-                    top = 0.dp
+            Text(text = "Currently Selected: $selectedText")
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedTextField(
+                value = bookSynopsis,
+                onValueChange = { bookSynopsis = it },
+                label = { Text(text = "Book Synopsis *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
                 ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
-        ImagePicker(
-            Modifier,
-            context,
-            navController,
-            bookTitle.text.trim(),
-            bookAuthor.text.trim(),
-            bookYearOfPublication.text.trim(),
-            bookPrice.text.trim(),
-            bookISBNNumber.text.trim(),
-            bookPublisher.text.trim(),
-            bookPublicationDate.text.trim(),
-            bookGenre.trim(),
-            bookEdition.text.trim(),
-            bookLanguage.text.trim(),
-            bookNumberOfPages.text.trim(),
-            bookAcquisitionMethod.trim(),
-            bookCondition.trim(),
-            bookShelfNumber.text.trim(),
-            selectedText.trim(),
-            bookSynopsis.text.trim()
-        )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookEdition,
+                onValueChange = { bookEdition = it },
+                label = { Text(text = "Book Edition *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookLanguage,
+                onValueChange = { bookLanguage = it },
+                label = { Text(text = "Book Language *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookNumberOfPages,
+                onValueChange = { bookNumberOfPages = it },
+                label = { Text(text = "Book Number Of Pages *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookISBNNumber,
+                onValueChange = { bookISBNNumber = it },
+                label = { Text(text = "Book ISBN Number *") }, // international standard book number
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .border(width = Dp.Hairline, color = Color.Black)
+                    .background(color = Color.White)
+            ) {
+                Text(
+                    text = "Book Genre:",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    color = Color.Magenta
+                )
+                ExposedDropdownMenuBox(expanded = isBookGenreExpanded,
+                    onExpandedChange = { isBookGenreExpanded = !isBookGenreExpanded }
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        value = bookGenre,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isBookGenreExpanded) },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Magenta,
+                            unfocusedTextColor = Color.Red,
+                            focusedContainerColor = Color.Cyan,
+                            unfocusedContainerColor = Color.Green,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color.Green,
+                            unfocusedLabelColor = Color.Magenta
+                        ),
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isBookGenreExpanded,
+                        onDismissRequest = { isBookGenreExpanded = false }) {
+                        bookGenreOptions.forEachIndexed { index, text ->
+                            DropdownMenuItem(
+                                text = { Text(text = text) },
+                                onClick = { bookGenre = bookGenreOptions[index] },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
+                    }
+
+                }
+            }
+            Text(text = "Currently Selected: $bookGenre")
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .border(width = Dp.Hairline, color = Color.Black)
+                    .background(color = Color.White)
+            ) {
+                Text(
+                    text = "Book Acquisition Method:",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    color = Color.Magenta
+                )
+                ExposedDropdownMenuBox(expanded = isBookAcquisitionMethodExpanded,
+                    onExpandedChange = {
+                        isBookAcquisitionMethodExpanded = !isBookAcquisitionMethodExpanded
+                    }
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        value = bookAcquisitionMethod,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isBookAcquisitionMethodExpanded) },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color.Magenta,
+                            unfocusedTextColor = Color.Red,
+                            focusedContainerColor = Color.Cyan,
+                            unfocusedContainerColor = Color.Green,
+                            disabledContainerColor = Color.White,
+                            focusedLabelColor = Color.Green,
+                            unfocusedLabelColor = Color.Magenta
+                        ),
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isBookAcquisitionMethodExpanded,
+                        onDismissRequest = { isBookAcquisitionMethodExpanded = false }) {
+                        bookAcquisitionMethodOptions.forEachIndexed { index, text ->
+                            DropdownMenuItem(
+                                text = { Text(text = text) },
+                                onClick = {
+                                    bookAcquisitionMethod = bookAcquisitionMethodOptions[index]
+                                },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
+                    }
+
+                }
+            }
+            Text(text = "Currently Selected: $bookAcquisitionMethod")
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedTextField(
+                value = bookYearOfPublication,
+                onValueChange = { bookYearOfPublication = it },
+                label = { Text(text = "Book Year Of Publication *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            ImagePicker(
+                Modifier,
+                context,
+                navController,
+                bookTitle.text.trim(),
+                bookAuthor.text.trim(),
+                bookYearOfPublication.text.trim(),
+                bookPrice.text.trim(),
+                bookISBNNumber.text.trim(),
+                bookPublisher.text.trim(),
+                bookPublicationDate.text.trim(),
+                bookGenre.trim(),
+                bookEdition.text.trim(),
+                bookLanguage.text.trim(),
+                bookNumberOfPages.text.trim(),
+                bookAcquisitionMethod.trim(),
+                bookCondition.trim(),
+                bookShelfNumber.text.trim(),
+                selectedText.trim(),
+                bookSynopsis.text.trim()
+            )
+        }
     }
 }
 @Composable

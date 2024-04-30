@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -31,87 +32,95 @@ import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
 fun ClientHomeScreen(navController: NavController){
-    Box {
-        Image(painter = painterResource(id = R.drawable.penta_color),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box (
+        modifier = Modifier.fillMaxSize()
     ){
-        Box {
-            Image(painter = painterResource(id = R.drawable.client_home_image_alpha),
-                contentDescription = null,
-                modifier = Modifier.size(400.dp)
+        Image(
+            painter = painterResource(id = R.drawable.penta_color),
+            contentDescription = null,
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box {
+                Image(
+                    painter = painterResource(id = R.drawable.client_home_image_alpha),
+                    contentDescription = null,
+                    modifier = Modifier.size(400.dp)
+                        .padding(
+                            start = 0.dp,
+                            end = 0.dp,
+                            top = 20.dp,
+                            bottom = 20.dp
+                        )
+                )
+            }
+            Button(
+                onClick = { navController.navigate(ROUTE_CLIENT_LOGIN) },
+                colors = ButtonDefaults.buttonColors(Color.Blue),
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
-                        start = 0.dp,
-                        end = 0.dp,
-                        top = 20.dp,
-                        bottom = 20.dp
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
                     )
-            )
-        }
-        Button(onClick = { navController.navigate(ROUTE_CLIENT_LOGIN) },
-            colors = ButtonDefaults.buttonColors(Color.Blue),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
-                )
-        ) {
-            Text(
-                text = "Log In",
-                color = Color.Green,
-                fontSize = 20.sp,
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Serif
+            ) {
+                Text(
+                    text = "Log In",
+                    color = Color.Green,
+                    fontSize = 20.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Serif
 
-            )
-        }
-        Button(onClick = { navController.navigate(ROUTE_CLIENT_REGISTER) },
-            colors = ButtonDefaults.buttonColors(Color.Green),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
                 )
-        ) {
-            Text(
-                text = "Sign Up",
-                color = Color.Blue,
-                fontSize = 20.sp,
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Serif
-            )
-        }
-        Button(onClick = { navController.navigate(ROUTE_HOME) },
-            colors = ButtonDefaults.buttonColors(Color.Blue),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 0.dp,
-                    bottom = 0.dp
+            }
+            Button(
+                onClick = { navController.navigate(ROUTE_CLIENT_REGISTER) },
+                colors = ButtonDefaults.buttonColors(Color.Green),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+            ) {
+                Text(
+                    text = "Sign Up",
+                    color = Color.Blue,
+                    fontSize = 20.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Serif
                 )
-        ) {
-            Text(
-                text = "Back to Home Screen",
-                color = Color.Green,
-                fontSize = 20.sp,
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Serif
-            )
+            }
+            Button(
+                onClick = { navController.navigate(ROUTE_HOME) },
+                colors = ButtonDefaults.buttonColors(Color.Blue),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+            ) {
+                Text(
+                    text = "Back to Home Screen",
+                    color = Color.Green,
+                    fontSize = 20.sp,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Serif
+                )
+            }
         }
     }
 
