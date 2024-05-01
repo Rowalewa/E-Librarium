@@ -319,6 +319,7 @@ class BooksViewModel (
                     val borrowedBook = snap.getValue(BorrowingBook::class.java)
                     if (borrowedBook != null) {
                         borrowedBooks.add(borrowedBook)
+                        Toast.makeText(context, "Borrowed book is null", Toast.LENGTH_LONG).show()
                     }
                 }
                 // Call the callback with the fetched data

@@ -2,6 +2,7 @@
 
 package com.example.e_librarium.ui.theme.screens.books
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
@@ -19,13 +20,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,12 +44,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -54,7 +63,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
+import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,6 +146,7 @@ fun AddBooksScreen(navController: NavHostController){
     var bookPrice by remember { mutableStateOf(TextFieldValue("")) }
     var bookPublisher by remember { mutableStateOf(TextFieldValue("")) }
     var bookPublicationDate by remember { mutableStateOf(TextFieldValue("")) }
+    var isBookPublicationDateExpanded by remember { mutableStateOf(false) }
     var bookShelfNumber by remember { mutableStateOf(TextFieldValue("")) }
     var bookSynopsis by remember { mutableStateOf(TextFieldValue("")) }
     var bookEdition by remember { mutableStateOf(TextFieldValue("")) }
@@ -260,26 +274,35 @@ fun AddBooksScreen(navController: NavHostController){
             OutlinedTextField(
                 value = bookPublicationDate,
                 onValueChange = { bookPublicationDate = it },
-                label = { Text(text = "Book Publication Date *") },
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,
-                    unfocusedTextColor = Color.Cyan,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    disabledContainerColor = Color.White,
-                    focusedLabelColor = Color.Green,
-                    unfocusedLabelColor = Color.Magenta,
-                ),
+                label = { Text("Book Publication Date") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        bottom = 0.dp,
-                        top = 0.dp
-                    ),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                    .padding(8.dp),
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { isBookPublicationDateExpanded = true }) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+                    }
+                }
             )
+
+            if (isBookPublicationDateExpanded) {
+                val today = Calendar.getInstance()
+                DatePickerDialog(
+                    context,
+                    { _, year, month, day ->
+                        val selectedDate = Calendar.getInstance()
+                        selectedDate.set(year, month, day)
+                        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                        bookPublicationDate = TextFieldValue(sdf.format(selectedDate.time))
+                        isBookPublicationDateExpanded = false
+                    },
+                    today.get(Calendar.YEAR),
+                    today.get(Calendar.MONTH),
+                    today.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
             Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier
@@ -766,20 +789,36 @@ fun ImagePicker(
                 .padding(bottom = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
                     imagePicker.launch("image/*")
-                }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+                    .clip(shape = CutCornerShape(30.dp)),
+                colors = ButtonDefaults.buttonColors(Color.Yellow)
+
             ) {
                 Text(
-                    text = "Select Image"
+                    text = "Select Image",
+                    fontSize = 25.sp,
+                    color = Color.Black,
+                    fontFamily = FontFamily.Cursive,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Button(onClick = {
-                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 val productRepository = BooksViewModel(navController,context)
                 productRepository.saveBook(
                     bookTitle,
@@ -801,16 +840,48 @@ fun ImagePicker(
                     imageUri!!
                 )
 
-            }) {
-                Text(text = "Upload")
+            },
+                modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    top = 0.dp,
+                    bottom = 10.dp
+                )
+                    .clip(shape = CutCornerShape(20.dp)),
+                colors = ButtonDefaults.buttonColors(Color.Green)
+
+            ) {
+                Text(
+                    text = "Upload",
+                    fontSize = 25.sp,
+                    color = Color.Black,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic
+                )
             }
-            Button(onClick = {
-                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
-
-//                navController.navigate(ROUTE_VIEW_UPLOAD_SCREEN)
-
-            }) {
-                Text(text = "view uploads")
+            Button(
+                onClick = { navController.navigate(ROUTE_VIEW_BOOKS) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Blue)
+            ) {
+                Text(
+                    text = "View Book Uploads",
+                    fontSize = 25.sp,
+                    color = Color.Black,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic
+                )
             }
 
         }

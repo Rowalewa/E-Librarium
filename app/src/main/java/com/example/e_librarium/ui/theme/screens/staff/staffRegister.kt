@@ -107,7 +107,8 @@ fun StaffRegisterScreen(navController: NavController){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.staff_register),
+        Image(
+            painter = painterResource(id = R.drawable.staff_register),
             contentDescription = "View Clients Image",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds

@@ -41,6 +41,7 @@ import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.Clients
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 
 @Composable
@@ -193,6 +194,10 @@ fun ClientInstance(
                 text = "Client Email: $email",
                 color = Color.Black
             )
+            Text(
+                text = "Client Id: $clientId",
+                color = Color.Black
+            )
             Row(
                 modifier = Modifier.background(color = Color.Yellow)
             ) {
@@ -215,7 +220,7 @@ fun ClientInstance(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-                        navController.navigate(ROUTE_VIEW_BOOKS)
+                        navController.navigate(/*"$*/ROUTE_VIEW_BOOKS/*$clientId"*/)
                     },
                     modifier = Modifier
                         .width(200.dp)
@@ -229,6 +234,24 @@ fun ClientInstance(
                 ) {
                     Text(text = "Borrow")
                 }
+            }
+
+            //----------------------Check on this one--------------------//
+            Button(
+                onClick = {
+                    navController.navigate("$ROUTE_BORROW_BOOKS/$clientId")
+                },
+                modifier = Modifier
+                    .width(200.dp)
+                    .padding(
+                        start = 0.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Green)
+            ) {
+                Text(text = "Borrow Books")
             }
         }
     }

@@ -54,6 +54,8 @@ fun BorrowBooksScreen(navController: NavHostController){
     val clientId by remember {
         mutableStateOf("")
     }
+//    val clientId = navController.previousBackStackEntry?.arguments?.getString("clientId") ?: ""
+
     var borrowDate by remember { mutableStateOf(TextFieldValue("")) }
     var isBorrowDateExpanded by remember { mutableStateOf(false) }
     var returnDate by remember { mutableStateOf(TextFieldValue("")) }

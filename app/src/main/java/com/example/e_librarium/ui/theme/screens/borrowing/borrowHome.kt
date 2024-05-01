@@ -1,5 +1,6 @@
 package com.example.e_librarium.ui.theme.screens.borrowing
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -49,8 +50,14 @@ fun BorrowHomeScreen(navController: NavHostController, clientId: String){
     val (borrowedBooks, setBorrowedBooks) = remember { mutableStateOf<List<BorrowingBook>>(emptyList()) }
 
     LaunchedEffect(clientId) {
-        booksViewModel.getBorrowedBooksForClient(clientId) { books ->
-            setBorrowedBooks(books)
+        try {
+            booksViewModel.getBorrowedBooksForClient(clientId) { books ->
+                setBorrowedBooks(books)
+            }
+        } catch (e: Exception) {
+            // Handle the error, e.g., show a toast or log the error
+            // For simplicity, a toast message is shown here
+            Toast.makeText(context, "Failed to fetch borrowed books", Toast.LENGTH_SHORT).show()
         }
     }
 
