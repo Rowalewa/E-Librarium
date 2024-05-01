@@ -220,7 +220,7 @@ fun ClientInstance(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-                        navController.navigate(/*"$*/ROUTE_VIEW_BOOKS/*$clientId"*/)
+                        navController.navigate(ROUTE_VIEW_BOOKS)
                     },
                     modifier = Modifier
                         .width(200.dp)
@@ -236,23 +236,23 @@ fun ClientInstance(
                 }
             }
 
-            //----------------------Check on this one--------------------//
-            Button(
-                onClick = {
-                    navController.navigate("$ROUTE_BORROW_BOOKS/$clientId")
-                },
-                modifier = Modifier
-                    .width(200.dp)
-                    .padding(
-                        start = 0.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    ),
-                colors = ButtonDefaults.buttonColors(Color.Green)
-            ) {
-                Text(text = "Borrow Books")
-            }
+//            //----------------------Check on this one--------------------//
+//            Button(
+//                onClick = {
+//                    navController.navigate(ROUTE_BORROW_BOOKS)
+//                },
+//                modifier = Modifier
+//                    .width(200.dp)
+//                    .padding(
+//                        start = 0.dp,
+//                        end = 20.dp,
+//                        top = 0.dp,
+//                        bottom = 0.dp
+//                    ),
+//                colors = ButtonDefaults.buttonColors(Color.Green)
+//            ) {
+//                Text(text = "Borrow Books")
+//            }
         }
     }
     Spacer(modifier = Modifier.height(40.dp))

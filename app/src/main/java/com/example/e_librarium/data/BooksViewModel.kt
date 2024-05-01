@@ -16,6 +16,7 @@ import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.BorrowingBook
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -121,7 +122,6 @@ class BooksViewModel (
         books: SnapshotStateList<Books>
     ): SnapshotStateList<Books> {
         val ref = FirebaseDatabase.getInstance().getReference().child("Books")
-
 //        progress.show()
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -298,6 +298,7 @@ class BooksViewModel (
                 bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
                     if (it.isSuccessful) {
                         Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
+                        navController.navigate(ROUTE_BORROW_BOOKS)
                     } else {
                         Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
                     }

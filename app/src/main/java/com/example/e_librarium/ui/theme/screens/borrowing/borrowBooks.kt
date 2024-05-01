@@ -48,10 +48,10 @@ fun BorrowBooksScreen(navController: NavHostController){
     val context = LocalContext.current
     val booksViewModel = BooksViewModel(navController, context)
 
-    val bookId by remember {
+    var bookId by remember {
         mutableStateOf("")
     }
-    val clientId by remember {
+    var clientId by remember {
         mutableStateOf("")
     }
 //    val clientId = navController.previousBackStackEntry?.arguments?.getString("clientId") ?: ""
@@ -61,12 +61,12 @@ fun BorrowBooksScreen(navController: NavHostController){
     var returnDate by remember { mutableStateOf(TextFieldValue("")) }
     var isReturnDateExpanded by remember { mutableStateOf(false) }
 
-    var mClientId by remember {
-        mutableStateOf(clientId)
-    }
-    var mBookId by remember {
-        mutableStateOf(bookId)
-    }
+//    var mClientId by remember {
+//        mutableStateOf("")
+//    }
+//    var mBookId by remember {
+//        mutableStateOf(bookId)
+//    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -79,13 +79,13 @@ fun BorrowBooksScreen(navController: NavHostController){
         )
         Column(modifier = Modifier.padding(16.dp)) {
             OutlinedTextField(
-                value = mBookId,
-                onValueChange = { mBookId = it },
+                value = bookId,
+                onValueChange = { bookId = it },
                 label = { Text("Book ID") }
             )
             OutlinedTextField(
-                value = mClientId,
-                onValueChange = { mClientId = it },
+                value = clientId,
+                onValueChange = { clientId = it },
                 label = { Text("Client ID") }
             )
             OutlinedTextField(
