@@ -120,7 +120,7 @@ fun ViewClientsScreen(navController: NavHostController){
                             phoneNumber = it.phoneNumber,
                             dateOfBirth = it.dateOfBirth,
                             email = it.email,
-                            clientId = it.clientid,
+                            clientId = it.clientId,
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
                             navController = navController,
                             clientRepository = clientsRepository

@@ -286,27 +286,44 @@ class BooksViewModel (
         borrowDate: String,
         returnDate: String
     ) {
-        val borrowedBookData = BorrowingBook(clientId, bookId, borrowDate, returnDate)
-        val dbRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(bookId)
+        val bookRef = FirebaseDatabase.getInstance().getReference().child("Books").child(bookId)
 
-        dbRef.setValue(borrowedBookData).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-//                val clientRef = FirebaseDatabase.getInstance().getReference().child("Client").child(clientId)
-//                clientRef.child("gender").setValue("Divorced")
-                // Update the book status in the Books node
-                val bookRef = FirebaseDatabase.getInstance().getReference().child("Books").child(bookId)
-                bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
-                        navController.navigate(ROUTE_BORROW_BOOKS)
-                    } else {
-                        Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
+        // Fetch the current status of the book
+        bookRef.child("bookStatus").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentStatus = snapshot.value as String
+
+                // Check if the book is currently available
+                if (currentStatus == "Available") {
+                    // Book is available, proceed with borrowing
+                    val borrowedBookData = BorrowingBook(clientId, bookId, borrowDate, returnDate)
+                    val dbRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(bookId)
+
+                    dbRef.setValue(borrowedBookData).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Update the book status to "Borrowed"
+                            bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
+                                    navController.navigate(ROUTE_BORROW_BOOKS)
+                                } else {
+                                    Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
+                        }
                     }
+                } else {
+                    // Book is not available for borrowing
+                    Toast.makeText(context, "Book is currently $currentStatus", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to fetch book status", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun getBorrowedBooksForClient(clientId: String, callback: (List<BorrowingBook>) -> Unit) {
@@ -324,6 +341,7 @@ class BooksViewModel (
                     }
                 }
                 // Call the callback with the fetched data
+                Toast.makeText(context, "Fetching books borrowed", Toast.LENGTH_LONG).show()
                 callback(borrowedBooks)
             }
 

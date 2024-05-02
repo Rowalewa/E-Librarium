@@ -197,8 +197,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
             }
 
             Log.d("Firebase", "Book ID: $bookId")
-            val currentDataRef =
-                FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+            val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
             val path = "Books/$bookId"
             Log.d("Firebase", "Database Reference Path: $path")
             Log.d("Firebase", "Fetching book with ID: $bookId")

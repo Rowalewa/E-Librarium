@@ -9,7 +9,7 @@ class Clients {
     var email: String = ""
     var pass: String = ""
     var clientProfilePictureUrl: String = ""
-    var clientid: String = ""
+    var clientId: String = ""
 
     constructor(
         fullName: String,
@@ -20,7 +20,7 @@ class Clients {
         email: String,
         pass: String,
         clientProfilePictureUrl: String,
-        clientid: String
+        clientId: String
     ){
         this.fullName = fullName
         this.gender = gender
@@ -30,7 +30,7 @@ class Clients {
         this.email = email
         this.pass = pass
         this.clientProfilePictureUrl = clientProfilePictureUrl
-        this.clientid = clientid
+        this.clientId = clientId
     }
 
     constructor()

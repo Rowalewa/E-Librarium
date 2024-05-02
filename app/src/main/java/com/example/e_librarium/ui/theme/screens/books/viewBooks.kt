@@ -311,7 +311,7 @@ fun BookItem(
                 }
             }
             Button(
-                onClick = { navController.navigate(ROUTE_BORROW_BOOKS) },
+                onClick = { navController.navigate("$ROUTE_BORROW_BOOKS/$bookId") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(

@@ -1,8 +1,8 @@
 package com.example.e_librarium.ui.theme.screens.borrowing
 
 import android.app.DatePickerDialog
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,34 +28,34 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
-import com.example.e_librarium.models.BorrowingBook
-import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.models.Books
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Locale
 
 @Composable
-fun BorrowBooksScreen(navController: NavHostController){
+fun BorrowBooksScreen(navController: NavHostController, bookId: String){
     val context = LocalContext.current
     val booksViewModel = BooksViewModel(navController, context)
 
-    var bookId by remember {
-        mutableStateOf("")
-    }
+//    val bookId by remember {
+//        mutableStateOf("")
+//    }
     var clientId by remember {
         mutableStateOf("")
     }
 //    val clientId = navController.previousBackStackEntry?.arguments?.getString("clientId") ?: ""
-
+    var mBookId by remember {
+        mutableStateOf(TextFieldValue(bookId))
+    }
     var borrowDate by remember { mutableStateOf(TextFieldValue("")) }
     var isBorrowDateExpanded by remember { mutableStateOf(false) }
     var returnDate by remember { mutableStateOf(TextFieldValue("")) }
@@ -67,6 +67,30 @@ fun BorrowBooksScreen(navController: NavHostController){
 //    var mBookId by remember {
 //        mutableStateOf(bookId)
 //    }
+    Log.d("Firebase", "Book ID: $bookId")
+    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
+    val path = "Books/$bookId"
+    Log.d("Firebase", "Database Reference Path: $path")
+    Log.d("Firebase", "Fetching book with ID: $bookId")
+    currentDataRef.addValueEventListener(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            if (snapshot.exists()) {
+                val book = snapshot.getValue(Books::class.java)
+                if (book != null) {
+                    mBookId = TextFieldValue(book.bookId)
+                } else {
+                    Log.e("Firebase", "Failed to parse book data")
+                }
+            } else {
+                Log.e("Firebase", "Snapshot does not exist")
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+        }
+    })
+
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -79,8 +103,8 @@ fun BorrowBooksScreen(navController: NavHostController){
         )
         Column(modifier = Modifier.padding(16.dp)) {
             OutlinedTextField(
-                value = bookId,
-                onValueChange = { bookId = it },
+                value = mBookId,
+                onValueChange = { mBookId = it },
                 label = { Text("Book ID") }
             )
             OutlinedTextField(
@@ -155,7 +179,7 @@ fun BorrowBooksScreen(navController: NavHostController){
             Button(
                 onClick = {
                     booksViewModel.borrowBook(
-                        bookId,
+                        mBookId.text.trim(),
                         clientId,
                         borrowDate.text.trim(),
                         returnDate.text.trim()
@@ -166,17 +190,5 @@ fun BorrowBooksScreen(navController: NavHostController){
                 Text("Borrow Book")
             }
         }
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-    showBackground = true,
-    name = "Borrow Books Screen Preview"
-)
-@Composable
-fun BorrowBooksScreenPreview(){
-    ELibrariumTheme {
-        BorrowBooksScreen(navController = rememberNavController())
     }
 }

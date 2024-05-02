@@ -16,6 +16,7 @@ import com.example.e_librarium.ui.theme.screens.borrowing.ViewClientsScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientHomeScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientLogInScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientRegisterScreen
+import com.example.e_librarium.ui.theme.screens.clients.ViewBorrowedBooks
 import com.example.e_librarium.ui.theme.screens.home.HomeScreen
 import com.example.e_librarium.ui.theme.screens.returning.ReturnBooksScreen
 import com.example.e_librarium.ui.theme.screens.returning.ReturningHomeScreen
@@ -45,8 +46,8 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable(ROUTE_VIEW_BOOKS){
             ViewBooksScreen(navController)  // need for edit
         }
-        composable(ROUTE_BORROW_BOOKS){
-            BorrowBooksScreen(navController)  // need for edit
+        composable("$ROUTE_BORROW_BOOKS/{bookId}"){passedData ->
+            BorrowBooksScreen(navController, passedData.arguments?.getString("bookId")!!)  // need for edit
         }
         composable("$ROUTE_BORROW_HOME/{clientId}"){passedData ->
             BorrowHomeScreen(navController, passedData.arguments?.getString("clientId")!!)
@@ -62,6 +63,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable(ROUTE_CLIENT_HOME){
             ClientHomeScreen(navController)
+        }
+        composable("$ROUTE_VIEW_BORROWED_BOOKS/{clientId}"){passedData ->
+            ViewBorrowedBooks(navController, passedData.arguments?.getString("clientId")!!)
         }
         composable(ROUTE_HOME){
             HomeScreen(navController)

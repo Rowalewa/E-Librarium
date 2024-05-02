@@ -147,7 +147,7 @@ class AuthViewModel (
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val clientid = System.currentTimeMillis().toString()
+                    val clientId = System.currentTimeMillis().toString()
                     val storageRef = FirebaseStorage.getInstance().reference
                     val profilePicRef = storageRef.child("client_profile_pictures/${mAuth.currentUser!!.uid}")
                     profilePicRef.putFile(clientProfilePictureUri)
@@ -163,7 +163,7 @@ class AuthViewModel (
                                     email,
                                     pass,
                                     clientProfilePictureUrl,
-                                    clientid
+                                    clientId
 
                                 )
                                 val regRef =
@@ -172,12 +172,8 @@ class AuthViewModel (
                                 regRef.setValue(clientdata).addOnCompleteListener { dataTask ->
                                     if (dataTask.isSuccessful) {
                                         progress.dismiss()
-                                        Toast.makeText(
-                                            context,
-                                            "Registered Successfully",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        navController.navigate(ROUTE_BORROW_HOME)
+                                        Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
+                                        navController.navigate("$ROUTE_BORROW_HOME/$clientId")
                                     } else {
                                         progress.dismiss()
                                         Toast.makeText(
@@ -216,9 +212,10 @@ class AuthViewModel (
         progress.show()
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener{
             progress.dismiss()
+            val clientId = System.currentTimeMillis().toString()
             if (it.isSuccessful){
                 Toast.makeText(context,"Successfully logged in", Toast.LENGTH_LONG).show()
-                navController.navigate("$ROUTE_BORROW_HOME/{clientId}")
+                navController.navigate("$ROUTE_BORROW_HOME/$clientId")
             } else {
                 Toast.makeText(context,"${it.exception!!.message}", Toast.LENGTH_LONG).show()
                 navController.navigate(ROUTE_CLIENT_HOME)
