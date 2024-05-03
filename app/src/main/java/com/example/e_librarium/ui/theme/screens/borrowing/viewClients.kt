@@ -62,8 +62,7 @@ fun ViewClientsScreen(navController: NavHostController){
 
             val context = LocalContext.current
             val clientsRepository = AuthViewModel(navController, context)
-            val emptyClientState =
-                remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "")) }
+            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "")) }
             val emptyClientListState = remember { mutableStateListOf<Clients>() }
 
             val books = clientsRepository.viewClients(emptyClientState, emptyClientListState)

@@ -10,16 +10,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.e_librarium.data.BooksViewModel
@@ -43,7 +47,13 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
             Toast.makeText(context, "Failed to fetch borrowed books", Toast.LENGTH_SHORT).show()
         }
     }
+
+
     Column {
+        OutlinedTextField(
+            value = TextFieldValue(clientId),
+            onValueChange = {}
+        )
         LazyColumn {
             items(borrowedBooks) { book ->
                 BookItems(

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,9 +28,6 @@ import com.example.e_librarium.navigation.ROUTE_VIEW_BORROWED_BOOKS
 fun BorrowHomeScreen(navController: NavHostController, clientId: String){
     val context = LocalContext.current
 
-    val clientId by remember { mutableStateOf(TextFieldValue(clientId) )
-    }
-
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -39,6 +37,10 @@ fun BorrowHomeScreen(navController: NavHostController, clientId: String){
             contentScale = ContentScale.FillBounds
         )
         Column {
+            OutlinedTextField(
+                value = clientId,
+                onValueChange = {}
+            )
             Button(
                 onClick = {
                     val myClientLogout = AuthViewModel(navController, context)
