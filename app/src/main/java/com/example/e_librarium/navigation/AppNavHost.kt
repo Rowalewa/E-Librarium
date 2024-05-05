@@ -43,12 +43,17 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable("$ROUTE_EDIT_BOOKS/{bookId}"){passedData ->
             EditBooksScreen(navController, passedData.arguments?.getString("bookId")!!)  // need for edit
         }
-        composable(ROUTE_VIEW_BOOKS){
-            ViewBooksScreen(navController)  // need for edit
+        composable("$ROUTE_VIEW_BOOKS/{clientId}"){passedData ->
+            ViewBooksScreen(navController, passedData.arguments?.getString("clientId")!!)  // need for edit
         }
-        composable("$ROUTE_BORROW_BOOKS/{bookId}"){passedData ->
-            BorrowBooksScreen(navController, passedData.arguments?.getString("bookId")!!)  // need for edit
+        composable("$ROUTE_BORROW_BOOKS/{clientId}/{bookId}"){ passedData ->
+            BorrowBooksScreen(
+                navController,
+                passedData.arguments?.getString("clientId")!!,
+                passedData.arguments?.getString("bookId")!!
+            )
         }
+
         composable("$ROUTE_BORROW_HOME/{clientId}"){passedData ->
             BorrowHomeScreen(navController, passedData.arguments?.getString("clientId")!!)
         }

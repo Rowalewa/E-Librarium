@@ -38,7 +38,6 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.Clients
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
@@ -65,7 +64,7 @@ fun ViewClientsScreen(navController: NavHostController){
             val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "")) }
             val emptyClientListState = remember { mutableStateListOf<Clients>() }
 
-            val books = clientsRepository.viewClients(emptyClientState, emptyClientListState)
+            val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
 
 
             Column(
@@ -111,7 +110,7 @@ fun ViewClientsScreen(navController: NavHostController){
                         top = 0.dp
                     )
                 ) {
-                    items(books) {
+                    items(clients) {
                         ClientInstance(
                             fullName = it.fullName,
                             gender = it.gender,
@@ -119,8 +118,8 @@ fun ViewClientsScreen(navController: NavHostController){
                             phoneNumber = it.phoneNumber,
                             dateOfBirth = it.dateOfBirth,
                             email = it.email,
-                            clientId = it.clientId,
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
+                            clientId = it.clientId,
                             navController = navController,
                             clientRepository = clientsRepository
                         )
@@ -139,8 +138,8 @@ fun ClientInstance(
     phoneNumber: String,
     dateOfBirth: String,
     email: String,
-    clientId: String,
     clientProfilePictureUrl: String,
+    clientId: String,
     navController: NavHostController,
     clientRepository: AuthViewModel
 ) {
@@ -219,7 +218,7 @@ fun ClientInstance(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-                        navController.navigate(ROUTE_VIEW_BOOKS)
+                        navController.navigate("$ROUTE_VIEW_BOOKS/$clientId")
                     },
                     modifier = Modifier
                         .width(200.dp)

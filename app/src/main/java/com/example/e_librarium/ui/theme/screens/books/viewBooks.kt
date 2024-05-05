@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -45,7 +46,7 @@ import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
-fun ViewBooksScreen(navController: NavHostController){
+fun ViewBooksScreen(navController: NavHostController, clientId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -104,6 +105,10 @@ fun ViewBooksScreen(navController: NavHostController){
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
+                OutlinedTextField(
+                    value = clientId,
+                    onValueChange = {}
+                )
 
                 Button(
                     onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
@@ -126,6 +131,171 @@ fun ViewBooksScreen(navController: NavHostController){
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
+                @Composable
+                fun BookItem(
+                    bookTitle: String,
+                    bookAuthor: String,
+                    bookYearOfPublication: String,
+                    bookPrice: String,
+                    bookISBNNumber: String,
+                    bookPublisher: String,
+                    bookPublicationDate: String,
+                    bookGenre: String,
+                    bookEdition: String,
+                    bookLanguage: String,
+                    bookNumberOfPages: String,
+                    bookAcquisitionMethod: String,
+                    bookCondition: String,
+                    bookShelfNumber: String,
+                    bookStatus: String,
+                    bookSynopsis: String,
+                    bookImageUrl: String,
+                    bookId: String,
+                    navController: NavHostController,
+                    bookRepository:BooksViewModel
+                ) {
+
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            top = 0.dp,
+                            end = 20.dp,
+                            bottom = 0.dp
+                        )
+                        .clip(shape = CutCornerShape(20.dp))
+                        ,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .background(color = Color.Green)
+                                .fillMaxWidth()
+                        ) {
+                            Image(
+                                painter = rememberAsyncImagePainter(bookImageUrl),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(400.dp)
+                                    .padding(18.dp)
+                            )
+                            Text(
+                                text = "Book Title: $bookTitle",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Author: $bookAuthor",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Year of Publication: $bookYearOfPublication",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Price: $bookPrice",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book ISBN Number: $bookISBNNumber",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Publisher: $bookPublisher",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Publication Date: $bookPublicationDate",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Genre: $bookGenre",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Edition: $bookEdition",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Language: $bookLanguage",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Number of Pages: $bookNumberOfPages",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Acquisition Method: $bookAcquisitionMethod",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Condition: $bookCondition",
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Book Shelf Number: $bookShelfNumber",
+                                color = Color.Black)
+                            Text(
+                                text = "Book Status: $bookStatus",
+                                color = Color.Black)
+                            Text(
+                                text = "Book Synopsis: $bookSynopsis",
+                                color = Color.Black)
+                            Row(
+                                modifier = Modifier.background(color = Color.Yellow)
+                            ) {
+                                Button(
+                                    onClick = {
+                                        bookRepository.deleteBook(bookId)
+                                    },
+                                    modifier = Modifier
+                                        .width(150.dp)
+                                        .padding(
+                                            start = 20.dp,
+                                            end = 0.dp,
+                                            top = 0.dp,
+                                            bottom = 0.dp
+                                        ),
+                                    colors = ButtonDefaults.buttonColors(Color.Red)
+                                ) {
+                                    Text(text = "Delete")
+                                }
+                                Spacer(modifier = Modifier.width(30.dp))
+                                Button(
+                                    onClick = {
+                                        navController.navigate("$ROUTE_EDIT_BOOKS/$bookId")
+                                    },
+                                    modifier = Modifier
+                                        .width(200.dp)
+                                        .padding(
+                                            start = 0.dp,
+                                            end = 20.dp,
+                                            top = 0.dp,
+                                            bottom = 0.dp
+                                        ),
+                                    colors = ButtonDefaults.buttonColors(Color.Blue)
+                                ) {
+                                    Text(text = "Update")
+                                }
+                            }
+                            Button(
+                                onClick = { navController.navigate("$ROUTE_BORROW_BOOKS/$bookId/$clientId") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = 20.dp,
+                                        end = 0.dp,
+                                        top = 0.dp,
+                                        bottom = 0.dp
+                                    ),
+                                colors = ButtonDefaults.buttonColors(Color.Red)
+                            ) {
+                                Text(text = "Borrow")
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(40.dp))
+                }
+
                 LazyColumn(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(
@@ -163,168 +333,4 @@ fun ViewBooksScreen(navController: NavHostController){
             }
         }
     }
-}
-@Composable
-fun BookItem(
-    bookTitle: String,
-    bookAuthor: String,
-    bookYearOfPublication: String,
-    bookPrice: String,
-    bookISBNNumber: String,
-    bookPublisher: String,
-    bookPublicationDate: String,
-    bookGenre: String,
-    bookEdition: String,
-    bookLanguage: String,
-    bookNumberOfPages: String,
-    bookAcquisitionMethod: String,
-    bookCondition: String,
-    bookShelfNumber: String,
-    bookStatus: String,
-    bookSynopsis: String,
-    bookImageUrl: String,
-    bookId: String,
-    navController: NavHostController,
-    bookRepository:BooksViewModel
-) {
-
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(
-            start = 20.dp,
-            top = 0.dp,
-            end = 20.dp,
-            bottom = 0.dp
-        )
-        .clip(shape = CutCornerShape(20.dp))
-        ,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .background(color = Color.Green)
-                .fillMaxWidth()
-        ) {
-            Image(
-                painter = rememberAsyncImagePainter(bookImageUrl),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(400.dp)
-                    .padding(18.dp)
-            )
-            Text(
-                 text = "Book Title: $bookTitle",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Author: $bookAuthor",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Year of Publication: $bookYearOfPublication",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Price: $bookPrice",
-                color = Color.Black
-            )
-            Text(
-                text = "Book ISBN Number: $bookISBNNumber",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Publisher: $bookPublisher",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Publication Date: $bookPublicationDate",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Genre: $bookGenre",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Edition: $bookEdition",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Language: $bookLanguage",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Number of Pages: $bookNumberOfPages",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Acquisition Method: $bookAcquisitionMethod",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Condition: $bookCondition",
-                color = Color.Black
-            )
-            Text(
-                text = "Book Shelf Number: $bookShelfNumber",
-                color = Color.Black)
-            Text(
-                text = "Book Status: $bookStatus",
-                color = Color.Black)
-            Text(
-                text = "Book Synopsis: $bookSynopsis",
-                color = Color.Black)
-            Row(
-                modifier = Modifier.background(color = Color.Yellow)
-            ) {
-                Button(
-                    onClick = {
-                        bookRepository.deleteBook(bookId)
-                    },
-                    modifier = Modifier
-                        .width(150.dp)
-                        .padding(
-                            start = 20.dp,
-                            end = 0.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    colors = ButtonDefaults.buttonColors(Color.Red)
-                ) {
-                    Text(text = "Delete")
-                }
-                Spacer(modifier = Modifier.width(30.dp))
-                Button(
-                    onClick = {
-                navController.navigate("$ROUTE_EDIT_BOOKS/$bookId")
-                    },
-                    modifier = Modifier
-                        .width(200.dp)
-                        .padding(
-                            start = 0.dp,
-                            end = 20.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    colors = ButtonDefaults.buttonColors(Color.Blue)
-                ) {
-                    Text(text = "Update")
-                }
-            }
-            Button(
-                onClick = { navController.navigate("$ROUTE_BORROW_BOOKS/$bookId") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 0.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    ),
-                colors = ButtonDefaults.buttonColors(Color.Red)
-            ) {
-                Text(text = "Borrow")
-            }
-        }
-    }
-    Spacer(modifier = Modifier.height(40.dp))
 }

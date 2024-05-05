@@ -42,16 +42,14 @@ import java.util.Calendar
 import java.util.Locale
 
 @Composable
-fun BorrowBooksScreen(navController: NavHostController, bookId: String){
+fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId: String){
     val context = LocalContext.current
     val booksViewModel = BooksViewModel(navController, context)
 
 //    val bookId by remember {
 //        mutableStateOf("")
 //    }
-    var clientId by remember {
-        mutableStateOf("")
-    }
+
 //    val clientId = navController.previousBackStackEntry?.arguments?.getString("clientId") ?: ""
     var mBookId by remember {
         mutableStateOf(TextFieldValue(bookId))
@@ -109,7 +107,7 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String){
             )
             OutlinedTextField(
                 value = clientId,
-                onValueChange = { clientId = it },
+                onValueChange = {  },
                 label = { Text("Client ID") }
             )
             OutlinedTextField(
