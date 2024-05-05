@@ -95,6 +95,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
             val bookNumberOfPages by remember { mutableStateOf("") }
             val bookISBNNumber by remember { mutableStateOf("") }
             val bookYearOfPublication by remember { mutableStateOf("") }
+            var bookQuantity by remember { mutableStateOf("") }
 
 
 
@@ -188,6 +189,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
             var mBookLanguage by remember { mutableStateOf(TextFieldValue(bookLanguage)) }
             var mBookNumberOfPages by remember { mutableStateOf(TextFieldValue(bookNumberOfPages)) }
             var mBookISBNNumber by remember { mutableStateOf(TextFieldValue(bookISBNNumber)) }
+            var mBookQuantity by remember { mutableStateOf(TextFieldValue(bookQuantity)) }
             var mBookYearOfPublication by remember {
                 mutableStateOf(
                     TextFieldValue(
@@ -222,6 +224,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                             mBookShelfNumber = TextFieldValue(book.bookShelfNumber)
                             mBookStatus = book.bookStatus
                             mBookSynopsis = TextFieldValue(book.bookSynopsis)
+                            bookQuantity = book.bookQuantity.toString()
                         } else {
                             Log.e("Firebase", "Failed to parse book data")
                         }
@@ -285,6 +288,29 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                 value = mBookPrice,
                 onValueChange = { mBookPrice = it },
                 label = { Text(text = "Book Price *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = mBookQuantity,
+                onValueChange = { mBookQuantity = it },
+                label = { Text(text = "Book Quantity *") },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Blue,
                     unfocusedTextColor = Color.Cyan,
@@ -779,6 +805,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                         "",
                         "",
                         "",
+                        0,
                         ""
                     )
                 )
@@ -807,6 +834,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                         "",
                         "",
                         "",
+                        0,
                         ""
                     )
                 }
@@ -842,7 +870,9 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                 mBookShelfNumber.text.trim(),
                 mBookStatus.trim(),
                 mBookSynopsis.text.trim(),
-                bookId
+                bookId,
+                mBookQuantity.text.toIntOrNull() ?: 0
+
             )
 
             Button(
@@ -890,7 +920,8 @@ fun ImageUploader(
     bookShelfNumber: String,
     bookStatus: String,
     bookSynopsis: String,
-    bookId: String
+    bookId: String,
+    bookQuantity: Int
 ) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -956,7 +987,9 @@ fun ImageUploader(
                     bookShelfNumber,
                     bookStatus,
                     bookSynopsis,
-                    imageUri
+                    bookQuantity,
+                    imageUri,
+
                 )
 
             }) {

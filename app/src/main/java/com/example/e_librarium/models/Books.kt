@@ -20,6 +20,7 @@ class Books {
     var bookStatus: String = ""
     var bookSynopsis: String = ""
     var bookImageUrl: String = ""
+    var bookQuantity: Int = 0
     var bookId: String = ""
 
     constructor(bookTitle: String,
@@ -39,6 +40,7 @@ class Books {
                 bookStatus: String,
                 bookSynopsis: String,
                 bookImageUrl: String,
+                bookQuantity: Int,
                 bookId: String
         ){
         this.bookTitle = bookTitle
@@ -58,6 +60,7 @@ class Books {
         this.bookAcquisitionMethod = bookAcquisitionMethod
         this.bookISBNNumber = bookISBNNumber
         this.bookImageUrl = bookImageUrl
+        this.bookQuantity = bookQuantity
         this.bookId = bookId
     }
 

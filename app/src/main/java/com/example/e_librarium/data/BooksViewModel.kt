@@ -56,7 +56,8 @@ class BooksViewModel (
         bookShelfNumber: String,
         bookStatus: String,
         bookSynopsis: String,
-        filePath: Uri
+        filePath: Uri,
+        bookQuantity: Int // Add quantity as an integer parameter
     ) {
         val id = System.currentTimeMillis().toString()
         val storageReference = FirebaseStorage.getInstance().getReference().child("Books/$id")
@@ -70,13 +71,11 @@ class BooksViewModel (
             ) {
                 progress.dismiss()
                 Toast.makeText(context, "Fill all the fields please", Toast.LENGTH_LONG).show()
-                // making a toast appear at the center of screen without using a variable
                 navController.navigate(ROUTE_ADD_BOOKS)
             } else if (bookISBNNumber.length != 10 && bookISBNNumber.length != 13){
                 progress.dismiss()
                 Toast.makeText(context, "Invalid ISBN Number", Toast.LENGTH_LONG).show()
                 navController.navigate(ROUTE_ADD_BOOKS)
-//
             } else if (it.isSuccessful){
                 progress.dismiss()
                 // Proceed to store other data into the db
@@ -99,7 +98,9 @@ class BooksViewModel (
                         bookShelfNumber,
                         bookStatus,
                         bookSynopsis,
-                        bookImageUrl, id,
+                        bookImageUrl,
+                        bookQuantity,
+                        id// Pass quantity to the Books constructor
                     )
                     val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$id")
                     dbRef.setValue(houseData)
@@ -107,15 +108,14 @@ class BooksViewModel (
                     toast.setGravity(Gravity.CENTER, 0, 0)
                     toast.show()
                     navController.navigate(ROUTE_ADD_BOOKS)
-                    // this is for making a toast centered on screen using variable
-//                    navController.navigate(ROUTE_VIEW_UPLOAD_SCREEN)
                 }
-            }else{
+            } else {
                 progress.dismiss()
                 Toast.makeText(context, "ERROR: ${it.exception!!.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     fun viewBooks(
         book: MutableState<Books>,
@@ -159,6 +159,7 @@ class BooksViewModel (
         bookShelfNumber: String,
         bookStatus: String,
         bookSynopsis: String,
+        bookQuantity: Int,
         filePath: Uri?
     ) {
         val storageReference = FirebaseStorage.getInstance().getReference().child("Books/$bookId")
@@ -180,7 +181,8 @@ class BooksViewModel (
             bookShelfNumber,
             bookStatus,
             bookSynopsis,
-            "", // Placeholder for bookImageUrl
+            "",
+            bookQuantity,// Placeholder for bookImageUrl
             bookId
         )
 
@@ -237,7 +239,8 @@ class BooksViewModel (
                         bookShelfNumber,
                         bookStatus,
                         bookSynopsis,
-                        existingImageUrl, // Retain the existing image URL if filePath is null
+                        existingImageUrl,
+                        bookQuantity,// Retain the existing image URL if filePath is null
                         bookId
                     )
 
@@ -288,43 +291,46 @@ class BooksViewModel (
     ) {
         val bookRef = FirebaseDatabase.getInstance().getReference().child("Books").child(bookId)
 
-        // Fetch the current status of the book
-        bookRef.child("bookStatus").addListenerForSingleValueEvent(object : ValueEventListener {
+        // Fetch the current status and quantity of the book
+        bookRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val currentStatus = snapshot.value as String
+                val book = snapshot.getValue(Books::class.java)
+                if (book != null) {
+                    if (book.bookQuantity > 0) {
+                        val borrowedBookData = BorrowingBook(clientId, bookId, borrowDate, returnDate)
+                        val borrowedRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").push()
 
-                // Check if the book is currently available
-                if (currentStatus == "Available") {
-                    // Book is available, proceed with borrowing
-                    val borrowedBookData = BorrowingBook(clientId, bookId, borrowDate, returnDate)
-                    val dbRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(bookId)
-
-                    dbRef.setValue(borrowedBookData).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            // Update the book status to "Borrowed"
-                            bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
-                                if (it.isSuccessful) {
-                                    Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
-                                    navController.navigate(ROUTE_BORROW_BOOKS)
-                                } else {
-                                    Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
+                        borrowedRef.setValue(borrowedBookData).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // Update the book quantity and status
+                                val newQuantity = book.bookQuantity - 1
+                                bookRef.child("bookQuantity").setValue(newQuantity)
+                                bookRef.child("bookStatus").setValue("Borrowed").addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
+                                        navController.navigate(ROUTE_BOOKS_HOME)
+                                    } else {
+                                        Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
+                            } else {
+                                Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
                             }
-                        } else {
-                            Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
                         }
+                    } else {
+                        Toast.makeText(context, "Book is out of stock", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    // Book is not available for borrowing
-                    Toast.makeText(context, "Book is currently $currentStatus", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Failed to fetch book details", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Failed to fetch book status", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to fetch book details", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
 
     fun getBorrowedBooksForClient(clientId: String, callback: (List<BorrowingBook>) -> Unit) {
         val borrowedBooks = mutableListOf<BorrowingBook>()

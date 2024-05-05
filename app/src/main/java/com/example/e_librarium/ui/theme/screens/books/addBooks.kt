@@ -154,6 +154,7 @@ fun AddBooksScreen(navController: NavHostController){
     var bookNumberOfPages by remember { mutableStateOf(TextFieldValue("")) }
     var bookISBNNumber by remember { mutableStateOf(TextFieldValue("")) }
     var bookYearOfPublication by remember { mutableStateOf(TextFieldValue("")) }
+    var bookQuantity by remember { mutableStateOf(TextFieldValue("")) }
     Box (
         modifier = Modifier.fillMaxSize()
     ){
@@ -229,6 +230,29 @@ fun AddBooksScreen(navController: NavHostController){
                 value = bookPrice,
                 onValueChange = { bookPrice = it },
                 label = { Text(text = "Book Price *") },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,
+                    unfocusedTextColor = Color.Cyan,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    focusedLabelColor = Color.Green,
+                    unfocusedLabelColor = Color.Magenta,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 0.dp,
+                        top = 0.dp
+                    ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+            OutlinedTextField(
+                value = bookQuantity,
+                onValueChange = { bookQuantity = it },
+                label = { Text(text = "Book Quantity *") },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Blue,
                     unfocusedTextColor = Color.Cyan,
@@ -731,7 +755,8 @@ fun AddBooksScreen(navController: NavHostController){
                 bookCondition.trim(),
                 bookShelfNumber.text.trim(),
                 selectedText.trim(),
-                bookSynopsis.text.trim()
+                bookSynopsis.text.trim(),
+                bookQuantity.text.toIntOrNull() ?: 0
             )
         }
     }
@@ -757,6 +782,7 @@ fun ImagePicker(
     bookShelfNumber: String,
     bookStatus: String,
     bookSynopsis: String,
+    bookQuantity: Int
 ) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -837,7 +863,8 @@ fun ImagePicker(
                     bookShelfNumber,
                     bookStatus,
                     bookSynopsis,
-                    imageUri!!
+                    imageUri!!,
+                    bookQuantity
                 )
 
             },

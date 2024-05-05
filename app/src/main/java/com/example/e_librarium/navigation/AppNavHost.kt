@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.ui.theme.screens.books.AddBooksScreen
 import com.example.e_librarium.ui.theme.screens.books.BooksHomeScreen
 import com.example.e_librarium.ui.theme.screens.books.EditBooksScreen
+import com.example.e_librarium.ui.theme.screens.books.ViewAllBooksScreen
 import com.example.e_librarium.ui.theme.screens.books.ViewBooksScreen
 import com.example.e_librarium.ui.theme.screens.borrowing.BorrowBooksScreen
 import com.example.e_librarium.ui.theme.screens.borrowing.BorrowHomeScreen
@@ -45,6 +46,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable("$ROUTE_VIEW_BOOKS/{clientId}"){passedData ->
             ViewBooksScreen(navController, passedData.arguments?.getString("clientId")!!)  // need for edit
+        }
+        composable(ROUTE_VIEW_ALL_BOOKS){
+            ViewAllBooksScreen(navController)  // need for edit
         }
         composable("$ROUTE_BORROW_BOOKS/{clientId}/{bookId}"){ passedData ->
             BorrowBooksScreen(

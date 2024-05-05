@@ -230,7 +230,7 @@ fun ClientInstance(
                         ),
                     colors = ButtonDefaults.buttonColors(Color.Blue)
                 ) {
-                    Text(text = "Borrow")
+                    Text(text = "Borrow Book")
                 }
             }
 

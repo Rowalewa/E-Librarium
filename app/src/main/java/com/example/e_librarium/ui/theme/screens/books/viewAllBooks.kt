@@ -46,7 +46,7 @@ import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
-fun ViewBooksScreen(navController: NavHostController, clientId: String){
+fun ViewAllBooksScreen(navController: NavHostController){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -105,11 +105,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                     color = Color.Red
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
-                OutlinedTextField(
-                    value = clientId,
-                    onValueChange = {}
-                )
 
                 Button(
                     onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
@@ -282,20 +277,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                                 ) {
                                     Text(text = "Update")
                                 }
-                            }
-                            Button(
-                                onClick = { navController.navigate("$ROUTE_BORROW_BOOKS/$bookId/$clientId") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = 20.dp,
-                                        end = 0.dp,
-                                        top = 0.dp,
-                                        bottom = 0.dp
-                                    ),
-                                colors = ButtonDefaults.buttonColors(Color.Red)
-                            ) {
-                                Text(text = "Select")
                             }
                         }
                     }

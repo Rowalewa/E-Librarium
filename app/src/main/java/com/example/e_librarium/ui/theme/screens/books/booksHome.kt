@@ -22,6 +22,7 @@ import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
+import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENTS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
@@ -49,7 +50,7 @@ fun BooksHomeScreen(navController: NavController){
                 Text(text = "\uD83D\uDCC1 Add Books")
             }
             Button(
-                onClick = { navController.navigate(ROUTE_VIEW_BOOKS) },
+                onClick = { navController.navigate(ROUTE_VIEW_ALL_BOOKS) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Blue
@@ -58,24 +59,13 @@ fun BooksHomeScreen(navController: NavController){
                 Text(text = "View Books")
             }
             Button(
-                onClick = {
-                    navController.navigate(ROUTE_BORROW_BOOKS)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow
-                )
-            ) {
-                Text(text = "Borrow Books Screen")
-            }
-            Button(
                 onClick = { navController.navigate(ROUTE_VIEW_CLIENTS) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Blue
                 )
             ) {
-                Text(text = "View Clients")
+                Text(text = "Choose Client")
             }
 //        Button(onClick = { navController.navigate("$ROUTE_EDIT_BOOKS/{bookId}") },
 //            modifier = Modifier.fillMaxWidth(),
