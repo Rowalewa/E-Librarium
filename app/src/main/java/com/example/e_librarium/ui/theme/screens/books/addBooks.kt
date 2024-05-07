@@ -72,13 +72,6 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBooksScreen(navController: NavHostController){
-    val  bookStatus = listOf("Available", "Borrowed", "Reserved")
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
-    var selectedText by remember {
-        mutableStateOf(bookStatus[0])
-    }
     val  bookConditionOptions = listOf("New", "Used", "Damaged")
     var isOpen by remember {
         mutableStateOf(false)
@@ -413,66 +406,6 @@ fun AddBooksScreen(navController: NavHostController){
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-                    .border(width = Dp.Hairline, color = Color.Black)
-                    .background(color = Color.White)
-            ) {
-                Text(
-                    text = "Book Status:",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically),
-                    color = Color.Magenta
-                )
-                ExposedDropdownMenuBox(expanded = isExpanded,
-                    onExpandedChange = { isExpanded = !isExpanded }
-                ) {
-                    TextField(
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                            .padding(
-                                start = 10.dp,
-                                end = 10.dp,
-                                top = 0.dp,
-                                bottom = 0.dp
-                            ),
-                        value = selectedText,
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
-                        colors = TextFieldDefaults.colors(
-                            focusedTextColor = Color.Magenta,
-                            unfocusedTextColor = Color.Red,
-                            focusedContainerColor = Color.Cyan,
-                            unfocusedContainerColor = Color.Green,
-                            disabledContainerColor = Color.White,
-                            focusedLabelColor = Color.Green,
-                            unfocusedLabelColor = Color.Magenta
-                        ),
-                    )
-                    ExposedDropdownMenu(
-                        expanded = isExpanded,
-                        onDismissRequest = { isExpanded = false }) {
-                        bookStatus.forEachIndexed { index, text ->
-                            DropdownMenuItem(
-                                text = { Text(text = text) },
-                                onClick = { selectedText = bookStatus[index] },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                            )
-                        }
-                    }
-
-                }
-            }
-            Text(text = "Currently Selected: $selectedText")
-            Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
                 value = bookSynopsis,
                 onValueChange = { bookSynopsis = it },
@@ -754,7 +687,6 @@ fun AddBooksScreen(navController: NavHostController){
                 bookAcquisitionMethod.trim(),
                 bookCondition.trim(),
                 bookShelfNumber.text.trim(),
-                selectedText.trim(),
                 bookSynopsis.text.trim(),
                 bookQuantity.text.toIntOrNull() ?: 0
             )
@@ -780,7 +712,6 @@ fun ImagePicker(
     bookAcquisitionMethod: String,
     bookCondition: String,
     bookShelfNumber: String,
-    bookStatus: String,
     bookSynopsis: String,
     bookQuantity: Int
 ) {
@@ -861,7 +792,6 @@ fun ImagePicker(
                     bookAcquisitionMethod,
                     bookYearOfPublication,
                     bookShelfNumber,
-                    bookStatus,
                     bookSynopsis,
                     imageUri!!,
                     bookQuantity

@@ -83,7 +83,6 @@ fun ViewAllBooksScreen(navController: NavHostController){
                         "",
                         "",
                         "",
-                        "",
                         0,
                         ""
                     )
@@ -143,7 +142,6 @@ fun ViewAllBooksScreen(navController: NavHostController){
                     bookAcquisitionMethod: String,
                     bookCondition: String,
                     bookShelfNumber: String,
-                    bookStatus: String,
                     bookSynopsis: String,
                     bookImageUrl: String,
                     bookId: String,
@@ -234,10 +232,8 @@ fun ViewAllBooksScreen(navController: NavHostController){
                             )
                             Text(
                                 text = "Book Shelf Number: $bookShelfNumber",
-                                color = Color.Black)
-                            Text(
-                                text = "Book Status: $bookStatus",
-                                color = Color.Black)
+                                color = Color.Black
+                            )
                             Text(
                                 text = "Book Synopsis: $bookSynopsis",
                                 color = Color.Black)
@@ -308,7 +304,6 @@ fun ViewAllBooksScreen(navController: NavHostController){
                             bookAcquisitionMethod = it.bookAcquisitionMethod,
                             bookCondition = it.bookCondition,
                             bookShelfNumber = it.bookShelfNumber,
-                            bookStatus = it.bookStatus,
                             bookSynopsis = it.bookSynopsis,
                             bookImageUrl = it.bookImageUrl,
                             bookId = it.bookId,

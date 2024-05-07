@@ -38,6 +38,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
+import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Clients
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
@@ -61,7 +62,7 @@ fun ViewClientsScreen(navController: NavHostController){
 
             val context = LocalContext.current
             val clientsRepository = AuthViewModel(navController, context)
-            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "")) }
+            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
             val emptyClientListState = remember { mutableStateListOf<Clients>() }
 
             val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
@@ -119,6 +120,7 @@ fun ViewClientsScreen(navController: NavHostController){
                             dateOfBirth = it.dateOfBirth,
                             email = it.email,
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
+                            clientStatus = it.clientStatus,
                             clientId = it.clientId,
                             navController = navController,
                             clientRepository = clientsRepository
@@ -139,11 +141,12 @@ fun ClientInstance(
     dateOfBirth: String,
     email: String,
     clientProfilePictureUrl: String,
+    clientStatus: String,
     clientId: String,
     navController: NavHostController,
     clientRepository: AuthViewModel
 ) {
-
+    val context = LocalContext.current
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(
@@ -193,6 +196,10 @@ fun ClientInstance(
                 color = Color.Black
             )
             Text(
+                text = "Client Status: $clientStatus",
+                color = Color.Black
+            )
+            Text(
                 text = "Client Id: $clientId",
                 color = Color.Black
             )
@@ -230,9 +237,27 @@ fun ClientInstance(
                         ),
                     colors = ButtonDefaults.buttonColors(Color.Blue)
                 ) {
-                    Text(text = "Borrow Book")
+                    Text(text = "Choose Book")
                 }
             }
+            Button(
+                onClick = {
+                    val viewModel = BooksViewModel(navController, context )
+                    viewModel.payFine(clientId)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Magenta)
+            ) {
+                Text(text = "Fine Paid")
+            }
+
 
 //            //----------------------Check on this one--------------------//
 //            Button(

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
-import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.Clients
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
@@ -68,9 +67,9 @@ class AuthViewModel (
         }else {
             mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val staffid = System.currentTimeMillis().toString()
+                    val staffId = System.currentTimeMillis().toString()
                     val storageRef = FirebaseStorage.getInstance().reference
-                    val profilePicRef = storageRef.child("staff_profile_pictures/${mAuth.currentUser!!.uid}")
+                    val profilePicRef = storageRef.child("staff_profile_pictures/${staffId}")
                     profilePicRef.putFile(staffProfilePictureUri)
                         .addOnSuccessListener { _ ->
                             profilePicRef.downloadUrl.addOnSuccessListener { uri ->
@@ -85,10 +84,10 @@ class AuthViewModel (
                                     email,
                                     pass,
                                     staffProfilePictureUrl, // Save the image URL in the user data
-                                    staffid
+                                    staffId
 
                                 )
-                                val regRef = FirebaseDatabase.getInstance().getReference().child("Staff").child(mAuth.currentUser!!.uid)
+                                val regRef = FirebaseDatabase.getInstance().getReference().child("Staff").child(staffId)
                                 regRef.setValue(staffdata).addOnCompleteListener { dataTask ->
                                     if (dataTask.isSuccessful) {
                                         progress.dismiss()
@@ -129,7 +128,8 @@ class AuthViewModel (
         email: String,
         pass: String,
         confpass: String,
-        clientProfilePictureUri: Uri
+        clientProfilePictureUri: Uri,
+        clientStatus: String
     ) {
         progress.show()
         if (fullName.isBlank() || gender.isBlank() || maritalStatus.isBlank() || phoneNumber.isBlank() || dateOfBirth.isBlank() || email.isBlank() || pass.isBlank() || confpass.isBlank()) {
@@ -149,7 +149,7 @@ class AuthViewModel (
                 if (task.isSuccessful) {
                     val clientId = System.currentTimeMillis().toString()
                     val storageRef = FirebaseStorage.getInstance().reference
-                    val profilePicRef = storageRef.child("client_profile_pictures/${mAuth.currentUser!!.uid}")
+                    val profilePicRef = storageRef.child("client_profile_pictures/${clientId}")
                     profilePicRef.putFile(clientProfilePictureUri)
                         .addOnSuccessListener { _ ->
                             profilePicRef.downloadUrl.addOnSuccessListener { uri ->
@@ -163,12 +163,12 @@ class AuthViewModel (
                                     email,
                                     pass,
                                     clientProfilePictureUrl,
+                                    clientStatus,
                                     clientId
 
+
                                 )
-                                val regRef =
-                                    FirebaseDatabase.getInstance().getReference().child("Client")
-                                        .child(mAuth.currentUser!!.uid)
+                                val regRef = FirebaseDatabase.getInstance().getReference().child("Client").child(clientId)
                                 regRef.setValue(clientdata).addOnCompleteListener { dataTask ->
                                     if (dataTask.isSuccessful) {
                                         progress.dismiss()

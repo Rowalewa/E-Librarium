@@ -110,13 +110,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                 textDecoration = TextDecoration.Underline
             )
 
-            val mBookStatusOptions = listOf("Available", "Borrowed", "Reserved")
-            var mIsExpanded by remember {
-                mutableStateOf(false)
-            }
-            var mBookStatus by remember {
-                mutableStateOf(mBookStatusOptions[0])
-            }
             val mBookConditionOptions = listOf("New", "Used", "Damaged")
             var mIsOpen by remember {
                 mutableStateOf(false)
@@ -222,7 +215,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                             mBookAcquisitionMethod = book.bookAcquisitionMethod
                             mBookCondition = book.bookCondition
                             mBookShelfNumber = TextFieldValue(book.bookShelfNumber)
-                            mBookStatus = book.bookStatus
                             mBookSynopsis = TextFieldValue(book.bookSynopsis)
                             bookQuantity = book.bookQuantity.toString()
                         } else {
@@ -461,66 +453,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                     ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-                    .border(width = Dp.Hairline, color = Color.Black)
-                    .background(color = Color.White)
-            ) {
-                Text(
-                    text = "Book Status:",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically),
-                    color = Color.Magenta
-                )
-                ExposedDropdownMenuBox(expanded = mIsExpanded,
-                    onExpandedChange = { mIsExpanded = !mIsExpanded }
-                ) {
-                    TextField(
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                            .padding(
-                                start = 10.dp,
-                                end = 10.dp,
-                                top = 0.dp,
-                                bottom = 0.dp
-                            ),
-                        value = mBookStatus,
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = mIsExpanded) },
-                        colors = TextFieldDefaults.colors(
-                            focusedTextColor = Color.Magenta,
-                            unfocusedTextColor = Color.Red,
-                            focusedContainerColor = Color.Cyan,
-                            unfocusedContainerColor = Color.Green,
-                            disabledContainerColor = Color.White,
-                            focusedLabelColor = Color.Green,
-                            unfocusedLabelColor = Color.Magenta
-                        ),
-                    )
-                    ExposedDropdownMenu(
-                        expanded = mIsExpanded,
-                        onDismissRequest = { mIsExpanded = false }) {
-                        mBookStatusOptions.forEachIndexed { index, text ->
-                            DropdownMenuItem(
-                                text = { Text(text = text) },
-                                onClick = { mBookStatus = mBookStatusOptions[index] },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                            )
-                        }
-                    }
-
-                }
-            }
-            Text(text = "Currently Selected: $mBookStatus")
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
                 value = mBookSynopsis,
@@ -804,7 +736,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                         "",
                         "",
                         "",
-                        "",
                         0,
                         ""
                     )
@@ -817,7 +748,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val book = snapshot.getValue(Books::class.java)
                     currentBook = book ?: Books(
-                        "",
                         "",
                         "",
                         "",
@@ -868,7 +798,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                 mBookAcquisitionMethod.trim(),
                 mBookCondition.trim(),
                 mBookShelfNumber.text.trim(),
-                mBookStatus.trim(),
                 mBookSynopsis.text.trim(),
                 bookId,
                 mBookQuantity.text.toIntOrNull() ?: 0
@@ -918,7 +847,6 @@ fun ImageUploader(
     bookAcquisitionMethod: String,
     bookCondition: String,
     bookShelfNumber: String,
-    bookStatus: String,
     bookSynopsis: String,
     bookId: String,
     bookQuantity: Int
@@ -985,10 +913,9 @@ fun ImageUploader(
                     bookAcquisitionMethod,
                     bookCondition,
                     bookShelfNumber,
-                    bookStatus,
                     bookSynopsis,
                     bookQuantity,
-                    imageUri,
+                    imageUri
 
                 )
 

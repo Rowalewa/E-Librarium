@@ -79,8 +79,11 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable(ROUTE_HOME){
             HomeScreen(navController)
         }
-        composable(ROUTE_RETURN_BOOKS){
-            ReturnBooksScreen(navController)  //need for edit
+        composable("$ROUTE_RETURN_BOOKS/{clientId}/{bookId}"){passedData ->
+            ReturnBooksScreen(navController,
+                passedData.arguments?.getString("clientId")!!,
+                passedData.arguments?.getString("bookId")!!
+            )  //need for edit
         }
         composable(ROUTE_RETURN_HOME){
             ReturningHomeScreen(navController)

@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,19 +34,10 @@ import com.example.e_librarium.models.BorrowingBook
 fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
     val context = LocalContext.current
     val booksViewModel = remember { BooksViewModel(navController, context) }
-    val (borrowedBooks, setBorrowedBooks) = remember { mutableStateOf<List<BorrowingBook>>(emptyList()) }
+    val borrowedBooks = remember { mutableStateListOf<BorrowingBook>() }
 
-    LaunchedEffect(clientId) {
-        try {
-            booksViewModel.getBorrowedBooksForClient(clientId) { books ->
-                setBorrowedBooks(books)
-                Toast.makeText(context, "Fetching borrowed books", Toast.LENGTH_LONG).show()
-            }
-        } catch (e: Exception) {
-            // Handle the error, e.g., show a toast or log the error
-            // For simplicity, a toast message is shown here
-            Toast.makeText(context, "Failed to fetch borrowed books", Toast.LENGTH_SHORT).show()
-        }
+    LaunchedEffect(Unit) {
+        booksViewModel.getBorrowedBooksForClient(clientId, borrowedBooks)
     }
 
 

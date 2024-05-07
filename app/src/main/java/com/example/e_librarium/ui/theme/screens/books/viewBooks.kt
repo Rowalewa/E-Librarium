@@ -43,6 +43,7 @@ import com.example.e_librarium.models.Books
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
+import com.example.e_librarium.navigation.ROUTE_RETURN_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
@@ -67,7 +68,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
             val emptyBookState = remember {
                 mutableStateOf(
                     Books(
-                        "",
                         "",
                         "",
                         "",
@@ -148,7 +148,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                     bookAcquisitionMethod: String,
                     bookCondition: String,
                     bookShelfNumber: String,
-                    bookStatus: String,
                     bookSynopsis: String,
                     bookImageUrl: String,
                     bookId: String,
@@ -241,9 +240,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                                 text = "Book Shelf Number: $bookShelfNumber",
                                 color = Color.Black)
                             Text(
-                                text = "Book Status: $bookStatus",
-                                color = Color.Black)
-                            Text(
                                 text = "Book Synopsis: $bookSynopsis",
                                 color = Color.Black)
                             Row(
@@ -295,7 +291,21 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                                     ),
                                 colors = ButtonDefaults.buttonColors(Color.Red)
                             ) {
-                                Text(text = "Select")
+                                Text(text = "Borrow")
+                            }
+                            Button(
+                                onClick = { navController.navigate("$ROUTE_RETURN_BOOKS/$clientId/$bookId") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = 20.dp,
+                                        end = 0.dp,
+                                        top = 0.dp,
+                                        bottom = 0.dp
+                                    ),
+                                colors = ButtonDefaults.buttonColors(Color.Red)
+                            ) {
+                                Text(text = "Return")
                             }
                         }
                     }
@@ -327,7 +337,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                             bookAcquisitionMethod = it.bookAcquisitionMethod,
                             bookCondition = it.bookCondition,
                             bookShelfNumber = it.bookShelfNumber,
-                            bookStatus = it.bookStatus,
                             bookSynopsis = it.bookSynopsis,
                             bookImageUrl = it.bookImageUrl,
                             bookId = it.bookId,

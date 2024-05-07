@@ -46,11 +46,6 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
     val context = LocalContext.current
     val booksViewModel = BooksViewModel(navController, context)
 
-//    val bookId by remember {
-//        mutableStateOf("")
-//    }
-
-//    val clientId = navController.previousBackStackEntry?.arguments?.getString("clientId") ?: ""
     var mBookId by remember {
         mutableStateOf(TextFieldValue(bookId))
     }
@@ -59,12 +54,6 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
     var returnDate by remember { mutableStateOf(TextFieldValue("")) }
     var isReturnDateExpanded by remember { mutableStateOf(false) }
 
-//    var mClientId by remember {
-//        mutableStateOf("")
-//    }
-//    var mBookId by remember {
-//        mutableStateOf(bookId)
-//    }
     Log.d("Firebase", "Book ID: $bookId")
     val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
     val path = "Books/$bookId"

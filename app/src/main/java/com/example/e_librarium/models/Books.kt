@@ -17,31 +17,30 @@ class Books {
     var bookAcquisitionMethod: String = ""
     var bookCondition: String = ""
     var bookShelfNumber: String = ""
-    var bookStatus: String = ""
     var bookSynopsis: String = ""
     var bookImageUrl: String = ""
     var bookQuantity: Int = 0
     var bookId: String = ""
 
-    constructor(bookTitle: String,
-                bookAuthor: String,
-                bookYearOfPublication: String,
-                bookPrice: String,
-                bookISBNNumber: String,
-                bookPublisher: String,
-                bookPublicationDate: String,
-                bookGenre: String,
-                bookEdition: String,
-                bookLanguage: String,
-                bookNumberOfPages: String,
-                bookAcquisitionMethod: String,
-                bookCondition: String,
-                bookShelfNumber: String,
-                bookStatus: String,
-                bookSynopsis: String,
-                bookImageUrl: String,
-                bookQuantity: Int,
-                bookId: String
+    constructor(
+        bookTitle: String,
+        bookAuthor: String,
+        bookYearOfPublication: String,
+        bookPrice: String,
+        bookISBNNumber: String,
+        bookPublisher: String,
+        bookPublicationDate: String,
+        bookGenre: String,
+        bookEdition: String,
+        bookLanguage: String,
+        bookNumberOfPages: String,
+        bookAcquisitionMethod: String,
+        bookCondition: String,
+        bookShelfNumber: String,
+        bookSynopsis: String,
+        bookImageUrl: String,
+        bookQuantity: Int,
+        bookId: String
         ){
         this.bookTitle = bookTitle
         this.bookAuthor = bookAuthor
@@ -51,7 +50,6 @@ class Books {
         this.bookPublicationDate = bookPublicationDate
         this.bookCondition = bookCondition
         this.bookShelfNumber = bookShelfNumber
-        this.bookStatus = bookStatus
         this.bookSynopsis = bookSynopsis
         this.bookEdition = bookEdition
         this.bookLanguage = bookLanguage
