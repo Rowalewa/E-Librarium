@@ -438,7 +438,7 @@ class BooksViewModel (
         clientId: String,
         bookId: String
     ) {
-        val borrowedRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks")
+        val borrowedRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(clientId)
         borrowedRef.orderByChild("bookId").equalTo(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (childSnapshot in snapshot.children) {
