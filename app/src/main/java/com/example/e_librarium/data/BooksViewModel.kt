@@ -144,28 +144,29 @@ class BooksViewModel (
         return books
     }
 
-    fun viewClientBooks(
-        book: MutableState<BorrowingBook>,
-        books: SnapshotStateList<BorrowingBook>
-    ): SnapshotStateList<BorrowingBook> {
-        val ref = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks")
-//        progress.show()
-        ref.addValueEventListener(object : ValueEventListener {
+    fun getBorrowedBooksForClient(clientId: String, callback: (List<BorrowingBook>) -> Unit) {
+        val ref = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(clientId)
+        val borrowedBooks = mutableListOf<BorrowingBook>()
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-//                progress.dismiss()
-                books.clear()
+                borrowedBooks.clear()
                 for (snap in snapshot.children) {
                     val value = snap.getValue(BorrowingBook::class.java)
-                    book.value = value!!
-                    books.add(value)
+                    value?.let {
+                        borrowedBooks.add(it)
+                    }
                 }
+                callback(borrowedBooks) // Invoke the callback with the fetched data
+                Toast.makeText(context, "Fetching", Toast.LENGTH_LONG).show()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error fetching borrowed books", Toast.LENGTH_LONG).show()
+                Log.e("BorrowedBooks", "Error fetching borrowed books: ${error.message}")
+                callback(emptyList()) // Handle the error by returning an empty list
             }
         })
-        return books
     }
 
     fun updateBook(
@@ -355,7 +356,7 @@ class BooksViewModel (
                                                 returnDate
                                             )
                                             val borrowedRef = FirebaseDatabase.getInstance()
-                                                .getReference("BorrowedBooks").push()
+                                                .getReference("BorrowedBooks").child(clientId)
 
                                             borrowedRef.setValue(borrowedBookData)
                                                 .addOnCompleteListener { task ->
