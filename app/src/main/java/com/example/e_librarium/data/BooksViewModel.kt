@@ -370,52 +370,26 @@ class BooksViewModel (
                                                             .setValue("Borrowed")
                                                             .addOnCompleteListener {
                                                                 if (it.isSuccessful) {
-                                                                    Toast.makeText(
-                                                                        context,
-                                                                        "Book successfully borrowed",
-                                                                        Toast.LENGTH_SHORT
-                                                                    ).show()
-                                                                    navController.navigate(
-                                                                        ROUTE_BOOKS_HOME
-                                                                    )
+                                                                    Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
+                                                                    navController.navigate(ROUTE_BOOKS_HOME)
                                                                 } else {
-                                                                    Toast.makeText(
-                                                                        context,
-                                                                        "Failed to update book status",
-                                                                        Toast.LENGTH_SHORT
-                                                                    ).show()
+                                                                    Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
                                                                 }
                                                             }
                                                     } else {
-                                                        Toast.makeText(
-                                                            context,
-                                                            "Failed to borrow book",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
+                                                        Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
                                                     }
                                                 }
                                         } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Book is out of stock",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            Toast.makeText(context, "Book is out of stock", Toast.LENGTH_SHORT).show()
                                         }
                                     } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Failed to fetch book details",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        Toast.makeText(context, "Failed to fetch book details", Toast.LENGTH_SHORT).show()
                                     }
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText(
-                                        context,
-                                        "Failed to fetch book details",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(context, "Failed to fetch book details", Toast.LENGTH_SHORT).show()
                                 }
                             })
                         }
