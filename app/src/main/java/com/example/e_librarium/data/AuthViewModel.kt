@@ -204,21 +204,48 @@ class AuthViewModel (
         }
     }
 
+    private fun getClientIdByEmail(email: String, callback: (String?) -> Unit) {
+        val ref = FirebaseDatabase.getInstance().getReference().child("Client")
+        ref.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (snap in snapshot.children) {
+                        val clientId = snap.key // Assuming the client ID is the key of the client node
+                        callback(clientId)
+                        return
+                    }
+                }
+                callback(null) // Client ID not found
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Client", "Error fetching client ID: ${error.message}")
+                callback(null) // Handle the error by returning null
+            }
+        })
+    }
+
 
     fun clientlogin(
         email: String,
-        pass: String
+        pass: String,
     ){
         progress.show()
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener{
             progress.dismiss()
-            val clientId = System.currentTimeMillis().toString()
-            if (it.isSuccessful){
-                Toast.makeText(context,"Successfully logged in", Toast.LENGTH_LONG).show()
-                navController.navigate("$ROUTE_BORROW_HOME/$clientId")
-            } else {
-                Toast.makeText(context,"${it.exception!!.message}", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_CLIENT_HOME)
+            getClientIdByEmail(email) { clientId ->
+                if (clientId != null) {
+                    if (it.isSuccessful) {
+                        Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
+                        navController.navigate("$ROUTE_BORROW_HOME/$clientId")
+                    } else {
+                        Toast.makeText(context, "${it.exception!!.message}", Toast.LENGTH_LONG)
+                            .show()
+                        navController.navigate(ROUTE_CLIENT_HOME)
+                    }
+                } else {
+                    Toast.makeText(context, "Failed to fetch client id", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

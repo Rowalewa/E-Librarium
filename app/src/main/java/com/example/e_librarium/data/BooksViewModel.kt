@@ -144,10 +144,14 @@ class BooksViewModel (
         return books
     }
 
-    fun getBorrowedBooksForClient(clientId: String, callback: (List<BorrowingBook>) -> Unit) {
+    fun getBorrowedBooksForClient(
+        clientId: String,
+        callback: (List<BorrowingBook>) -> Unit
+    ) {
         val ref = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(clientId)
         val borrowedBooks = mutableListOf<BorrowingBook>()
 
+        Log.d("BorrowedBooks","Client ID is: $clientId")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 borrowedBooks.clear()
@@ -157,12 +161,11 @@ class BooksViewModel (
                         borrowedBooks.add(it)
                     }
                 }
+                Log.d("BorrowedBooks", "Fetched ${borrowedBooks.size} books for client $clientId")
                 callback(borrowedBooks) // Invoke the callback with the fetched data
-                Toast.makeText(context, "Fetching", Toast.LENGTH_LONG).show()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Error fetching borrowed books", Toast.LENGTH_LONG).show()
                 Log.e("BorrowedBooks", "Error fetching borrowed books: ${error.message}")
                 callback(emptyList()) // Handle the error by returning an empty list
             }
@@ -355,16 +358,14 @@ class BooksViewModel (
                                                 borrowDate,
                                                 returnDate
                                             )
-                                            val borrowedRef = FirebaseDatabase.getInstance()
-                                                .getReference("BorrowedBooks").child(clientId)
+                                            val borrowedRef = FirebaseDatabase.getInstance().getReference("BorrowedBooks").child(clientId).push()
 
                                             borrowedRef.setValue(borrowedBookData)
                                                 .addOnCompleteListener { task ->
                                                     if (task.isSuccessful) {
                                                         // Update the book quantity and status
                                                         val newQuantity = book.bookQuantity - 1
-                                                        bookRef.child("bookQuantity")
-                                                            .setValue(newQuantity)
+                                                        bookRef.child("bookQuantity").setValue(newQuantity)
                                                         bookRef.child("bookStatus")
                                                             .setValue("Borrowed")
                                                             .addOnCompleteListener {
