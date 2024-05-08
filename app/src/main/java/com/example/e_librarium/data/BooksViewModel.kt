@@ -144,6 +144,30 @@ class BooksViewModel (
         return books
     }
 
+    fun viewClientBooks(
+        book: MutableState<BorrowingBook>,
+        books: SnapshotStateList<BorrowingBook>
+    ): SnapshotStateList<BorrowingBook> {
+        val ref = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks")
+//        progress.show()
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+//                progress.dismiss()
+                books.clear()
+                for (snap in snapshot.children) {
+                    val value = snap.getValue(BorrowingBook::class.java)
+                    book.value = value!!
+                    books.add(value)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+        return books
+    }
+
     fun updateBook(
         bookId: String,
         bookTitle: String,
@@ -485,27 +509,6 @@ class BooksViewModel (
         })
     }
 
-
-
-
-    fun getBorrowedBooksForClient(clientId: String, borrowedBooks: SnapshotStateList<BorrowingBook>) {
-        val ref = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks")
-        ref.orderByChild("clientId").equalTo(clientId).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                borrowedBooks.clear()
-                for (snap in snapshot.children) {
-                    val value = snap.getValue(BorrowingBook::class.java)
-                    value?.let {
-                        borrowedBooks.add(it)
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("BorrowedBooks", "Error fetching borrowed books: ${error.message}")
-            }
-        })
-    }
 
 
     fun payFine(clientId: String) {
