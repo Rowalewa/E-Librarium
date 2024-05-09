@@ -63,6 +63,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
+import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import java.text.SimpleDateFormat
@@ -820,7 +821,7 @@ fun ImagePicker(
                 )
             }
             Button(
-                onClick = { navController.navigate(ROUTE_VIEW_BOOKS) },
+                onClick = { navController.navigate(ROUTE_VIEW_ALL_BOOKS) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
