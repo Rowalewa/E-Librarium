@@ -1,16 +1,18 @@
 package com.example.e_librarium.ui.theme.screens.clients
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.BorrowingBook
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
@@ -55,7 +57,16 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
         LazyColumn {
             items(borrowedBooks) { book ->
                 BookItems(
-                    bookId = book.bookId
+                    bookId = book.bookId,
+                    bookTitle = book.bookTitle,
+                    bookAuthor = book.bookAuthor,
+                    bookISBNNumber = book.bookISBNNumber,
+                    bookGenre = book.bookGenre,
+                    bookPublisher = book.bookPublisher,
+                    bookSynopsis = book.bookSynopsis,
+                    bookImageUrl = book.bookImageUrl,
+                    borrowDate = book.borrowDate,
+                    returnDate = book.returnDate
                 )
             }
         }
@@ -64,7 +75,16 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
 
 @Composable
 fun BookItems(
-    bookId: String
+    bookId: String,
+    bookTitle: String,
+    bookAuthor: String,
+    bookISBNNumber: String,
+    bookGenre: String,
+    bookPublisher: String,
+    bookSynopsis: String,
+    bookImageUrl: String,
+    borrowDate: String,
+    returnDate: String
 ) {
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -75,6 +95,7 @@ fun BookItems(
             bottom = 0.dp
         )
         .clip(shape = CutCornerShape(20.dp))
+        .border(width = 5.dp, shape = CutCornerShape(20.dp), color = Color.Blue)
         ,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
@@ -83,8 +104,47 @@ fun BookItems(
                 .background(color = Color.Green)
                 .fillMaxWidth()
         ) {
+            Image(
+                painter = rememberAsyncImagePainter(bookImageUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(400.dp)
+                    .padding(18.dp)
+            )
             Text(
                 text = "Book Id: $bookId",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Title: $bookTitle",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Author: $bookAuthor",
+                color = Color.Black
+            )
+            Text(
+                text = "Book ISBN Number: $bookISBNNumber",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Genre: $bookGenre",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Publisher: $bookPublisher",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Synopsis: $bookSynopsis",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Borrow Date: $borrowDate",
+                color = Color.Black
+            )
+            Text(
+                text = "Book Return Date: $returnDate",
                 color = Color.Black
             )
         }

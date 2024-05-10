@@ -2,6 +2,7 @@ package com.example.e_librarium.ui.theme.screens.borrowing
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,13 +17,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -80,6 +90,45 @@ fun ViewClientsScreen(navController: NavHostController){
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
+                var searchText by remember { mutableStateOf("") }
+                Row(
+                    modifier = Modifier
+                        .border(
+                            width = Dp.Hairline,
+                            shape = CutCornerShape(10.dp),
+                            color = Color.Black
+                        )
+                        .background(color = Color.Cyan, shape = CutCornerShape(10.dp)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = searchText,
+                        onValueChange = { searchText = it },
+                        label = { Text("Search") },
+                        modifier = Modifier.padding(
+                            start = 10.dp,
+                            end = 0.dp,
+                            top = 2.dp,
+                            bottom = 5.dp
+                        ),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Red,
+                            unfocusedContainerColor = Color.White,
+                            focusedLabelColor = Color.Black ,
+                            unfocusedLabelColor = Color.DarkGray,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Magenta
+                        )
+                    )
+                    IconButton(onClick = { searchText = "" }) {
+                        Icon(
+                            Icons.Filled.Clear,
+                            contentDescription = "Clear Search",
+                            tint = Color.Red
+                        )
+                    }
+                }
+
 
                 Button(
                     onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
@@ -111,7 +160,11 @@ fun ViewClientsScreen(navController: NavHostController){
                         top = 0.dp
                     )
                 ) {
-                    items(clients) {
+                    val filteredClients = clients.filter {
+                        it.fullName.contains(searchText, ignoreCase = true) ||
+                                it.email.contains(searchText, ignoreCase = true)
+                    }
+                    items(filteredClients) {
                         ClientInstance(
                             fullName = it.fullName,
                             gender = it.gender,

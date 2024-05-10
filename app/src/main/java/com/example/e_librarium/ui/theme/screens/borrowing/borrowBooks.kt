@@ -49,6 +49,48 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
     var mBookId by remember {
         mutableStateOf(TextFieldValue(bookId))
     }
+    val bookTitle by remember {
+        mutableStateOf("")
+    }
+    val bookAuthor by remember {
+        mutableStateOf("")
+    }
+    val bookISBNNumber by remember {
+        mutableStateOf("")
+    }
+    val bookGenre by remember {
+        mutableStateOf("")
+    }
+    val bookPublisher by remember {
+        mutableStateOf("")
+    }
+    val bookSynopsis by remember {
+        mutableStateOf("")
+    }
+    val bookImageUrl by remember {
+        mutableStateOf("")
+    }
+    var mBookTitle by remember {
+        mutableStateOf(TextFieldValue(bookTitle))
+    }
+    var mBookAuthor by remember {
+        mutableStateOf(TextFieldValue(bookAuthor))
+    }
+    var mBookISBNNumber by remember {
+        mutableStateOf(TextFieldValue(bookISBNNumber))
+    }
+    var mBookGenre by remember {
+        mutableStateOf(TextFieldValue(bookGenre))
+    }
+    var mBookPublisher by remember {
+        mutableStateOf(TextFieldValue(bookPublisher))
+    }
+    var mBookSynopsis by remember {
+        mutableStateOf(TextFieldValue(bookSynopsis))
+    }
+    var mBookImageUrl by remember {
+        mutableStateOf(TextFieldValue(bookImageUrl))
+    }
     var borrowDate by remember { mutableStateOf(TextFieldValue("")) }
     var isBorrowDateExpanded by remember { mutableStateOf(false) }
     var returnDate by remember { mutableStateOf(TextFieldValue("")) }
@@ -65,6 +107,14 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
                 val book = snapshot.getValue(Books::class.java)
                 if (book != null) {
                     mBookId = TextFieldValue(book.bookId)
+                    mBookTitle = TextFieldValue(book.bookTitle)
+                    mBookAuthor = TextFieldValue(book.bookAuthor)
+                    mBookISBNNumber = TextFieldValue(book.bookISBNNumber)
+                    mBookGenre = TextFieldValue(book.bookGenre)
+                    mBookPublisher = TextFieldValue(book.bookPublisher)
+                    mBookSynopsis = TextFieldValue(book.bookSynopsis)
+                    mBookImageUrl = TextFieldValue(book.bookImageUrl)
+
                 } else {
                     Log.e("Firebase", "Failed to parse book data")
                 }
@@ -168,6 +218,13 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
                     booksViewModel.borrowBook(
                         mBookId.text.trim(),
                         clientId,
+                        mBookTitle.text.trim(),
+                        mBookAuthor.text.trim(),
+                        mBookISBNNumber.text.trim(),
+                        mBookGenre.text.trim(),
+                        mBookPublisher.text.trim(),
+                        mBookSynopsis.text.trim(),
+                        mBookImageUrl.text.trim(),
                         borrowDate.text.trim(),
                         returnDate.text.trim()
                     )

@@ -314,6 +314,13 @@ class BooksViewModel (
     fun borrowBook(
         bookId: String,
         clientId: String,
+        bookTitle: String,
+        bookAuthor: String,
+        bookISBNNumber: String,
+        bookGenre: String,
+        bookPublisher: String,
+        bookSynopsis: String,
+        bookImageUrl: String,
         borrowDate: String,
         returnDate: String
     ) {
@@ -355,9 +362,17 @@ class BooksViewModel (
                                             val borrowedBookData = BorrowingBook(
                                                 clientId,
                                                 bookId,
+                                                bookTitle,
+                                                bookAuthor,
+                                                bookISBNNumber,
+                                                bookGenre,
+                                                bookPublisher,
+                                                bookSynopsis,
+                                                bookImageUrl,
                                                 borrowDate,
                                                 returnDate
                                             )
+
                                             val borrowedRef = FirebaseDatabase.getInstance().getReference("BorrowedBooks").child(clientId).push()
 
                                             borrowedRef.setValue(borrowedBookData)
