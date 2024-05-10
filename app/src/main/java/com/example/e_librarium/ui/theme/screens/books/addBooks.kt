@@ -64,7 +64,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -72,7 +71,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddBooksScreen(navController: NavHostController){
+fun AddBooksScreen(navController: NavHostController, staffId: String){
     val  bookConditionOptions = listOf("New", "Used", "Damaged")
     var isOpen by remember {
         mutableStateOf(false)
@@ -167,6 +166,7 @@ fun AddBooksScreen(navController: NavHostController){
                     reverseScrolling = true
                 )
         ) {
+            StaffAppTopBar(navController, staffId)
             Text(
                 text = "Add Books",
                 fontSize = 30.sp,
@@ -800,13 +800,13 @@ fun ImagePicker(
 
             },
                 modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 0.dp,
-                    bottom = 10.dp
-                )
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 10.dp
+                    )
                     .clip(shape = CutCornerShape(20.dp)),
                 colors = ButtonDefaults.buttonColors(Color.Green)
 
@@ -854,6 +854,6 @@ fun ImagePicker(
 @Composable
 fun AddBooksScreenPreview(){
     ELibrariumTheme {
-        AddBooksScreen(navController = rememberNavController())
+        AddBooksScreen(navController = rememberNavController(), staffId = "")
     }
 }

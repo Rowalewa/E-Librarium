@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.BorrowingBook
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
 
 @Composable
 fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
@@ -44,12 +45,7 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        OutlinedTextField(
-            value = TextFieldValue(clientId),
-            onValueChange = {},
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        )
-        Spacer(modifier = Modifier.height(5.dp))
+        ClientAppTopBar(navController, clientId)
         Button(onClick = { navController.popBackStack() },
             modifier = Modifier.fillMaxWidth()
         ) {

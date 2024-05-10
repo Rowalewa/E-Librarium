@@ -371,7 +371,7 @@ class BooksViewModel (
                                                             .addOnCompleteListener {
                                                                 if (it.isSuccessful) {
                                                                     Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
-                                                                    navController.navigate(ROUTE_BOOKS_HOME)
+                                                                    navController.navigate("$ROUTE_BOOKS_HOME/$clientId")
                                                                 } else {
                                                                     Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
                                                                 }
@@ -463,7 +463,7 @@ class BooksViewModel (
 
                                     childSnapshot.ref.removeValue()
                                     Toast.makeText(context, "Book successfully returned. Fine: Ksh.$fine", Toast.LENGTH_LONG).show()
-                                    navController.navigate(ROUTE_BOOKS_HOME)
+                                    navController.navigate("$ROUTE_BOOKS_HOME/$clientId")
                                 } else {
                                     Toast.makeText(context, "Failed to return book: Book details not found", Toast.LENGTH_LONG).show()
                                 }

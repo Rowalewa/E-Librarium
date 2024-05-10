@@ -17,13 +17,17 @@ import com.example.e_librarium.ui.theme.screens.borrowing.ViewClientsScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientHomeScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientLogInScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientRegisterScreen
+import com.example.e_librarium.ui.theme.screens.clients.EditClientInfo
 import com.example.e_librarium.ui.theme.screens.clients.ViewBorrowedBooks
+import com.example.e_librarium.ui.theme.screens.clients.ViewClientInfo
 import com.example.e_librarium.ui.theme.screens.home.HomeScreen
 import com.example.e_librarium.ui.theme.screens.returning.ReturnBooksScreen
 import com.example.e_librarium.ui.theme.screens.returning.ReturningHomeScreen
+import com.example.e_librarium.ui.theme.screens.staff.EditStaffInfo
 import com.example.e_librarium.ui.theme.screens.staff.StaffHomeScreen
 import com.example.e_librarium.ui.theme.screens.staff.StaffLogInScreen
 import com.example.e_librarium.ui.theme.screens.staff.StaffRegisterScreen
+import com.example.e_librarium.ui.theme.screens.staff.ViewStaffInfo
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier,
@@ -35,11 +39,11 @@ fun AppNavHost(modifier: Modifier = Modifier,
         modifier = modifier,
         startDestination = startDestination
     ){
-        composable(ROUTE_ADD_BOOKS){
-            AddBooksScreen(navController)
+        composable("$ROUTE_ADD_BOOKS/{staffId}"){passedData->
+            AddBooksScreen(navController, passedData.arguments?.getString("staffId")!!)
         }
-        composable(ROUTE_BOOKS_HOME){
-            BooksHomeScreen(navController)
+        composable("$ROUTE_BOOKS_HOME/{staffId}"){passedData->
+            BooksHomeScreen(navController, passedData.arguments?.getString("staffId")!!)
         }
         composable("$ROUTE_EDIT_BOOKS/{bookId}"){passedData ->
             EditBooksScreen(navController, passedData.arguments?.getString("bookId")!!)  // need for edit
@@ -73,6 +77,12 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable(ROUTE_CLIENT_HOME){
             ClientHomeScreen(navController)
         }
+        composable("$ROUTE_VIEW_CLIENT_INFO/{clientId}"){passedData->
+            ViewClientInfo(navController, passedData.arguments?.getString("clientId")!!)
+        }
+        composable("$ROUTE_EDIT_CLIENT_INFO/{clientId}"){ passedData->
+            EditClientInfo(navController, passedData.arguments?.getString("clientId")!!)
+        }
         composable("$ROUTE_VIEW_BORROWED_BOOKS/{clientId}"){passedData ->
             ViewBorrowedBooks(navController, passedData.arguments?.getString("clientId")!!)
         }
@@ -96,6 +106,12 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable(ROUTE_STAFF_LOGIN){
             StaffLogInScreen(navController)
+        }
+        composable("$ROUTE_VIEW_STAFF_INFO/{staffId}"){passedData->
+            ViewStaffInfo(navController, passedData.arguments?.getString("staffId")!!)
+        }
+        composable("$ROUTE_EDIT_STAFF_INFO/{staffId}"){ passedData->
+            EditStaffInfo(navController, passedData.arguments?.getString("staffId")!!)
         }
 
     }

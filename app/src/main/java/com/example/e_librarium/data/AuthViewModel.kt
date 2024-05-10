@@ -92,7 +92,7 @@ class AuthViewModel (
                                     if (dataTask.isSuccessful) {
                                         progress.dismiss()
                                         Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
-                                        navController.navigate(ROUTE_BOOKS_HOME)
+                                        navController.navigate("$ROUTE_BOOKS_HOME/$staffId")
                                     } else {
                                         progress.dismiss()
                                         Toast.makeText(context, "${dataTask.exception!!.message}", Toast.LENGTH_LONG).show()
@@ -250,20 +250,297 @@ class AuthViewModel (
         }
     }
 
+    fun updateClient(
+        fullName: String,
+        gender: String,
+        maritalStatus: String,
+        phoneNumber: String,
+        dateOfBirth: String,
+        email: String,
+        pass: String,
+        confpass: String,
+        clientStatus: String,
+        clientId: String,
+        filePath: Uri?
+    ) {
+        val storageReference = FirebaseStorage.getInstance().getReference().child("Client/$clientId")
+
+        val updateData = Clients(
+            fullName,
+            gender,
+            maritalStatus,
+            phoneNumber,
+            dateOfBirth,
+            email,
+            pass,
+            "",
+            clientStatus,
+            clientId
+        )
+
+        // Update book details in Firebase Realtime Database
+        if (filePath != null) {
+            val user = FirebaseAuth.getInstance().currentUser
+            user?.updatePassword(pass)?.addOnCompleteListener { passwordUpdateTask ->
+                if (passwordUpdateTask.isSuccessful) {
+                    if (pass == confpass) {
+                        val dbRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
+                        dbRef.setValue(updateData).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // If an image file is provided, update the image in Firebase Storage
+                                filePath.let { fileUri ->
+                                    storageReference.putFile(fileUri)
+                                        .addOnCompleteListener { storageTask ->
+                                            if (storageTask.isSuccessful) {
+                                                storageReference.downloadUrl.addOnSuccessListener { uri ->
+                                                    val imageUrl = uri.toString()
+                                                    updateData.clientProfilePictureUrl = imageUrl
+                                                    dbRef.setValue(updateData) // Update the book entry with the image URL
+                                                }
+                                            } else {
+                                                Toast.makeText(context, "Upload Failure", Toast.LENGTH_LONG).show()
+                                            }
+                                        }
+                                }
+
+                                // Show success message
+                                Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                                navController.popBackStack()
+                            } else {
+                                // Handle database update error
+                                Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Passwords Update task failure", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        } else {
+            val user = FirebaseAuth.getInstance().currentUser
+            user?.updatePassword(pass)?.addOnCompleteListener { passwordUpdateTask ->
+                if (passwordUpdateTask.isSuccessful) {
+                    if (pass == confpass) {
+                        val dbRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
+                        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val client = snapshot.getValue(Clients::class.java)
+                                val existingImageUrl = client?.clientProfilePictureUrl ?: ""
+
+                                val updateData = Clients(
+                                    fullName,
+                                    gender,
+                                    maritalStatus,
+                                    phoneNumber,
+                                    dateOfBirth,
+                                    email,
+                                    pass,
+                                    clientStatus,
+                                    existingImageUrl,
+                                    clientId
+                                )
+
+                                dbRef.setValue(updateData).addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        // Show success message
+                                        Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                                        navController.popBackStack()
+                                    } else {
+                                        // Handle database update error
+                                        Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                // Handle database error
+                                Toast.makeText(context, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        Toast.makeText(context, "Success with Image Retained", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Password Update Task Failure", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+
+    private fun getStaffIdByEmail(email: String, callback: (String?) -> Unit) {
+        val ref = FirebaseDatabase.getInstance().getReference().child("Staff")
+        ref.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (snap in snapshot.children) {
+                        val staffId = snap.key // Assuming the client ID is the key of the client node
+                        callback(staffId)
+                        return
+                    }
+                }
+                callback(null) // Client ID not found
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Staff", "Error fetching staff ID: ${error.message}")
+                callback(null) // Handle the error by returning null
+            }
+        })
+    }
+
     fun stafflogin(
         email: String,
         pass: String
     ){
         progress.show()
-        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener{
-            if (it.isSuccessful){
-                progress.dismiss()
-                Toast.makeText(context,"Successfully logged in", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_BOOKS_HOME)
-            } else {
-                progress.dismiss()
-                Toast.makeText(context,"${it.exception!!.message}", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_STAFF_HOME)
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
+            progress.dismiss()
+            getStaffIdByEmail(email) { staffId ->
+                if (staffId != null) {
+                    if (it.isSuccessful) {
+                        Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
+                        navController.navigate("$ROUTE_BOOKS_HOME/$staffId")
+                    } else {
+                        Toast.makeText(context, "${it.exception!!.message}", Toast.LENGTH_LONG)
+                            .show()
+                        navController.navigate(ROUTE_STAFF_HOME)
+                    }
+                } else {
+                    Toast.makeText(context, "Staff is null", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    fun updateStaff(
+        fullName: String,
+        gender: String,
+        maritalStatus: String,
+        phoneNumber: String,
+        dateOfBirth: String,
+        email: String,
+        pass: String,
+        confpass: String,
+        staffId: String,
+        filePath: Uri?
+    ) {
+        val storageReference = FirebaseStorage.getInstance().getReference().child("Staff/$staffId")
+
+        val updateData = Staff(
+            fullName,
+            gender,
+            maritalStatus,
+            phoneNumber,
+            dateOfBirth,
+            email,
+            pass,
+            "",
+            staffId
+        )
+
+        // Update book details in Firebase Realtime Database
+        if (filePath != null) {
+            val user = FirebaseAuth.getInstance().currentUser
+            user?.updatePassword(pass)?.addOnCompleteListener { passwordUpdateTask ->
+                if (passwordUpdateTask.isSuccessful) {
+                    if (pass == confpass) {
+                        val dbRef = FirebaseDatabase.getInstance().getReference().child("Staff/$staffId")
+                        dbRef.setValue(updateData).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // If an image file is provided, update the image in Firebase Storage
+                                filePath.let { fileUri ->
+                                    storageReference.putFile(fileUri)
+                                        .addOnCompleteListener { storageTask ->
+                                            if (storageTask.isSuccessful) {
+                                                storageReference.downloadUrl.addOnSuccessListener { uri ->
+                                                    val imageUrl = uri.toString()
+                                                    updateData.staffProfilePictureUrl = imageUrl
+                                                    dbRef.setValue(updateData) // Update the book entry with the image URL
+                                                }
+                                            } else {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Upload Failure",
+                                                    Toast.LENGTH_LONG
+                                                )
+                                                    .show()
+                                            }
+                                        }
+                                }
+
+                                // Show success message
+                                Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT)
+                                    .show()
+                                navController.popBackStack()
+                            } else {
+                                // Handle database update error
+                                Toast.makeText(
+                                    context,
+                                    "ERROR: ${task.exception?.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Passwords Update task failure", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        } else {
+            val user = FirebaseAuth.getInstance().currentUser
+            user?.updatePassword(pass)?.addOnCompleteListener { passwordUpdateTask ->
+                if (passwordUpdateTask.isSuccessful) {
+                    if (pass == confpass) {
+                        val dbRef = FirebaseDatabase.getInstance().getReference().child("Staff/$staffId")
+                        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val staff = snapshot.getValue(Staff::class.java)
+                                val existingImageUrl = staff?.staffProfilePictureUrl ?: ""
+
+                                val updateData = Staff(
+                                    fullName,
+                                    gender,
+                                    maritalStatus,
+                                    phoneNumber,
+                                    dateOfBirth,
+                                    email,
+                                    pass,
+                                    existingImageUrl,
+                                    staffId
+                                )
+
+                                dbRef.setValue(updateData).addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        // Show success message
+                                        Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                                        navController.popBackStack()
+                                    } else {
+                                        // Handle database update error
+                                        Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                // Handle database error
+                                Toast.makeText(context, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        Toast.makeText(context, "Success with Image Retained", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Password Update Task Failure", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
