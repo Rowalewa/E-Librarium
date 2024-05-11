@@ -2,16 +2,25 @@ package com.example.e_librarium.ui.theme.screens.books
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,11 +30,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +45,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
+import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
@@ -48,10 +62,34 @@ import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENTS
 import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.delay
+import java.util.Calendar
 
 @Composable
 fun BooksHomeScreen(navController: NavController, staffId: String){
     val context = LocalContext.current
+    val fullName by remember {
+        mutableStateOf("")
+    }
+    var staffFullName by remember {
+        mutableStateOf(TextFieldValue(fullName))
+    }
+    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Staff/$staffId")
+    currentDataRef.addValueEventListener(object: ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val staff = snapshot.getValue(Staff::class.java)
+            staffFullName = TextFieldValue(staff!!.fullName)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(context,error.message, Toast.LENGTH_SHORT).show()
+        }
+    } )
+
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -61,46 +99,189 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             StaffAppTopBar(navController, staffId)
-            Button(
-                onClick = { navController.navigate("$ROUTE_ADD_BOOKS/$staffId") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green
-                )
-            ) {
-                Text(text = "\uD83D\uDCC1 Add Books")
+            val visible by remember { mutableStateOf(true) }
+
+            if (visible) {
+                val timeOfDay = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+                    in 0..11 -> "morning"
+                    in 12..16 -> "afternoon"
+                    else -> "evening"
+                }
+
+                Card(
+                    modifier = Modifier.padding(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.Cyan),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 5.dp,
+                        focusedElevation = 10.dp,
+                        pressedElevation = 20.dp,
+                        hoveredElevation = 15.dp
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Good $timeOfDay",
+                            color = Color.Magenta
+                        )
+                        Text(
+                            text = staffFullName.text,
+                            fontSize = 25.sp,
+                            fontFamily = FontFamily.Serif,
+                            color = Color.Red
+                        )
+                    }
+                }
+                LaunchedEffect(key1 = true) {
+                    delay(250000) // Dismiss after 250 seconds
+//                    visible = false
+                }
             }
-            Button(
-                onClick = { navController.navigate(ROUTE_VIEW_ALL_BOOKS) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue
-                )
-            ) {
-                Text(text = "View Books")
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_VIEW_CLIENTS) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue
-                )
-            ) {
-                Text(text = "Choose Client")
-            }
-            Button(
-                onClick = {
-                    val myStaffLogout = AuthViewModel(navController, context)
-                    myStaffLogout.stafflogout()
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red
-                )
-            ) {
-                Text(text = "\uD83D\uDEB6 Sign Out \uD83D\uDEB6\u200D♀\uFE0F")
+            Card (
+                colors = CardDefaults.cardColors(containerColor = Color.Blue),
+                modifier = Modifier.padding(10.dp)
+            ){
+                Row{
+                    Card(
+                        modifier = Modifier
+                            .clip(shape = RoundedCornerShape(10.dp))
+                            .padding(16.dp)
+                            .size(150.dp, 200.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.Yellow),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.add_book_btn),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                        )
+                        Button(
+                            onClick = { navController.navigate("$ROUTE_ADD_BOOKS/$staffId") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    start = 5.dp,
+                                    end = 5.dp,
+                                    top = 0.dp,
+                                    bottom = 0.dp
+                                ),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Green
+                            )
+                        ) {
+                            Text(text = "\uD83D\uDCC1 Add Books")
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Card (
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .size(150.dp, 200.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.Green),
+                        shape = RoundedCornerShape(10.dp)
+                    ){
+                        Image(
+                            painter = painterResource(id = R.drawable.view_book_btn),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                        )
+                        Button(
+                            onClick = { navController.navigate(ROUTE_VIEW_ALL_BOOKS) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = 10.dp,
+                                    start = 5.dp,
+                                    end = 5.dp,
+                                    bottom = 0.dp
+                                ),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Blue
+                            )
+                        ) {
+                            Text(text = "View Books")
+                        }
+                    }
+                }
+                Card(
+                    modifier = Modifier.padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 10.dp,
+                        top = 0.dp
+                    ),
+                    colors = CardDefaults.cardColors(containerColor = Color.Magenta)
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.view_clients_btn),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .size(100.dp)
+                    )
+                    Button(
+                        onClick = { navController.navigate(ROUTE_VIEW_CLIENTS) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = 5.dp,
+                                end = 5.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Blue
+                        )
+                    ) {
+                        Text(text = "Choose Client")
+                    }
+                }
+                Card(
+                    modifier = Modifier.padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 10.dp,
+                        top = 0.dp
+                    ),
+                    colors = CardDefaults.cardColors(containerColor = Color.Cyan)
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.staff_sign_out_btn),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .size(90.dp)
+                    )
+                    Button(
+                        onClick = {
+                            val myStaffLogout = AuthViewModel(navController, context)
+                            myStaffLogout.stafflogout()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(
+                                start = 5.dp,
+                                end = 5.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            ),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Red
+                        )
+                    ) {
+                        Text(text = "\uD83D\uDEB6 Sign Out \uD83D\uDEB6\u200D♀\uFE0F")
+                    }
+                }
             }
         }
     }

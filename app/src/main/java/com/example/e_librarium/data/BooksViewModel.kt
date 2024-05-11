@@ -75,11 +75,11 @@ class BooksViewModel (
             ) {
                 progress.dismiss()
                 Toast.makeText(context, "Fill all the fields please", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_ADD_BOOKS)
+                navController.popBackStack()
             } else if (bookISBNNumber.length != 10 && bookISBNNumber.length != 13){
                 progress.dismiss()
                 Toast.makeText(context, "Invalid ISBN Number", Toast.LENGTH_LONG).show()
-                navController.navigate(ROUTE_ADD_BOOKS)
+                navController.popBackStack()
             } else if (it.isSuccessful){
                 progress.dismiss()
                 // Proceed to store other data into the db
@@ -110,7 +110,7 @@ class BooksViewModel (
                     val toast = Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.CENTER, 0, 0)
                     toast.show()
-                    navController.navigate(ROUTE_ADD_BOOKS)
+                    navController.popBackStack()
                 }
             } else {
                 progress.dismiss()

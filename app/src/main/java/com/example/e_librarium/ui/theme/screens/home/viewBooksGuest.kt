@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.books
+package com.example.e_librarium.ui.theme.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
@@ -44,24 +43,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
-import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
-import com.example.e_librarium.navigation.ROUTE_RETURN_BOOKS
-import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
-fun ViewBooksScreen(navController: NavHostController, clientId: String){
+fun ViewBooksGuest(navController: NavHostController){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
         Image(
-            painter = painterResource(id = R.drawable.view_books),
+            painter = painterResource(id = R.drawable.view_books_guest),
             contentDescription = "View Books",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
@@ -114,7 +107,27 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                     color = Color.Red
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+
+                Button(
+                    onClick = { navController.popBackStack() },
+                    colors = ButtonDefaults.buttonColors(Color.Blue),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Back",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
+                    )
+                }
+                Spacer(modifier = Modifier.height(5.dp))
                 var searchText by remember { mutableStateOf("") }
                 Row(
                     modifier = Modifier
@@ -154,26 +167,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                     }
                 }
 
-                Button(
-                    onClick = { navController.popBackStack() },
-                    colors = ButtonDefaults.buttonColors(Color.Blue),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 20.dp,
-                            end = 20.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        )
-                ) {
-                    Text(
-                        text = "Back",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Serif
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(10.dp))
                 @Composable
                 fun BookItem(
@@ -193,10 +186,7 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                     bookShelfNumber: String,
                     bookSynopsis: String,
                     bookImageUrl: String,
-                    bookId: String,
                     bookQuantity: Int,
-                    navController: NavHostController,
-                    bookRepository:BooksViewModel
                 ) {
 
                     Column(modifier = Modifier
@@ -215,6 +205,7 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                             modifier = Modifier
                                 .background(color = Color.Green)
                                 .fillMaxWidth()
+                                .padding(10.dp)
                         ) {
                             Image(
                                 painter = rememberAsyncImagePainter(bookImageUrl),
@@ -281,75 +272,12 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                             )
                             Text(
                                 text = "Book Shelf Number: $bookShelfNumber",
-                                color = Color.Black)
+                                color = Color.Black
+                            )
                             Text(
                                 text = "Book Synopsis: $bookSynopsis",
-                                color = Color.Black)
-                            Row(
-                                modifier = Modifier.background(color = Color.Yellow)
-                            ) {
-                                Button(
-                                    onClick = {
-                                        bookRepository.deleteBook(bookId)
-                                    },
-                                    modifier = Modifier
-                                        .width(150.dp)
-                                        .padding(
-                                            start = 20.dp,
-                                            end = 0.dp,
-                                            top = 0.dp,
-                                            bottom = 0.dp
-                                        ),
-                                    colors = ButtonDefaults.buttonColors(Color.Red)
-                                ) {
-                                    Text(text = "Delete")
-                                }
-                                Spacer(modifier = Modifier.width(30.dp))
-                                Button(
-                                    onClick = {
-                                        navController.navigate("$ROUTE_EDIT_BOOKS/$bookId")
-                                    },
-                                    modifier = Modifier
-                                        .width(200.dp)
-                                        .padding(
-                                            start = 0.dp,
-                                            end = 20.dp,
-                                            top = 0.dp,
-                                            bottom = 0.dp
-                                        ),
-                                    colors = ButtonDefaults.buttonColors(Color.Blue)
-                                ) {
-                                    Text(text = "Update")
-                                }
-                            }
-                            Button(
-                                onClick = { navController.navigate("$ROUTE_BORROW_BOOKS/$bookId/$clientId") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = 20.dp,
-                                        end = 0.dp,
-                                        top = 0.dp,
-                                        bottom = 0.dp
-                                    ),
-                                colors = ButtonDefaults.buttonColors(Color.Red)
-                            ) {
-                                Text(text = "Borrow")
-                            }
-                            Button(
-                                onClick = { navController.navigate("$ROUTE_RETURN_BOOKS/$clientId/$bookId") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        start = 20.dp,
-                                        end = 0.dp,
-                                        top = 0.dp,
-                                        bottom = 0.dp
-                                    ),
-                                colors = ButtonDefaults.buttonColors(Color.Red)
-                            ) {
-                                Text(text = "Return")
-                            }
+                                color = Color.Black
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.height(40.dp))
@@ -368,7 +296,7 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                         it.bookTitle.contains(searchText, ignoreCase = true) ||
                                 it.bookAuthor.contains(searchText, ignoreCase = true)
                     }
-                    items(filteredBooks) {
+                    items(filteredBooks){
                         BookItem(
                             bookTitle = it.bookTitle,
                             bookAuthor = it.bookAuthor,
@@ -386,10 +314,7 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String){
                             bookShelfNumber = it.bookShelfNumber,
                             bookSynopsis = it.bookSynopsis,
                             bookImageUrl = it.bookImageUrl,
-                            bookId = it.bookId,
                             bookQuantity = it.bookQuantity,
-                            navController = navController,
-                            bookRepository = booksRepository
                         )
                     }
                 }

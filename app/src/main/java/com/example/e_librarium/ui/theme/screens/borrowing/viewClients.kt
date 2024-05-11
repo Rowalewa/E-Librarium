@@ -131,7 +131,7 @@ fun ViewClientsScreen(navController: NavHostController){
 
 
                 Button(
-                    onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
+                    onClick = { navController.popBackStack() },
                     colors = ButtonDefaults.buttonColors(Color.Blue),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -143,7 +143,7 @@ fun ViewClientsScreen(navController: NavHostController){
                         )
                 ) {
                     Text(
-                        text = "Back to Home Screen",
+                        text = "Back",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Serif

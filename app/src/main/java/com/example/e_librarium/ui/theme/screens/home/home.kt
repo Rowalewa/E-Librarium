@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedCard
@@ -44,13 +45,16 @@ import com.example.e_librarium.navigation.ROUTE_CLIENT_REGISTER
 import com.example.e_librarium.navigation.ROUTE_STAFF_HOME
 import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
 import com.example.e_librarium.navigation.ROUTE_STAFF_REGISTER
+import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
+import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS_GUEST
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController){
     Box (
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = Color.Blue)
 
     ){
@@ -115,6 +119,7 @@ fun HomeScreen(navController: NavController){
                                     bottom = 0.dp,
                                     end = 0.dp
                                 )
+                                .size(120.dp)
                         )
                     }
                     Button(
@@ -140,7 +145,7 @@ fun HomeScreen(navController: NavController){
             OutlinedCard(
 //            onClick = { navController.navigate(ROUTE_STAFF_HOME)},
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.Red,
+                    containerColor = Color.Blue,
                     contentColor = Color.Blue
                 ),
                 border = BorderStroke(1.dp, Color.Black),
@@ -167,6 +172,7 @@ fun HomeScreen(navController: NavController){
                                 bottom = 0.dp,
                                 end = 0.dp
                             )
+                            .size(120.dp)
                     )
 
                 }
@@ -187,6 +193,48 @@ fun HomeScreen(navController: NavController){
                         color = Color.Cyan
                     )
                 }
+            }
+            Card (
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.Green),
+                shape = RoundedCornerShape(10.dp)
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.view_book_btn),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .size(120.dp)
+                )
+                Button(
+                    onClick = { navController.navigate(ROUTE_VIEW_BOOKS_GUEST) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 10.dp,
+                            start = 5.dp,
+                            end = 5.dp,
+                            bottom = 0.dp
+                        ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Blue
+                    )
+                ) {
+                    Text(
+                        text = "View Books",
+                        color = Color.Red
+                    )
+                }
+                Text(
+                    text = "With this option you can only view books available",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontFamily = FontFamily.Serif
+                )
             }
         }
     }
