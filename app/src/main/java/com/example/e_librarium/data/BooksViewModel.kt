@@ -17,9 +17,6 @@ import androidx.navigation.NavHostController
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.BorrowingBook
 import com.example.e_librarium.models.Clients
-import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -29,18 +26,18 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
+@Suppress("NAME_SHADOWING")
 class BooksViewModel (
     var navController: NavHostController,
     var context: Context
 ){
-    private var authRepository: AuthViewModel = AuthViewModel(navController, context)
-    private var progress: ProgressDialog
+//    private var authRepository: AuthViewModel = AuthViewModel(navController, context)
+//        if (!authRepository.isloggedin()) {
+//            navController.navigate(ROUTE_BOOKS_HOME)
+//        } This one checks first if user is logged in or not for him or she to use services
+private var progress: ProgressDialog = ProgressDialog(context)
 
     init {
-        if (!authRepository.isloggedin()) {
-            navController.navigate(ROUTE_BOOKS_HOME)
-        }
-        progress = ProgressDialog(context)
         progress.setTitle("Saving \uD83D\uDCBE")
         progress.setMessage("Please wait...")
     }
@@ -110,7 +107,7 @@ class BooksViewModel (
                     val toast = Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.CENTER, 0, 0)
                     toast.show()
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             } else {
                 progress.dismiss()
@@ -237,7 +234,7 @@ class BooksViewModel (
 
                     // Show success message
                     Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
-                    navController.navigate(ROUTE_VIEW_BOOKS)
+                    navController.navigateUp()
                 } else {
                     // Handle database update error
                     Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT)
@@ -276,7 +273,7 @@ class BooksViewModel (
                         if (task.isSuccessful) {
                             // Show success message
                             Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
-                            navController.navigate(ROUTE_VIEW_BOOKS)
+                            navController.navigateUp()
                         } else {
                             // Handle database update error
                             Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -349,7 +346,7 @@ class BooksViewModel (
                         if (currentBorrowedCount >= maxBooksToBorrow) {
                             Toast.makeText(context, "Cannot borrow, maximum books borrowed.", Toast.LENGTH_SHORT).show()
 //                            return
-                            navController.navigate(ROUTE_BOOKS_HOME)
+                            navController.popBackStack()
                         } else {
 
 
@@ -386,7 +383,7 @@ class BooksViewModel (
                                                             .addOnCompleteListener {
                                                                 if (it.isSuccessful) {
                                                                     Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
-                                                                    navController.navigate("$ROUTE_BOOKS_HOME/$clientId")
+                                                                    navController.navigateUp()
                                                                 } else {
                                                                     Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
                                                                 }
@@ -478,7 +475,7 @@ class BooksViewModel (
 
                                     childSnapshot.ref.removeValue()
                                     Toast.makeText(context, "Book successfully returned. Fine: Ksh.$fine", Toast.LENGTH_LONG).show()
-                                    navController.navigate("$ROUTE_BOOKS_HOME/$clientId")
+                                    navController.navigateUp()
                                 } else {
                                     Toast.makeText(context, "Failed to return book: Book details not found", Toast.LENGTH_LONG).show()
                                 }

@@ -34,6 +34,7 @@ import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
+import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -108,6 +109,7 @@ fun EditStaffInfo(navController: NavHostController, staffId: String){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        StaffAppTopBar(navController, staffId)
         OutlinedTextField(
             value = mEmail,
             onValueChange = {mEmail = it},
@@ -195,15 +197,14 @@ fun StaffUploader(
             Button(
                 onClick = {
                     imagePicker.launch("image/*")
-                }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(20.dp)
             ) {
                 Text(
                     text = "Change Profile Picture"
                 )
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 val staffRepository = AuthViewModel(navController,context)
@@ -220,8 +221,15 @@ fun StaffUploader(
                     imageUri
 
                 )
-
-            }) {
+            },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+            ) {
                 Text(text = "Update Changes")
             }
 

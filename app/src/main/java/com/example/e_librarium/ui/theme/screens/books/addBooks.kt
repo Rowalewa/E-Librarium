@@ -689,7 +689,8 @@ fun AddBooksScreen(navController: NavHostController, staffId: String){
                 bookCondition.trim(),
                 bookShelfNumber.text.trim(),
                 bookSynopsis.text.trim(),
-                bookQuantity.text.toIntOrNull() ?: 0
+                bookQuantity.text.toIntOrNull() ?: 0,
+                staffId
             )
         }
     }
@@ -714,7 +715,8 @@ fun ImagePicker(
     bookCondition: String,
     bookShelfNumber: String,
     bookSynopsis: String,
-    bookQuantity: Int
+    bookQuantity: Int,
+    staffId: String
 ) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -821,7 +823,7 @@ fun ImagePicker(
                 )
             }
             Button(
-                onClick = { navController.navigate(ROUTE_VIEW_ALL_BOOKS) },
+                onClick = { navController.navigate("$ROUTE_VIEW_ALL_BOOKS/$staffId") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(

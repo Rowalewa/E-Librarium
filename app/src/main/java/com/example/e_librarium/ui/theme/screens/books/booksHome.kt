@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -195,7 +196,7 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                                 .padding(10.dp)
                         )
                         Button(
-                            onClick = { navController.navigate(ROUTE_VIEW_ALL_BOOKS) },
+                            onClick = { navController.navigate("$ROUTE_VIEW_ALL_BOOKS/$staffId") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
@@ -230,7 +231,7 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                             .size(100.dp)
                     )
                     Button(
-                        onClick = { navController.navigate(ROUTE_VIEW_CLIENTS) },
+                        onClick = { navController.navigate("$ROUTE_VIEW_CLIENTS/$staffId") },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -324,6 +325,16 @@ fun StaffAppTopBar(navController: NavController, staffId: String){
             navigationIconContentColor = Color.White
         ),
         actions = {
+            IconButton(onClick = {
+                navController.navigateUp()
+            }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription ="Back",
+                    tint = Color.Magenta
+                )
+            }
              IconButton(
                     onClick = { expanded = true }
                 ) {
@@ -365,8 +376,9 @@ fun StaffAppTopBar(navController: NavController, staffId: String){
         }
 
     )
-
 }
+
+
 
 @Preview(
     showSystemUi = true,

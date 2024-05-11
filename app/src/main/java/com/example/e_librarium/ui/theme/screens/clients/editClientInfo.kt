@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Clients
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -112,6 +113,7 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        ClientAppTopBar(navController, clientId)
         OutlinedTextField(
             value = mEmail,
             onValueChange = {mEmail = it},
@@ -201,15 +203,14 @@ fun ClientUploader(
             Button(
                 onClick = {
                     imagePicker.launch("image/*")
-                }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(20.dp)
             ) {
                 Text(
                     text = "Change Profile Picture"
                 )
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 val clientRepository = AuthViewModel(navController, context)
@@ -227,7 +228,15 @@ fun ClientUploader(
                     imageUri
                 )
 
-            }) {
+            },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(
+                        start = 7.dp,
+                        end = 7.dp,
+                        top = 2.dp,
+                        bottom = 0.dp
+                    )
+            ) {
                 Text(text = "Update Changes")
             }
 

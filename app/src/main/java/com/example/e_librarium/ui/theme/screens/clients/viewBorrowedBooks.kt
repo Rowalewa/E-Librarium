@@ -48,11 +48,6 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         ClientAppTopBar(navController, clientId)
-        Button(onClick = { navController.popBackStack() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Back")
-        }
         Spacer(modifier = Modifier.height(5.dp))
         LazyColumn {
             items(borrowedBooks) { book ->

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -43,6 +44,8 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_HOME
+import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS_CLIENT
+import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS_GUEST
 import com.example.e_librarium.navigation.ROUTE_VIEW_BORROWED_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENT_INFO
 import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
@@ -83,7 +86,18 @@ fun BorrowHomeScreen(navController: NavHostController, clientId: String){
                     containerColor = Color.Yellow
                 )
             ) {
-                Text(text = "View Borrowed Books Screen")
+                Text(text = "View My Borrowed Books")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("$ROUTE_VIEW_ALL_BOOKS_CLIENT/$clientId")
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow
+                )
+            ) {
+                Text(text = "View Library Books")
             }
         }
     }
@@ -126,6 +140,16 @@ fun ClientAppTopBar(navController: NavController, clientId: String){
             navigationIconContentColor = Color.White
         ),
         actions = {
+            IconButton(onClick = {
+                navController.navigateUp()
+            }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription ="Back",
+                    tint = Color.Magenta
+                )
+            }
             IconButton(
                 onClick = { expanded = true }
             ) {

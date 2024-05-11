@@ -55,7 +55,7 @@ import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
-fun ViewAllBooksScreen(navController: NavHostController){
+fun ViewAllBooksScreen(navController: NavHostController, staffId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -101,7 +101,7 @@ fun ViewAllBooksScreen(navController: NavHostController){
 
             val books = booksRepository.viewBooks(emptyBookState, emptyBookListState)
 
-
+            StaffAppTopBar(navController, staffId)
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -112,27 +112,6 @@ fun ViewAllBooksScreen(navController: NavHostController){
                     fontFamily = FontFamily.Serif,
                     color = Color.Red
                 )
-
-
-                Button(
-                    onClick = { navController.popBackStack() },
-                    colors = ButtonDefaults.buttonColors(Color.Blue),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 20.dp,
-                            end = 20.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        )
-                ) {
-                    Text(
-                        text = "Back",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Serif
-                    )
-                }
                 Spacer(modifier = Modifier.height(5.dp))
                 var searchText by remember { mutableStateOf("") }
                 Row(
@@ -307,7 +286,7 @@ fun ViewAllBooksScreen(navController: NavHostController){
                                 Spacer(modifier = Modifier.width(30.dp))
                                 Button(
                                     onClick = {
-                                        navController.navigate("$ROUTE_EDIT_BOOKS/$bookId")
+                                        navController.navigate("$ROUTE_EDIT_BOOKS/$bookId/$staffId")
                                     },
                                     modifier = Modifier
                                         .width(200.dp)

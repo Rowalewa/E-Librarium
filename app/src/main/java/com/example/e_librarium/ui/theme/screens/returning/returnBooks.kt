@@ -23,12 +23,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 
 @Composable
-fun ReturnBooksScreen(navController: NavHostController, clientId: String, bookId: String){
+fun ReturnBooksScreen(navController: NavHostController, clientId: String, bookId: String, staffId: String){
     val context = LocalContext.current
     val booksViewModel = BooksViewModel(navController, context)
     Column {
+        StaffAppTopBar(navController, staffId )
         OutlinedTextField(
             value = clientId,
             onValueChange = {},
@@ -86,6 +88,6 @@ fun ReturnBooksScreen(navController: NavHostController, clientId: String, bookId
 @Composable
 fun ReturnBooksScreenPreview(){
     ELibrariumTheme {
-        ReturnBooksScreen(navController = rememberNavController(), clientId = "", bookId = "")
+        ReturnBooksScreen(navController = rememberNavController(), clientId = "", bookId = "", staffId = "")
     }
 }

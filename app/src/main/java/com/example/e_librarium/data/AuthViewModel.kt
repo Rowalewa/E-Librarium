@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
+@Suppress("NAME_SHADOWING")
 class AuthViewModel (
     var navController: NavController,
     private var context: Context
@@ -233,18 +234,23 @@ class AuthViewModel (
         progress.show()
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener{
             progress.dismiss()
-            getClientIdByEmail(email) { clientId ->
-                if (clientId != null) {
-                    if (it.isSuccessful) {
-                        Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
-                        navController.navigate("$ROUTE_BORROW_HOME/$clientId")
+            if (email.isBlank() || pass.isBlank()){
+                Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_LONG).show()
+            } else {
+                getClientIdByEmail(email) { clientId ->
+                    if (clientId != null) {
+                        if (it.isSuccessful) {
+                            Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG)
+                                .show()
+                            navController.navigate("$ROUTE_BORROW_HOME/$clientId")
+                        } else {
+                            Toast.makeText(context, "${it.exception!!.message}", Toast.LENGTH_LONG).show()
+                            navController.navigate(ROUTE_CLIENT_HOME)
+                        }
                     } else {
-                        Toast.makeText(context, "${it.exception!!.message}", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "Failed to fetch client id", Toast.LENGTH_LONG)
                             .show()
-                        navController.navigate(ROUTE_CLIENT_HOME)
                     }
-                } else {
-                    Toast.makeText(context, "Failed to fetch client id", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -400,18 +406,23 @@ class AuthViewModel (
         progress.show()
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
             progress.dismiss()
-            getStaffIdByEmail(email) { staffId ->
-                if (staffId != null) {
-                    if (it.isSuccessful) {
-                        Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
-                        navController.navigate("$ROUTE_BOOKS_HOME/$staffId")
+            if (email.isBlank() || pass.isBlank()){
+                Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_LONG).show()
+            } else {
+                getStaffIdByEmail(email) { staffId ->
+                    if (staffId != null) {
+                        if (it.isSuccessful) {
+                            Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG)
+                                .show()
+                            navController.navigate("$ROUTE_BOOKS_HOME/$staffId")
+                        } else {
+                            Toast.makeText(context, "${it.exception!!.message}", Toast.LENGTH_LONG)
+                                .show()
+                            navController.navigate(ROUTE_STAFF_HOME)
+                        }
                     } else {
-                        Toast.makeText(context, "${it.exception!!.message}", Toast.LENGTH_LONG)
-                            .show()
-                        navController.navigate(ROUTE_STAFF_HOME)
+                        Toast.makeText(context, "Staff is null", Toast.LENGTH_LONG).show()
                     }
-                } else {
-                    Toast.makeText(context, "Staff is null", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -557,9 +568,9 @@ class AuthViewModel (
         Toast.makeText(context, "Successfully logged out", Toast.LENGTH_LONG).show()
     }
 
-    fun isloggedin(): Boolean{
-        return mAuth.currentUser != null
-    }
+//    fun isloggedin(): Boolean{
+//        return mAuth.currentUser != null
+//    } This one checks first if user is logged in or not for him or she to use services
 
     fun viewClients(
         client: MutableState<Clients>,

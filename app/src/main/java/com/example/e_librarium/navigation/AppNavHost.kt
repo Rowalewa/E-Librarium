@@ -18,6 +18,7 @@ import com.example.e_librarium.ui.theme.screens.clients.ClientHomeScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientLogInScreen
 import com.example.e_librarium.ui.theme.screens.clients.ClientRegisterScreen
 import com.example.e_librarium.ui.theme.screens.clients.EditClientInfo
+import com.example.e_librarium.ui.theme.screens.clients.ViewAllBooksClient
 import com.example.e_librarium.ui.theme.screens.clients.ViewBorrowedBooks
 import com.example.e_librarium.ui.theme.screens.clients.ViewClientInfo
 import com.example.e_librarium.ui.theme.screens.home.HomeScreen
@@ -46,31 +47,52 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable("$ROUTE_BOOKS_HOME/{staffId}"){passedData->
             BooksHomeScreen(navController, passedData.arguments?.getString("staffId")!!)
         }
-        composable("$ROUTE_EDIT_BOOKS/{bookId}"){passedData ->
-            EditBooksScreen(navController, passedData.arguments?.getString("bookId")!!)  // need for edit
+        composable("$ROUTE_EDIT_BOOKS/{bookId}/{staffId}"){passedData ->
+            EditBooksScreen(
+                navController,
+                passedData.arguments?.getString("bookId")!!,
+                passedData.arguments?.getString("staffId")!!
+            )  // need for edit
         }
-        composable("$ROUTE_VIEW_BOOKS/{clientId}"){passedData ->
-            ViewBooksScreen(navController, passedData.arguments?.getString("clientId")!!)  // need for edit
+        composable("$ROUTE_VIEW_BOOKS/{clientId}/{staffId}"){passedData ->
+            ViewBooksScreen(
+                navController,
+                passedData.arguments?.getString("clientId")!!,
+                passedData.arguments?.getString("staffId")!!
+            )  // need for edit
         }
-        composable(ROUTE_VIEW_ALL_BOOKS){
-            ViewAllBooksScreen(navController)  // need for edit
+        composable("$ROUTE_VIEW_ALL_BOOKS/{staffId}"){passedData->
+            ViewAllBooksScreen(
+                navController,
+                passedData.arguments?.getString("staffId")!!
+            )  // need for edit
         }
         composable(ROUTE_VIEW_BOOKS_GUEST){
             ViewBooksGuest(navController)  // need for edit
         }
-        composable("$ROUTE_BORROW_BOOKS/{clientId}/{bookId}"){ passedData ->
+        composable("$ROUTE_VIEW_ALL_BOOKS_CLIENT/{clientId}"){passedData->
+            ViewAllBooksClient(
+                navController,
+                passedData.arguments?.getString("clientId")!!
+            )  // need for edit
+        }
+        composable("$ROUTE_BORROW_BOOKS/{clientId}/{bookId}/{staffId}"){ passedData ->
             BorrowBooksScreen(
                 navController,
                 passedData.arguments?.getString("clientId")!!,
-                passedData.arguments?.getString("bookId")!!
+                passedData.arguments?.getString("bookId")!!,
+                passedData.arguments?.getString("staffId")!!
             )
         }
 
         composable("$ROUTE_BORROW_HOME/{clientId}"){passedData ->
             BorrowHomeScreen(navController, passedData.arguments?.getString("clientId")!!)
         }
-        composable(ROUTE_VIEW_CLIENTS){
-            ViewClientsScreen(navController)  // need for edit
+        composable("$ROUTE_VIEW_CLIENTS/{staffId}"){passedData->
+            ViewClientsScreen(
+                navController,
+                passedData.arguments?.getString("staffId")!!
+            )  // need for edit
         }
         composable(ROUTE_CLIENT_LOGIN){
             ClientLogInScreen(navController)
@@ -93,10 +115,11 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable(ROUTE_HOME){
             HomeScreen(navController)
         }
-        composable("$ROUTE_RETURN_BOOKS/{clientId}/{bookId}"){passedData ->
+        composable("$ROUTE_RETURN_BOOKS/{clientId}/{bookId}/{staffId}"){passedData ->
             ReturnBooksScreen(navController,
                 passedData.arguments?.getString("clientId")!!,
-                passedData.arguments?.getString("bookId")!!
+                passedData.arguments?.getString("bookId")!!,
+                passedData.arguments?.getString("staffId")!!
             )  //need for edit
         }
         composable(ROUTE_RETURN_HOME){

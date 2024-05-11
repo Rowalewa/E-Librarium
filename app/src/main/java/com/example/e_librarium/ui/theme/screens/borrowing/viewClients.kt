@@ -50,12 +50,14 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Clients
+import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
+import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 
 @Composable
-fun ViewClientsScreen(navController: NavHostController){
+fun ViewClientsScreen(navController: NavHostController, staffId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -82,6 +84,7 @@ fun ViewClientsScreen(navController: NavHostController){
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                StaffAppTopBar(navController, staffId)
                 Text(
                     text = "CLIENTS",
                     fontSize = 30.sp,
@@ -128,28 +131,6 @@ fun ViewClientsScreen(navController: NavHostController){
                         )
                     }
                 }
-
-
-                Button(
-                    onClick = { navController.popBackStack() },
-                    colors = ButtonDefaults.buttonColors(Color.Blue),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 20.dp,
-                            end = 20.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        )
-                ) {
-                    Text(
-                        text = "Back",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Serif
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyColumn(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -175,6 +156,7 @@ fun ViewClientsScreen(navController: NavHostController){
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
                             clientStatus = it.clientStatus,
                             clientId = it.clientId,
+                            staffId = staffId,
                             navController = navController,
                             clientRepository = clientsRepository
                         )
@@ -196,6 +178,7 @@ fun ClientInstance(
     clientProfilePictureUrl: String,
     clientStatus: String,
     clientId: String,
+    staffId: String,
     navController: NavHostController,
     clientRepository: AuthViewModel
 ) {
@@ -278,7 +261,7 @@ fun ClientInstance(
                 Spacer(modifier = Modifier.width(30.dp))
                 Button(
                     onClick = {
-                        navController.navigate("$ROUTE_VIEW_BOOKS/$clientId")
+                        navController.navigate("$ROUTE_VIEW_BOOKS/$clientId/$staffId")
                     },
                     modifier = Modifier
                         .width(200.dp)

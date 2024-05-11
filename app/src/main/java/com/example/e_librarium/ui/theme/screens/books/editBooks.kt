@@ -57,6 +57,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
+import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
@@ -67,7 +68,7 @@ import com.google.firebase.database.ValueEventListener
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditBooksScreen(navController: NavHostController, bookId: String){
+fun EditBooksScreen(navController: NavHostController, bookId: String, staffId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -99,7 +100,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
 
 
 
-
+            StaffAppTopBar(navController, staffId)
             Text(
                 text = "Edit Book Record",
                 fontSize = 30.sp,
@@ -229,7 +230,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
                     Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
                 }
             })
-
             OutlinedTextField(
                 value = mBookTitle,
                 onValueChange = { mBookTitle = it },
@@ -804,26 +804,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String){
 
             )
 
-            Button(
-                onClick = { navController.navigate(ROUTE_BOOKS_HOME) },
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(
-                    text = "Back to Home Screen",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
-                )
-            }
-
         }
     }
 }
@@ -885,15 +865,14 @@ fun ImageUploader(
             Button(
                 onClick = {
                     imagePicker.launch("image/*")
-                }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(10.dp)
             ) {
                 Text(
                     text = "Select Image"
                 )
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 val bookRepository = BooksViewModel(navController,context)
@@ -919,13 +898,28 @@ fun ImageUploader(
 
                 )
 
-            }) {
+            },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    )
+            ) {
                 Text(text = "Upload")
             }
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 navController.navigate(ROUTE_VIEW_BOOKS)
             },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 5.dp,
+                        bottom = 20.dp
+                    )
             ) {
                 Text(text = "view uploads")
             }
@@ -941,6 +935,6 @@ fun ImageUploader(
 @Composable
 fun EditBooksScreenPreview(){
     ELibrariumTheme {
-        EditBooksScreen(navController = rememberNavController(), bookId = "")
+        EditBooksScreen(navController = rememberNavController(), bookId = "", staffId = "")
     }
 }

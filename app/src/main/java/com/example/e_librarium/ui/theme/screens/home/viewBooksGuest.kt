@@ -106,8 +106,6 @@ fun ViewBooksGuest(navController: NavHostController){
                     fontFamily = FontFamily.Serif,
                     color = Color.Red
                 )
-
-
                 Button(
                     onClick = { navController.popBackStack() },
                     colors = ButtonDefaults.buttonColors(Color.Blue),
