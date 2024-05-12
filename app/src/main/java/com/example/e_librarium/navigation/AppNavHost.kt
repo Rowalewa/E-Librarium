@@ -21,6 +21,8 @@ import com.example.e_librarium.ui.theme.screens.clients.EditClientInfo
 import com.example.e_librarium.ui.theme.screens.clients.ViewAllBooksClient
 import com.example.e_librarium.ui.theme.screens.clients.ViewBorrowedBooks
 import com.example.e_librarium.ui.theme.screens.clients.ViewClientInfo
+import com.example.e_librarium.ui.theme.screens.feedback.FeedbackScreenClient
+import com.example.e_librarium.ui.theme.screens.feedback.FeedbackScreenStaff
 import com.example.e_librarium.ui.theme.screens.home.HomeScreen
 import com.example.e_librarium.ui.theme.screens.home.ViewBooksGuest
 import com.example.e_librarium.ui.theme.screens.returning.ReturnBooksScreen
@@ -139,6 +141,12 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable("$ROUTE_EDIT_STAFF_INFO/{staffId}"){ passedData->
             EditStaffInfo(navController, passedData.arguments?.getString("staffId")!!)
+        }
+        composable("$ROUTE_STAFF_FEEDBACK/{staffId}"){passedData->
+            FeedbackScreenStaff(navController, passedData.arguments?.getString("staffId")!!)
+        }
+        composable("$ROUTE_CLIENT_FEEDBACK/{clientId}"){passedData->
+            FeedbackScreenClient(navController, passedData.arguments?.getString("clientId")!!)
         }
 
     }

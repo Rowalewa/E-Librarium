@@ -17,7 +17,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MailOutline
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -25,6 +32,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -58,6 +67,8 @@ import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
+import com.example.e_librarium.navigation.ROUTE_CLIENT_FEEDBACK
+import com.example.e_librarium.navigation.ROUTE_STAFF_FEEDBACK
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENTS
 import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
@@ -136,6 +147,17 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                             fontFamily = FontFamily.Serif,
                             color = Color.Red
                         )
+                        Button(
+                            onClick = {
+                                navController.navigate("$ROUTE_STAFF_FEEDBACK/$staffId")
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Yellow
+                            )
+                        ) {
+                            Text(text = "Submit Feedback")
+                        }
                     }
                 }
                 LaunchedEffect(key1 = true) {
@@ -378,7 +400,45 @@ fun StaffAppTopBar(navController: NavController, staffId: String){
     )
 }
 
-
+@Composable
+fun StaffBottomAppBar(navController: NavController){
+    BottomAppBar(
+        actions = {
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    Icons.Filled.MailOutline,
+                    contentDescription = "Feedback"
+                )
+            }
+            Spacer(modifier = Modifier.width(40.dp))
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    Icons.Filled.Info,
+                    contentDescription = "About",
+                )
+            }
+            Spacer(modifier = Modifier.width(40.dp))
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    Icons.Filled.Phone,
+                    contentDescription = "Phone Numbers",
+                )
+            }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.popBackStack() },
+                containerColor = Color.White,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Localized description")
+            }
+        }
+    )
+}
 
 @Preview(
     showSystemUi = true,

@@ -44,6 +44,7 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_HOME
+import com.example.e_librarium.navigation.ROUTE_CLIENT_FEEDBACK
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS_CLIENT
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS_GUEST
 import com.example.e_librarium.navigation.ROUTE_VIEW_BORROWED_BOOKS
@@ -98,6 +99,17 @@ fun BorrowHomeScreen(navController: NavHostController, clientId: String){
                 )
             ) {
                 Text(text = "View Library Books")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("$ROUTE_CLIENT_FEEDBACK/$clientId")
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow
+                )
+            ) {
+                Text(text = "Submit Feedback")
             }
         }
     }
