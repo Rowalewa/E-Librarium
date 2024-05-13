@@ -58,57 +58,64 @@ fun FeedbackScreenStaff(navController: NavHostController, staffId: String) {
         }
     })
     Box{
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxSize()
-        ) {
-            StaffAppTopBar(navController, staffId)
-            Text(
-                text = "We'd love to hear your feedback!",
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            TextField(
-                value = feedbackName,
-                onValueChange = { feedbackName = it },
-                label = { Text("Enter your name here *") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = feedbackEmailAddress,
-                onValueChange = { feedbackEmailAddress = it },
-                label = { Text("Enter your email here (Optional)") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            TextField(
-                value = feedbackText,
-                onValueChange = { feedbackText = it },
-                label = { Text("Enter your feedback here *") },
+        Column {
+            Box(
+                modifier = Modifier,
+                contentAlignment = Alignment.TopCenter
+            ) {
+                StaffAppTopBar(navController, staffId)
+            }
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-            )
+                    .padding(16.dp)
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = "We'd love to hear your feedback!",
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                TextField(
+                    value = feedbackName,
+                    onValueChange = { feedbackName = it },
+                    label = { Text("Enter your name here *") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                TextField(
+                    value = feedbackEmailAddress,
+                    onValueChange = { feedbackEmailAddress = it },
+                    label = { Text("Enter your email here (Optional)") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                TextField(
+                    value = feedbackText,
+                    onValueChange = { feedbackText = it },
+                    label = { Text("Enter your feedback here *") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
 
-            Button(
-                onClick = {
-                    val feedbackRepository = FeedbackViewModel(navController, context)
-                    feedbackRepository.saveFeedbackToFirebaseStaff(
-                        feedbackName.text.trim(),
-                        feedbackEmailAddress.text.trim(),
-                        feedbackText.text.trim()
-                    )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        val feedbackRepository = FeedbackViewModel(navController, context)
+                        feedbackRepository.saveFeedbackToFirebaseStaff(
+                            feedbackName.text.trim(),
+                            feedbackEmailAddress.text.trim(),
+                            feedbackText.text.trim()
+                        )
 //                feedbackText = TextFieldValue()
 //                feedbackEmailAddress = TextFieldValue()
 //                feedbackName = TextFieldValue()
-                },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Submit")
+                    },
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Text("Submit")
+                }
+                Spacer(modifier = Modifier.height(70.dp))
             }
-            Spacer(modifier = Modifier.height(70.dp))
         }
         Box(
             modifier = Modifier.fillMaxSize(),

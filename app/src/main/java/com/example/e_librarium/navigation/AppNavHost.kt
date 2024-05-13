@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.ui.theme.screens.about.AboutScreenAdmin
 import com.example.e_librarium.ui.theme.screens.about.AboutScreenClient
+import com.example.e_librarium.ui.theme.screens.about.AboutScreenGuest
 import com.example.e_librarium.ui.theme.screens.about.AboutScreenStaff
 import com.example.e_librarium.ui.theme.screens.admin.AdminClientEdit
 import com.example.e_librarium.ui.theme.screens.admin.AdminEditAccount
@@ -34,8 +35,11 @@ import com.example.e_librarium.ui.theme.screens.clients.ViewClientInfo
 import com.example.e_librarium.ui.theme.screens.contact.ContactStaffAsAdmin
 import com.example.e_librarium.ui.theme.screens.contact.ContactStaffAsClient
 import com.example.e_librarium.ui.theme.screens.contact.ContactStaffAsStaff
+import com.example.e_librarium.ui.theme.screens.contact.ContactUsScreen
+import com.example.e_librarium.ui.theme.screens.dashboard.DashboardScreen
 import com.example.e_librarium.ui.theme.screens.endUserLicenceAgreement.EndUserLicenceAgreementScreenAdmin
 import com.example.e_librarium.ui.theme.screens.endUserLicenceAgreement.EndUserLicenceAgreementScreenClient
+import com.example.e_librarium.ui.theme.screens.endUserLicenceAgreement.EndUserLicenceAgreementScreenGuest
 import com.example.e_librarium.ui.theme.screens.endUserLicenceAgreement.EndUserLicenceAgreementScreenStaff
 import com.example.e_librarium.ui.theme.screens.feedback.FeedbackScreenAdmin
 import com.example.e_librarium.ui.theme.screens.feedback.FeedbackScreenClient
@@ -44,6 +48,7 @@ import com.example.e_librarium.ui.theme.screens.home.HomeScreen
 import com.example.e_librarium.ui.theme.screens.home.ViewBooksGuest
 import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScreenAdmin
 import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScreenClient
+import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScreenGuest
 import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScreenStaff
 import com.example.e_librarium.ui.theme.screens.returning.ReturnBooksScreen
 import com.example.e_librarium.ui.theme.screens.returning.ReturningHomeScreen
@@ -54,18 +59,22 @@ import com.example.e_librarium.ui.theme.screens.staff.StaffRegisterScreen
 import com.example.e_librarium.ui.theme.screens.staff.ViewStaffInfo
 import com.example.e_librarium.ui.theme.screens.userManual.UserManualScreenAdmin
 import com.example.e_librarium.ui.theme.screens.userManual.UserManualScreenClient
+import com.example.e_librarium.ui.theme.screens.userManual.UserManualScreenGuest
 import com.example.e_librarium.ui.theme.screens.userManual.UserManualScreenStaff
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier,
                navController: NavHostController = rememberNavController(),
-               startDestination: String = ROUTE_HOME
+               startDestination: String = ROUTE_DASHBOARD
 ) {
     NavHost(
         navController = navController,
         modifier = modifier,
         startDestination = startDestination
     ){
+        composable(ROUTE_DASHBOARD){
+            DashboardScreen(navController)
+        }
         composable("$ROUTE_ADMIN_CLIENT_EDIT/{adminId}"){passedData->
             AdminClientEdit(navController, passedData.arguments?.getString("adminId")!!)
         }
@@ -204,6 +213,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable("$ROUTE_ABOUT_SCREEN_ADMIN/{adminId}"){ passedData->
             AboutScreenAdmin(navController, passedData.arguments?.getString("adminId")!!)
         }
+        composable(ROUTE_ABOUT_SCREEN_GUEST){
+            AboutScreenGuest(navController)
+        }
         composable("$ROUTE_STAFF_CONTACT_AS_CLIENT/{clientId}"){ passedData->
             ContactStaffAsClient(navController, passedData.arguments?.getString("clientId")!!)
         }
@@ -212,6 +224,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable("$ROUTE_STAFF_CONTACT_AS_ADMIN/{adminId}"){ passedData->
             ContactStaffAsAdmin(navController, passedData.arguments?.getString("adminId")!!)
+        }
+        composable(ROUTE_CONTACT_US){
+            ContactUsScreen(navController)
         }
         composable("$ROUTE_EULA_STAFF/{staffId}"){ passedData->
             EndUserLicenceAgreementScreenStaff(navController, passedData.arguments?.getString("staffId")!!)
@@ -222,6 +237,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable("$ROUTE_EULA_ADMIN/{adminId}"){ passedData->
             EndUserLicenceAgreementScreenAdmin(navController, passedData.arguments?.getString("adminId")!!)
         }
+        composable(ROUTE_EULA_GUEST){
+            EndUserLicenceAgreementScreenGuest(navController)
+        }
         composable("$ROUTE_PRIVACY_POLICY_STAFF/{staffId}"){ passedData->
             PrivacyPolicyScreenStaff(navController, passedData.arguments?.getString("staffId")!!)
         }
@@ -230,6 +248,9 @@ fun AppNavHost(modifier: Modifier = Modifier,
         }
         composable("$ROUTE_PRIVACY_POLICY_ADMIN/{adminId}"){ passedData->
             PrivacyPolicyScreenAdmin(navController, passedData.arguments?.getString("adminId")!!)
+        }
+        composable(ROUTE_PRIVACY_POLICY_GUEST){
+            PrivacyPolicyScreenGuest(navController)
         }
         composable("$ROUTE_USER_MANUAL_STAFF/{staffId}"){ passedData->
             UserManualScreenStaff(navController, passedData.arguments?.getString("staffId")!!)
@@ -240,6 +261,8 @@ fun AppNavHost(modifier: Modifier = Modifier,
         composable("$ROUTE_USER_MANUAL_ADMIN/{adminId}"){ passedData->
             UserManualScreenAdmin(navController, passedData.arguments?.getString("adminId")!!)
         }
-
+        composable(ROUTE_USER_MANUAL_GUEST){
+            UserManualScreenGuest(navController)
+        }
     }
 }

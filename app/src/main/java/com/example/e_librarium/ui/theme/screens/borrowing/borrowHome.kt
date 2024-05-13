@@ -88,42 +88,49 @@ fun BorrowHomeScreen(navController: NavHostController, clientId: String){
             contentScale = ContentScale.FillBounds
         )
         Column {
-            ClientAppTopBar(navController, clientId)
-            Button(
-                onClick = {
-                    val myClientLogout = AuthViewModel(navController, context)
-                    myClientLogout.clientlogout()
-                },
+            Box (
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red
-                )
-            ) {
-                Text(text = "Sign Out")
+                contentAlignment = Alignment.TopCenter
+            ){
+                ClientAppTopBar(navController, clientId)
             }
-            Button(
-                onClick = {
-                    navController.navigate("$ROUTE_VIEW_BORROWED_BOOKS/$clientId")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow
-                )
-            ) {
-                Text(text = "View My Borrowed Books")
+            Column {
+                Button(
+                    onClick = {
+                        val myClientLogout = AuthViewModel(navController, context)
+                        myClientLogout.clientlogout()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red
+                    )
+                ) {
+                    Text(text = "Sign Out")
+                }
+                Button(
+                    onClick = {
+                        navController.navigate("$ROUTE_VIEW_BORROWED_BOOKS/$clientId")
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow
+                    )
+                ) {
+                    Text(text = "View My Borrowed Books")
+                }
+                Button(
+                    onClick = {
+                        navController.navigate("$ROUTE_VIEW_ALL_BOOKS_CLIENT/$clientId")
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow
+                    )
+                ) {
+                    Text(text = "View Library Books")
+                }
+                Spacer(modifier = Modifier.height(70.dp))
             }
-            Button(
-                onClick = {
-                    navController.navigate("$ROUTE_VIEW_ALL_BOOKS_CLIENT/$clientId")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow
-                )
-            ) {
-                Text(text = "View Library Books")
-            }
-            Spacer(modifier = Modifier.height(70.dp))
         }
         Box(
             modifier = Modifier.fillMaxSize(),

@@ -66,7 +66,12 @@ fun ViewAllBooksClient(navController: NavHostController, clientId: String){
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                ClientAppTopBar(navController, clientId)
+            }
             val context = LocalContext.current
             val booksRepository = BooksViewModel(navController, context)
             val emptyBookState = remember {
@@ -102,7 +107,6 @@ fun ViewAllBooksClient(navController: NavHostController, clientId: String){
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ClientAppTopBar(navController, clientId)
                 Text(
                     text = "BOOKS",
                     fontSize = 30.sp,

@@ -53,31 +53,33 @@ import com.example.e_librarium.models.Clients
 fun AdminClientEdit(navController: NavHostController, adminId: String){
     Box(
         modifier = Modifier.fillMaxSize()
-    ){
-        Image(painter = painterResource(id = R.drawable.admin_client_edit_screen),
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.admin_client_edit_screen),
             contentDescription = "View Clients Image",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            val context = LocalContext.current
-            val clientsRepository = AuthViewModel(navController, context)
-            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
-            val emptyClientListState = remember { mutableStateListOf<Clients>() }
-
-            val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
-
-
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                AdminAppTopBar(navController, adminId)
+            }
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AdminAppTopBar(navController, adminId)
+
+                val context = LocalContext.current
+                val clientsRepository = AuthViewModel(navController, context)
+                val emptyClientState =
+                    remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
+                val emptyClientListState = remember { mutableStateListOf<Clients>() }
+
+                val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
                 Text(
                     text = "CLIENTS",
                     fontSize = 30.sp,
@@ -110,7 +112,7 @@ fun AdminClientEdit(navController: NavHostController, adminId: String){
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Red,
                             unfocusedContainerColor = Color.White,
-                            focusedLabelColor = Color.Black ,
+                            focusedLabelColor = Color.Black,
                             unfocusedLabelColor = Color.DarkGray,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Magenta

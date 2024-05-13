@@ -147,7 +147,12 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            StaffAppTopBar(navController, staffId)
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                StaffAppTopBar(navController, staffId)
+            }
             Column(
                 modifier = Modifier.padding(16.dp)
             ){

@@ -134,7 +134,12 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
         ) {
-            ClientAppTopBar(navController, clientId)
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                ClientAppTopBar(navController, clientId)
+            }
             Image(
                 painter = rememberAsyncImagePainter(mClientProfilePictureUrl),
                 contentDescription = null,

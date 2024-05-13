@@ -1,5 +1,29 @@
 package com.example.e_librarium.ui.theme.screens.about
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import com.example.e_librarium.data.AuthViewModel
+import com.example.e_librarium.navigation.ROUTE_ADMIN_EDIT_HOME
+import com.example.e_librarium.navigation.ROUTE_ADMIN_VIEW_ACCOUNT
+import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -37,7 +61,7 @@ import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @Composable
-fun AboutScreenAdmin(navController: NavController, adminId: String) {
+fun AboutScreenGuest(navController: NavController) {
 //    val scrollState = rememberScrollState()
 //    val coroutineScope = rememberCoroutineScope()
 //
@@ -53,18 +77,18 @@ fun AboutScreenAdmin(navController: NavController, adminId: String) {
 
     Box(
         modifier = Modifier.fillMaxSize()
-    ){
-        Image(painter = painterResource(id = R.drawable.admin_client_edit_screen),
-            contentDescription = "View Clients Image",
-            modifier = Modifier.matchParentSize(),
-            contentScale = ContentScale.FillBounds
-        )
+    ) {
+//        Image(painter = painterResource(id = R.drawable.admin_client_edit_screen),
+//            contentDescription = "View Clients Image",
+//            modifier = Modifier.matchParentSize(),
+//            contentScale = ContentScale.FillBounds
+//        )
         Column{
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
             ) {
-                AdminAppTopBar(navController, adminId)
+                DashTopBar(navController)
             }
             Column(
                 modifier = Modifier
@@ -193,10 +217,10 @@ fun AboutScreenAdmin(navController: NavController, adminId: String) {
                 // Add more Text elements for version, developer info, credits, etc.
             }
         }
-        Box(
+        Column (
             modifier = Modifier.align(Alignment.BottomCenter)
-        ) {
-            AdminBottomAppBar(navController, adminId)
+        ){
+            AdminBottomAppBar(navController, adminId = "")
         }
     }
 }
@@ -205,8 +229,8 @@ fun AboutScreenAdmin(navController: NavController, adminId: String) {
     showSystemUi = true
 )
 @Composable
-fun AboutScreenAdminPreview(){
+fun AboutScreenGuestPreview(){
     ELibrariumTheme {
-        AboutScreenAdmin(navController = rememberNavController(), adminId = "")
+        AboutScreenGuest(navController = rememberNavController())
     }
 }

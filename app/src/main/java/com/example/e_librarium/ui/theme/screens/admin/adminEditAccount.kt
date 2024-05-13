@@ -107,50 +107,57 @@ fun AdminEditAccount(navController: NavHostController, adminId: String){
         }
     } )
     Box{
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            AdminAppTopBar(navController, adminId)
-            OutlinedTextField(
-                value = mEmail,
-                onValueChange = { mEmail = it },
-                label = { Text(text = "Email Address") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
+        Column{
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                AdminAppTopBar(navController, adminId)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = mEmail,
+                    onValueChange = { mEmail = it },
+                    label = { Text(text = "Email Address") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                )
 
-            OutlinedTextField(
-                value = mPass,
-                onValueChange = { mPass = it },
-                label = { Text(text = "Password") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
+                OutlinedTextField(
+                    value = mPass,
+                    onValueChange = { mPass = it },
+                    label = { Text(text = "Password") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                )
 
-            OutlinedTextField(
-                value = confpass,
-                onValueChange = { confpass = it },
-                label = { Text(text = "Confirm Password") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
+                OutlinedTextField(
+                    value = confpass,
+                    onValueChange = { confpass = it },
+                    label = { Text(text = "Confirm Password") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                )
 
-            AdminUploader(
-                context = context,
-                navController = navController,
-                fullName = mFullName.text.trim(),
-                gender = mGender.text.trim(),
-                maritalStatus = mMaritalStatus.text.trim(),
-                phoneNumber = mPhoneNumber.text.trim(),
-                dateOfBirth = mDateOfBirth.text.trim(),
-                email = mEmail.text.trim(),
-                pass = mPass.text.trim(),
-                confpass = confpass.trim(),
-                adminId = adminId
-            )
+                AdminUploader(
+                    context = context,
+                    navController = navController,
+                    fullName = mFullName.text.trim(),
+                    gender = mGender.text.trim(),
+                    maritalStatus = mMaritalStatus.text.trim(),
+                    phoneNumber = mPhoneNumber.text.trim(),
+                    dateOfBirth = mDateOfBirth.text.trim(),
+                    email = mEmail.text.trim(),
+                    pass = mPass.text.trim(),
+                    confpass = confpass.trim(),
+                    adminId = adminId
+                )
+            }
         }
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            ClientBottomAppBar(navController, adminId)
+            AdminBottomAppBar(navController, adminId)
         }
     }
 }

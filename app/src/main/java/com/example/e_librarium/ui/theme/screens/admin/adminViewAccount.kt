@@ -121,128 +121,146 @@ fun AdminViewAccount(navController: NavHostController, adminId: String){
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
-        ) {
-            AdminAppTopBar(navController, adminId)
-            Image(
-                painter = rememberAsyncImagePainter(mAdminProfilePictureUrl),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(200.dp)
-                    .clip(shape = CircleShape)
-            )
-            Column(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .border(width = 5.dp, color = Color.Magenta, shape = RoundedCornerShape(20.dp))
-                    .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
-            ){
-                Text(
-                    text = "Name:\n ${adminFullName.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 15.dp,
-                            bottom = 0.dp,
-                            end = 0.dp,
-                            start = 0.dp
-                        )
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Gender:\n ${adminGender.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Marital Status: \n ${adminMaritalStatus.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Phone Number: \n ${adminPhoneNumber.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Monospace,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Date of Birth: \n ${adminDateOfBirth.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Email Address: \n ${adminEmail.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 0.dp,
-                            bottom = 15.dp,
-                            end = 0.dp,
-                            start = 0.dp
-                        )
-                )
-            }
-            Button(
-                onClick = { navController.navigate("$ROUTE_ADMIN_EDIT_ACCOUNT/$adminId") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
+            Column {
+                Box (
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.TopCenter
+                ){
+                    AdminAppTopBar(navController, adminId)
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.verticalScroll(
+                        state = rememberScrollState(),
+                        enabled = true,
+                        reverseScrolling = true
                     )
-            ) {
-                Text(text = "Edit")
-            }
-            Button(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(mAdminProfilePictureUrl),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .size(200.dp)
+                            .clip(shape = CircleShape)
                     )
-            ) {
-                Text(text = "Back")
+                    Column(
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .border(
+                                width = 5.dp,
+                                color = Color.Magenta,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .background(
+                                color = Color.Transparent,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                    ) {
+                        Text(
+                            text = "Name:\n ${adminFullName.text}",
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Serif,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = 15.dp,
+                                    bottom = 0.dp,
+                                    end = 0.dp,
+                                    start = 0.dp
+                                )
+                                .background(color = Color.Yellow)
+                        )
+                        Text(
+                            text = "Gender:\n ${adminGender.text}",
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Serif,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            text = "Marital Status: \n ${adminMaritalStatus.text}",
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Serif,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = Color.Yellow)
+                        )
+                        Text(
+                            text = "Phone Number: \n ${adminPhoneNumber.text}",
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Monospace,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            text = "Date of Birth: \n ${adminDateOfBirth.text}",
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Serif,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = Color.Yellow)
+                        )
+                        Text(
+                            text = "Email Address: \n ${adminEmail.text}",
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily.Serif,
+                            color = Color.Black,
+                            fontStyle = FontStyle.Italic,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = 0.dp,
+                                    bottom = 15.dp,
+                                    end = 0.dp,
+                                    start = 0.dp
+                                )
+                        )
+                    }
+                    Button(
+                        onClick = { navController.navigate("$ROUTE_ADMIN_EDIT_ACCOUNT/$adminId") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = 20.dp,
+                                end = 20.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            )
+                    ) {
+                        Text(text = "Edit")
+                    }
+                    Button(
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = 20.dp,
+                                end = 20.dp,
+                                top = 0.dp,
+                                bottom = 0.dp
+                            )
+                    ) {
+                        Text(text = "Back")
+                    }
+                    Spacer(modifier = Modifier.height(80.dp))
+                }
             }
-            Spacer(modifier = Modifier.height(80.dp))
-        }
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter

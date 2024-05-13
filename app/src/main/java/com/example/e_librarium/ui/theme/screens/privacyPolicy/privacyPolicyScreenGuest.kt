@@ -14,20 +14,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
-import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @Composable
-fun PrivacyPolicyScreenStaff(navController: NavController, staffId: String){
+fun PrivacyPolicyScreenGuest(navController: NavController){
     Box {
         Column {
             Box (
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
             ){
-                StaffAppTopBar(navController, staffId)
+                DashTopBar(navController)
             }
             Column (
                 modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = false)
@@ -62,13 +59,7 @@ fun PrivacyPolicyScreenStaff(navController: NavController, staffId: String){
                             "\n" +
                             "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page."
                 )
-                Spacer(modifier = Modifier.height(70.dp))
-            }
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                StaffBottomAppBar(navController, staffId)
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }

@@ -48,25 +48,32 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
     }
 
     Box{
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ClientAppTopBar(navController, clientId)
-            Spacer(modifier = Modifier.height(5.dp))
-            LazyColumn {
-                items(borrowedBooks) { book ->
-                    BookItems(
-                        bookId = book.bookId,
-                        bookTitle = book.bookTitle,
-                        bookAuthor = book.bookAuthor,
-                        bookISBNNumber = book.bookISBNNumber,
-                        bookGenre = book.bookGenre,
-                        bookPublisher = book.bookPublisher,
-                        bookSynopsis = book.bookSynopsis,
-                        bookImageUrl = book.bookImageUrl,
-                        borrowDate = book.borrowDate,
-                        returnDate = book.returnDate
-                    )
+        Column{
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                ClientAppTopBar(navController, clientId)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(5.dp))
+                LazyColumn {
+                    items(borrowedBooks) { book ->
+                        BookItems(
+                            bookId = book.bookId,
+                            bookTitle = book.bookTitle,
+                            bookAuthor = book.bookAuthor,
+                            bookISBNNumber = book.bookISBNNumber,
+                            bookGenre = book.bookGenre,
+                            bookPublisher = book.bookPublisher,
+                            bookSynopsis = book.bookSynopsis,
+                            bookImageUrl = book.bookImageUrl,
+                            borrowDate = book.borrowDate,
+                            returnDate = book.returnDate
+                        )
+                    }
                 }
             }
         }

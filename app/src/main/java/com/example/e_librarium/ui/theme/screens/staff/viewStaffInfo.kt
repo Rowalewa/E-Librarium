@@ -128,138 +128,153 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
-        ) {
-            StaffAppTopBar(navController, staffId)
-            Image(
-                painter = rememberAsyncImagePainter(mStaffProfilePictureUrl),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(200.dp)
-                    .clip(shape = CircleShape)
-            )
-            Column(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .border(width = 5.dp, color = Color.Magenta, shape = RoundedCornerShape(20.dp))
-                    .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
             ){
-                Text(
-                    text = "Name:\n ${staffFullName.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
+                StaffAppTopBar(navController, staffId)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(
+                    state = rememberScrollState(),
+                    enabled = true,
+                    reverseScrolling = true
+                )
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(mStaffProfilePictureUrl),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 15.dp,
-                            bottom = 0.dp,
-                            end = 0.dp,
-                            start = 0.dp
+                        .padding(16.dp)
+                        .size(200.dp)
+                        .clip(shape = CircleShape)
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .border(
+                            width = 5.dp,
+                            color = Color.Magenta,
+                            shape = RoundedCornerShape(20.dp)
                         )
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Gender:\n ${staffGender.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Marital Status: \n ${staffMaritalStatus.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Phone Number: \n ${staffPhoneNumber.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Monospace,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Date of Birth: \n ${staffDateOfBirth.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Account Status: \n ${mStaffStatus.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = "Email Address: \n ${staffEmail.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Center,
+                        .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
+                ) {
+                    Text(
+                        text = "Name:\n ${staffFullName.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 15.dp,
+                                bottom = 0.dp,
+                                end = 0.dp,
+                                start = 0.dp
+                            )
+                            .background(color = Color.Yellow)
+                    )
+                    Text(
+                        text = "Gender:\n ${staffGender.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "Marital Status: \n ${staffMaritalStatus.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.Yellow)
+                    )
+                    Text(
+                        text = "Phone Number: \n ${staffPhoneNumber.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Monospace,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "Date of Birth: \n ${staffDateOfBirth.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.Yellow)
+                    )
+                    Text(
+                        text = "Account Status: \n ${mStaffStatus.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Text(
+                        text = "Email Address: \n ${staffEmail.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontStyle = FontStyle.Italic,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 0.dp,
+                                bottom = 15.dp,
+                                end = 0.dp,
+                                start = 0.dp
+                            )
+                            .background(color = Color.Yellow)
+                    )
+                }
+                Button(
+                    onClick = { navController.navigate("$ROUTE_EDIT_STAFF_INFO/$staffId") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
+                            start = 20.dp,
+                            end = 20.dp,
                             top = 0.dp,
-                            bottom = 15.dp,
-                            end = 0.dp,
-                            start = 0.dp
+                            bottom = 0.dp
                         )
-                        .background(color = Color.Yellow)
-                )
+                ) {
+                    Text(text = "Edit")
+                }
+                Button(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(text = "Back")
+                }
+                Spacer(modifier = Modifier.height(80.dp))
             }
-            Button(
-                onClick = { navController.navigate("$ROUTE_EDIT_STAFF_INFO/$staffId") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(text = "Edit")
-            }
-            Button(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(text = "Back")
-            }
-            Spacer(modifier = Modifier.height(80.dp))
         }
         Box(
             modifier = Modifier.fillMaxSize(),

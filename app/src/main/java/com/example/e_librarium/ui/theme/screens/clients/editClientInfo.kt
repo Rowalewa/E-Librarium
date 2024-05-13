@@ -114,45 +114,52 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
         }
     } )
     Box{
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ClientAppTopBar(navController, clientId)
-            OutlinedTextField(
-                value = mEmail,
-                onValueChange = { mEmail = it },
-                label = { Text(text = "Email Address") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
+        Column{
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                ClientAppTopBar(navController, clientId)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = mEmail,
+                    onValueChange = { mEmail = it },
+                    label = { Text(text = "Email Address") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                )
 
-            OutlinedTextField(
-                value = mPass,
-                onValueChange = { mPass = it },
-                label = { Text(text = "Password") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
+                OutlinedTextField(
+                    value = mPass,
+                    onValueChange = { mPass = it },
+                    label = { Text(text = "Password") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                )
 
-            OutlinedTextField(
-                value = confpass,
-                onValueChange = { confpass = it },
-                label = { Text(text = "Confirm Password") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
+                OutlinedTextField(
+                    value = confpass,
+                    onValueChange = { confpass = it },
+                    label = { Text(text = "Confirm Password") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                )
 
-            ClientUploader(
-                context = context,
-                navController = navController,
-                fullName = mFullName.text.trim(),
-                gender = mGender.text.trim(),
-                maritalStatus = mMaritalStatus.text.trim(),
-                phoneNumber = mPhoneNumber.text.trim(),
-                dateOfBirth = mDateOfBirth.text.trim(),
-                email = mEmail.text.trim(),
-                pass = mPass.text.trim(),
-                confpass = confpass.trim(),
-                clientStatus = mClientStatus.text.trim(),
-                clientId = clientId
-            )
+                ClientUploader(
+                    context = context,
+                    navController = navController,
+                    fullName = mFullName.text.trim(),
+                    gender = mGender.text.trim(),
+                    maritalStatus = mMaritalStatus.text.trim(),
+                    phoneNumber = mPhoneNumber.text.trim(),
+                    dateOfBirth = mDateOfBirth.text.trim(),
+                    email = mEmail.text.trim(),
+                    pass = mPass.text.trim(),
+                    confpass = confpass.trim(),
+                    clientStatus = mClientStatus.text.trim(),
+                    clientId = clientId
+                )
+            }
         }
         Box(
             modifier = Modifier.fillMaxSize(),

@@ -115,83 +115,158 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column (
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
-        ){
-            StaffAppTopBar(navController, staffId)
-            val visible by remember { mutableStateOf(true) }
+        Column {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){ StaffAppTopBar(navController, staffId) }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(
+                    state = rememberScrollState(),
+                    enabled = true,
+                    reverseScrolling = true
+                )
+            ) {
+                val visible by remember { mutableStateOf(true) }
 
-            if (visible) {
-                val timeOfDay = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
-                    in 0..11 -> "morning"
-                    in 12..16 -> "afternoon"
-                    else -> "evening"
-                }
+                if (visible) {
+                    val timeOfDay = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+                        in 0..11 -> "morning"
+                        in 12..16 -> "afternoon"
+                        else -> "evening"
+                    }
 
-                Card(
-                    modifier = Modifier.padding(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.Cyan),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 5.dp,
-                        focusedElevation = 10.dp,
-                        pressedElevation = 20.dp,
-                        hoveredElevation = 15.dp
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
+                    Card(
+                        modifier = Modifier.padding(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.Cyan),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 5.dp,
+                            focusedElevation = 10.dp,
+                            pressedElevation = 20.dp,
+                            hoveredElevation = 15.dp
+                        )
                     ) {
-                        Text(
-                            text = "Good $timeOfDay",
-                            color = Color.Magenta
-                        )
-                        Text(
-                            text = staffFullName.text,
-                            fontSize = 25.sp,
-                            fontFamily = FontFamily.Serif,
-                            color = Color.Red
-                        )
-                        Button(
-                            onClick = {
-                                navController.navigate("$ROUTE_STAFF_FEEDBACK/$staffId")
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Yellow
-                            )
+                        Column(
+                            modifier = Modifier.padding(16.dp)
                         ) {
-                            Text(text = "Submit Feedback")
+                            Text(
+                                text = "Good $timeOfDay",
+                                color = Color.Magenta
+                            )
+                            Text(
+                                text = staffFullName.text,
+                                fontSize = 25.sp,
+                                fontFamily = FontFamily.Serif,
+                                color = Color.Red
+                            )
+                            Button(
+                                onClick = {
+                                    navController.navigate("$ROUTE_STAFF_FEEDBACK/$staffId")
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Yellow
+                                )
+                            ) {
+                                Text(text = "Submit Feedback")
+                            }
                         }
                     }
-                }
-                LaunchedEffect(key1 = true) {
-                    delay(250000) // Dismiss after 250 seconds
+                    LaunchedEffect(key1 = true) {
+                        delay(250000) // Dismiss after 250 seconds
 //                    visible = false
+                    }
                 }
-            }
-            Card (
-                colors = CardDefaults.cardColors(containerColor = Color.Blue),
-                modifier = Modifier.padding(10.dp)
-            ){
-                Row{
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Color.Blue),
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    Row {
+                        Card(
+                            modifier = Modifier
+                                .clip(shape = RoundedCornerShape(10.dp))
+                                .padding(16.dp)
+                                .size(150.dp, 200.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Yellow),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.add_book_btn),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
+                            )
+                            Button(
+                                onClick = { navController.navigate("$ROUTE_ADD_BOOKS/$staffId") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = 5.dp,
+                                        end = 5.dp,
+                                        top = 0.dp,
+                                        bottom = 0.dp
+                                    ),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Green
+                                )
+                            ) {
+                                Text(text = "\uD83D\uDCC1 Add Books")
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Card(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .size(150.dp, 200.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Green),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.view_book_btn),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
+                            )
+                            Button(
+                                onClick = { navController.navigate("$ROUTE_VIEW_ALL_BOOKS/$staffId") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        top = 10.dp,
+                                        start = 5.dp,
+                                        end = 5.dp,
+                                        bottom = 0.dp
+                                    ),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Blue
+                                )
+                            ) {
+                                Text(text = "View Books")
+                            }
+                        }
+                    }
                     Card(
-                        modifier = Modifier
-                            .clip(shape = RoundedCornerShape(10.dp))
-                            .padding(16.dp)
-                            .size(150.dp, 200.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.Yellow),
-                        shape = RoundedCornerShape(10.dp)
+                        modifier = Modifier.padding(
+                            start = 10.dp,
+                            end = 10.dp,
+                            bottom = 10.dp,
+                            top = 0.dp
+                        ),
+                        colors = CardDefaults.cardColors(containerColor = Color.Magenta)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.add_book_btn),
+                            painter = painterResource(id = R.drawable.view_clients_btn),
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(10.dp)
+                                .size(100.dp)
                         )
                         Button(
-                            onClick = { navController.navigate("$ROUTE_ADD_BOOKS/$staffId") },
+                            onClick = { navController.navigate("$ROUTE_VIEW_CLIENTS/$staffId") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
@@ -201,118 +276,52 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                                     bottom = 0.dp
                                 ),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Green
+                                containerColor = Color.Blue
                             )
                         ) {
-                            Text(text = "\uD83D\uDCC1 Add Books")
+                            Text(text = "Choose Client")
                         }
                     }
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Card (
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .size(150.dp, 200.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.Green),
-                        shape = RoundedCornerShape(10.dp)
-                    ){
+                    Card(
+                        modifier = Modifier.padding(
+                            start = 10.dp,
+                            end = 10.dp,
+                            bottom = 10.dp,
+                            top = 0.dp
+                        ),
+                        colors = CardDefaults.cardColors(containerColor = Color.Cyan)
+                    ) {
                         Image(
-                            painter = painterResource(id = R.drawable.view_book_btn),
+                            painter = painterResource(id = R.drawable.staff_sign_out_btn),
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(10.dp)
+                                .size(90.dp)
                         )
                         Button(
-                            onClick = { navController.navigate("$ROUTE_VIEW_ALL_BOOKS/$staffId") },
+                            onClick = {
+                                val myStaffLogout = AuthViewModel(navController, context)
+                                myStaffLogout.stafflogout()
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = 10.dp,
                                     start = 5.dp,
                                     end = 5.dp,
+                                    top = 0.dp,
                                     bottom = 0.dp
                                 ),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Blue
+                                containerColor = Color.Red
                             )
                         ) {
-                            Text(text = "View Books")
+                            Text(text = "\uD83D\uDEB6 Sign Out \uD83D\uDEB6\u200D♀\uFE0F")
                         }
                     }
                 }
-                Card(
-                    modifier = Modifier.padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        bottom = 10.dp,
-                        top = 0.dp
-                    ),
-                    colors = CardDefaults.cardColors(containerColor = Color.Magenta)
-                ){
-                    Image(
-                        painter = painterResource(id = R.drawable.view_clients_btn),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                            .size(100.dp)
-                    )
-                    Button(
-                        onClick = { navController.navigate("$ROUTE_VIEW_CLIENTS/$staffId") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = 5.dp,
-                                end = 5.dp,
-                                top = 0.dp,
-                                bottom = 0.dp
-                            ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Blue
-                        )
-                    ) {
-                        Text(text = "Choose Client")
-                    }
-                }
-                Card(
-                    modifier = Modifier.padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        bottom = 10.dp,
-                        top = 0.dp
-                    ),
-                    colors = CardDefaults.cardColors(containerColor = Color.Cyan)
-                ){
-                    Image(
-                        painter = painterResource(id = R.drawable.staff_sign_out_btn),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                            .size(90.dp)
-                    )
-                    Button(
-                        onClick = {
-                            val myStaffLogout = AuthViewModel(navController, context)
-                            myStaffLogout.stafflogout()
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = 5.dp,
-                                end = 5.dp,
-                                top = 0.dp,
-                                bottom = 0.dp
-                            ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Red
-                        )
-                    ) {
-                        Text(text = "\uD83D\uDEB6 Sign Out \uD83D\uDEB6\u200D♀\uFE0F")
-                    }
-                }
+                Spacer(modifier = Modifier.height(70.dp))
             }
-            Spacer(modifier = Modifier.height(70.dp))
         }
         Box(
             modifier = Modifier.fillMaxSize(),

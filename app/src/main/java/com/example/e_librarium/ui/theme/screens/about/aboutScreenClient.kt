@@ -3,10 +3,14 @@ package com.example.e_librarium.ui.theme.screens.about
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.admin.AdminAppTopBar
+import com.example.e_librarium.ui.theme.screens.admin.AdminBottomAppBar
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
@@ -39,112 +45,150 @@ fun AboutScreenClient(navController: NavController, clientId: String) {
 //        }
 //        onDispose { }
 //    }
-
-    Column(
-        modifier = Modifier
-            .verticalScroll(
-                state = rememberScrollState(),
-                enabled = true,
-                reverseScrolling = true
-            )
-            .background(color = Color.Red),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box (
+        modifier = Modifier.fillMaxSize()
     ) {
-        ClientAppTopBar(navController, clientId)
-        Text(
-            text = "About",
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Yellow,
-            fontFamily = FontFamily.Serif,
-            fontSize = 30.sp
-        )
-        Text(
-            text = "ELibrarium",
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Blue
-        )
-        Text(
-            text = "Version: \n 1.0",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "Developer: \n Leslie Wanjala",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Cyan
-        )
-        Text(
-            text = "Credits: Special thanks to: \n Emobilis Technology Training Institute \n Felix Kegode \n Pinterest \n Pexels \n Open AI \n Android Developers \n Google \n Firebase",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "License: \n MIT License",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Cyan
-        )
-        Text(
-            text = "Contacts: \n lesliewanjala@gmail.com \n 0791589514",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "Features: \n Borrowing books \n Returning Books \n Maintaining Saved Book Records \n Maintaining Borrowed Books Records \n Maintaining Client Accounts \n Creating User Accounts \n Viewing Books",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Cyan
-        )
-        Text(
-            text = "Staff Privileges and Functions: \n Manage Books \n Manage Memberships \n Manage Borrowing \n Manage other Library Resources \n Interact with clients \n Provide Feedback",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "Client Privileges and Functions: \n Search and Browse Books \n Borrow Memberships \n Renew Books \n View Account Information \n Interact with library staff \n Provide feedback",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color.Cyan
-        )
-        Text(
-            text = "©2024 Elibrarium. All rights reserved.",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+        Column{
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                ClientAppTopBar(navController, clientId)
+            }
+            Column(
+                modifier = Modifier
+                    .verticalScroll(
+                        state = rememberScrollState(),
+                        enabled = true,
+                        reverseScrolling = true
+                    )
+                    .background(color = Color.Red)
+                    .padding(bottom = 100.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "About",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Black, shape = CutCornerShape(10.dp)),
+                    textAlign = TextAlign.Center,
+                    color = Color.Yellow,
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 30.sp
+                )
+                Text(
+                    text = "ELibrarium",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.Blue,
+                    fontSize = 30.sp,
+                    fontFamily = FontFamily.SansSerif
+                )
+                Text(
+                    text = "Version: \n 1.0",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(10.dp)),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "Developer: \n Leslie Wanjala",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Cyan),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                )
+                Text(
+                    text = "Credits: Special thanks to: \n Emobilis Technology Training Institute \n Felix Kegode \n Pinterest \n Pexels \n Open AI \n Android Developers \n Google \n Firebase",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Blue, shape = CutCornerShape(20.dp)),
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+                Text(
+                    text = "License: \n MIT License",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Black),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+                Text(
+                    text = "Contacts: \n lesliewanjala@gmail.com \n 0791589514",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Green),
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif,
+                    color = Color.Black
+                )
+                Text(
+                    text = "Features: \n Borrowing books \n Returning Books \n Maintaining Saved Book Records \n Maintaining Borrowed Books Records \n Maintaining Client Accounts \n Creating User Accounts \n Viewing Books",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Yellow, shape = RoundedCornerShape(10.dp)),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+                Text(
+                    text = "Staff Privileges and Functions: \n Manage Books \n Manage Memberships \n Manage Borrowing \n Manage other Library Resources \n Interact with clients \n Provide Feedback",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Magenta),
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif,
+                    color = Color.Black
+                )
+                Text(
+                    text = "Client Privileges and Functions: \n Search and Browse Books \n Borrow Memberships \n Renew Books \n View Account Information \n Interact with library staff \n Provide feedback",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Cyan, shape = RoundedCornerShape(10.dp)),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+                Text(
+                    text = "©2024 Elibrarium. All rights reserved.",
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                // Add more Text elements for version, developer info, credits, etc.
+            }
+        }
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
             ClientBottomAppBar(navController, clientId)
         }
-        // Add more Text elements for version, developer info, credits, etc.
     }
 }
 @Preview(

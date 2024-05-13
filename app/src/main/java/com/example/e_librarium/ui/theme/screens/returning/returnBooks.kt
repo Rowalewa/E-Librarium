@@ -33,62 +33,70 @@ import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 fun ReturnBooksScreen(navController: NavHostController, clientId: String, bookId: String, staffId: String){
     val context = LocalContext.current
     val booksViewModel = BooksViewModel(navController, context)
-    Box{
+    Box {
         Column {
-            StaffAppTopBar(navController, staffId)
-            OutlinedTextField(
-                value = clientId,
-                onValueChange = {},
-                label = { Text(text = "Client Id") },
+            Box (
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,
-                    unfocusedTextColor = Color.Red,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                )
-            )
-            OutlinedTextField(
-                value = bookId,
-                onValueChange = {},
-                label = { Text(text = "Book Id") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,
-                    unfocusedTextColor = Color.Red,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                )
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                onClick = {
-                    booksViewModel.returnBook(
-                        clientId,
-                        bookId
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(Color.Green)
-
-            ) {
-                Text(
-                    text = "Return",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Blue
-                )
+                contentAlignment = Alignment.TopCenter
+            ){
+                StaffAppTopBar(navController, staffId)
             }
-            Spacer(modifier = Modifier.height(70.dp))
-        }
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            StaffBottomAppBar(navController, staffId)
+            Column {
+                StaffAppTopBar(navController, staffId)
+                OutlinedTextField(
+                    value = clientId,
+                    onValueChange = {},
+                    label = { Text(text = "Client Id") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = Color.Blue,
+                        unfocusedTextColor = Color.Red,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                    )
+                )
+                OutlinedTextField(
+                    value = bookId,
+                    onValueChange = {},
+                    label = { Text(text = "Book Id") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = Color.Blue,
+                        unfocusedTextColor = Color.Red,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                    )
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = {
+                        booksViewModel.returnBook(
+                            clientId,
+                            bookId
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(Color.Green)
+
+                ) {
+                    Text(
+                        text = "Return",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Blue
+                    )
+                }
+                Spacer(modifier = Modifier.height(70.dp))
+            }
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                StaffBottomAppBar(navController, staffId)
+            }
         }
     }
 

@@ -16,24 +16,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @Composable
-fun UserManualScreenClient(navController: NavController, clientId: String) {
-    Box{
+fun UserManualScreenGuest(navController: NavController) {
+    Box {
         Column {
             Box (
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
             ){
-                ClientAppTopBar(navController, clientId)
+                DashTopBar(navController)
             }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
-                    .verticalScroll(rememberScrollState(), reverseScrolling = false, enabled = true)
+                    .verticalScroll(rememberScrollState())
             ) {
                 Text(
                     text = "User Manual",
@@ -108,15 +107,9 @@ fun UserManualScreenClient(navController: NavController, clientId: String) {
                     text = "16. About:\n Click on info icon button on bottom app bar. \n A screen with the app information is populated here.\n This is all about the app, features, functionalities, version e.t.c.",
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
-                Spacer(modifier = Modifier.height(70.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 // Add more instructions as needed
             }
-        }
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            ClientBottomAppBar(navController, clientId)
         }
     }
 }

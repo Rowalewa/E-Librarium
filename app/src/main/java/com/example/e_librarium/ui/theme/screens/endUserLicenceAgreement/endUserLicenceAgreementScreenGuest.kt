@@ -14,24 +14,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.e_librarium.ui.theme.screens.admin.AdminAppTopBar
-import com.example.e_librarium.ui.theme.screens.admin.AdminBottomAppBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @Composable
-fun EndUserLicenceAgreementScreenAdmin(navController: NavController, adminId: String){
+fun EndUserLicenceAgreementScreenGuest(navController: NavController){
     Box{
         Column {
             Box (
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomCenter
+                contentAlignment = Alignment.TopCenter
             ){
-                AdminAppTopBar(navController, adminId)
+                DashTopBar(navController)
             }
-            Column(
+
+            Column (
                 modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = false)
-            ) {
+            ){
                 Text(
                     text = "License Grant: \n" +
                             "\n" +
@@ -80,14 +78,8 @@ fun EndUserLicenceAgreementScreenAdmin(navController: NavController, adminId: St
                             "If you have any questions about this EULA, please contact us at [lesliewanjala06@gmail.com]." +
                             "\n"
                 )
-                Spacer(modifier = Modifier.height(70.dp))
+                Spacer(modifier = Modifier.height(20.dp))
             }
-        }
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            AdminBottomAppBar(navController, adminId)
         }
     }
 }

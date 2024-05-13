@@ -72,7 +72,12 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                StaffAppTopBar(navController, staffId)
+            }
             val context = LocalContext.current
             val clientsRepository = AuthViewModel(navController, context)
             val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
@@ -85,7 +90,6 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                StaffAppTopBar(navController, staffId)
                 Text(
                     text = "CLIENTS",
                     fontSize = 30.sp,
