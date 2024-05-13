@@ -217,11 +217,6 @@ fun AboutScreenGuest(navController: NavController) {
                 // Add more Text elements for version, developer info, credits, etc.
             }
         }
-        Column (
-            modifier = Modifier.align(Alignment.BottomCenter)
-        ){
-            AdminBottomAppBar(navController, adminId = "")
-        }
     }
 }
 @Preview(
