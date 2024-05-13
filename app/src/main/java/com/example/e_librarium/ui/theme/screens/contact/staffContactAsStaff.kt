@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.borrowing
+package com.example.e_librarium.ui.theme.screens.contact
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,13 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -36,37 +35,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.data.BooksViewModel
-import com.example.e_librarium.models.Clients
 import com.example.e_librarium.models.Staff
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
-fun ViewClientsScreen(navController: NavHostController, staffId: String){
+fun ContactStaffAsStaff(navController: NavHostController, staffId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.view_clients),
-            contentDescription = "View Clients Image",
-            modifier = Modifier.matchParentSize(),
-            contentScale = ContentScale.FillBounds
-        )
+//        Image(painter = painterResource(id = R.drawable.view_clients),
+//            contentDescription = "View Clients Image",
+//            modifier = Modifier.matchParentSize(),
+//            contentScale = ContentScale.FillBounds
+//        )
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -74,11 +66,11 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
         ) {
 
             val context = LocalContext.current
-            val clientsRepository = AuthViewModel(navController, context)
-            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
-            val emptyClientListState = remember { mutableStateListOf<Clients>() }
+            val staffRepository = AuthViewModel(navController, context)
+            val emptyStaffState = remember { mutableStateOf(Staff("", "", "", "", "", "", "", "", "", "")) }
+            val emptyStaffListState = remember { mutableStateListOf<Staff>() }
 
-            val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
+            val staff = staffRepository.viewStaff(emptyStaffState, emptyStaffListState)
 
 
             Column(
@@ -87,7 +79,7 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
             ) {
                 StaffAppTopBar(navController, staffId)
                 Text(
-                    text = "CLIENTS",
+                    text = "Staff",
                     fontSize = 30.sp,
                     fontFamily = FontFamily.Serif,
                     color = Color.Red
@@ -133,8 +125,8 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                LazyColumn(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                LazyRow(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(
                         start = 0.dp,
                         end = 0.dp,
@@ -142,24 +134,18 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                         top = 0.dp
                     )
                 ) {
-                    val filteredClients = clients.filter {
+                    val filteredStaff = staff.filter {
                         it.fullName.contains(searchText, ignoreCase = true) ||
                                 it.email.contains(searchText, ignoreCase = true)
                     }
-                    items(filteredClients) {
-                        ClientInstance(
+                    items(filteredStaff) {
+                        StaffInstanceAsStaff(
                             fullName = it.fullName,
-                            gender = it.gender,
-                            maritalStatus = it.maritalStatus,
                             phoneNumber = it.phoneNumber,
-                            dateOfBirth = it.dateOfBirth,
                             email = it.email,
-                            clientProfilePictureUrl = it.clientProfilePictureUrl,
-                            clientStatus = it.clientStatus,
-                            clientId = it.clientId,
-                            staffId = staffId,
-                            navController = navController,
-                            clientRepository = clientsRepository
+                            staffProfilePictureUrl = it.staffProfilePictureUrl,
+                            //navController = navController,
+                            //staffRepository = staffRepository
                         )
                     }
                 }
@@ -173,33 +159,28 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
         }
     }
 }
-
 @Composable
-fun ClientInstance(
+fun StaffInstanceAsStaff(
     fullName: String,
-    gender: String,
-    maritalStatus: String,
     phoneNumber: String,
-    dateOfBirth: String,
     email: String,
-    clientProfilePictureUrl: String,
-    clientStatus: String,
-    clientId: String,
-    staffId: String,
-    navController: NavHostController,
-    clientRepository: AuthViewModel
+    staffProfilePictureUrl: String,
+    // navController: NavHostController,
+    //staffRepository: AuthViewModel
 ) {
-    val context = LocalContext.current
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(
-            start = 20.dp,
-            top = 0.dp,
-            end = 20.dp,
-            bottom = 0.dp
-        )
-        .clip(shape = CutCornerShape(20.dp)),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    //val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 20.dp,
+                top = 0.dp,
+                end = 20.dp,
+                bottom = 0.dp
+            )
+            .clip(shape = CutCornerShape(20.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -207,7 +188,7 @@ fun ClientInstance(
                 .fillMaxWidth()
         ) {
             Image(
-                painter = rememberAsyncImagePainter(clientProfilePictureUrl),
+                painter = rememberAsyncImagePainter(staffProfilePictureUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .size(400.dp)
@@ -215,92 +196,18 @@ fun ClientInstance(
                     .clip(shape = CircleShape)
             )
             Text(
-                text = "Client Name: $fullName",
+                text = "Staff Name: $fullName",
                 color = Color.Black
             )
             Text(
-                text = "Client Gender: $gender",
+                text = "Staff Phone Number: $phoneNumber",
                 color = Color.Black
             )
             Text(
-                text = "Client Marital Status: $maritalStatus",
+                text = "Staff Email: $email",
                 color = Color.Black
             )
-            Text(
-                text = "Client Phone Number: $phoneNumber",
-                color = Color.Black
-            )
-            Text(
-                text = "Client Date of Birth: $dateOfBirth",
-                color = Color.Black
-            )
-            Text(
-                text = "Client Email: $email",
-                color = Color.Black
-            )
-            Text(
-                text = "Client Status: $clientStatus",
-                color = Color.Black
-            )
-            Text(
-                text = "Client Id: $clientId",
-                color = Color.Black
-            )
-            Row(
-                modifier = Modifier.background(color = Color.Yellow)
-            ) {
-                Button(
-                    onClick = {
-                        clientRepository.deleteClient(clientId)
-                    },
-                    modifier = Modifier
-                        .width(150.dp)
-                        .padding(
-                            start = 20.dp,
-                            end = 0.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    colors = ButtonDefaults.buttonColors(Color.Red)
-                ) {
-                    Text(text = "Delete")
-                }
-                Spacer(modifier = Modifier.width(30.dp))
-                Button(
-                    onClick = {
-                        navController.navigate("$ROUTE_VIEW_BOOKS/$clientId/$staffId")
-                    },
-                    modifier = Modifier
-                        .width(200.dp)
-                        .padding(
-                            start = 0.dp,
-                            end = 20.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    colors = ButtonDefaults.buttonColors(Color.Blue)
-                ) {
-                    Text(text = "Choose Book")
-                }
-            }
-            Button(
-                onClick = {
-                    val viewModel = BooksViewModel(navController, context )
-                    viewModel.payFine(clientId)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    ),
-                colors = ButtonDefaults.buttonColors(Color.Magenta)
-            ) {
-                Text(text = "Fine Paid")
-            }
         }
     }
-    Spacer(modifier = Modifier.height(70.dp))
+    Spacer(modifier = Modifier.width(20.dp))
 }

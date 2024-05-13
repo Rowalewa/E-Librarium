@@ -332,7 +332,7 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String, staffId:
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(70.dp))
                 }
 
                 LazyColumn(
@@ -374,6 +374,12 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String, staffId:
                     }
                 }
             }
+        }
+        Box (
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ){
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }

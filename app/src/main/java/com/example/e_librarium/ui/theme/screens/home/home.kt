@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,14 +14,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
+import com.example.e_librarium.navigation.ROUTE_ADMIN_LOGIN
 import com.example.e_librarium.navigation.ROUTE_CLIENT_HOME
 import com.example.e_librarium.navigation.ROUTE_CLIENT_LOGIN
 import com.example.e_librarium.navigation.ROUTE_CLIENT_REGISTER
@@ -65,21 +74,46 @@ fun HomeScreen(navController: NavController){
             contentScale = ContentScale.FillBounds
         )
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
 
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = "E-Librarium",
-                fontSize = 30.sp,
-                fontWeight = FontWeight.ExtraBold,
-                fontFamily = FontFamily.Serif,
-                color = Color.Blue,
-                modifier = Modifier
-                    .background(color = Color.Green, shape = CutCornerShape(10.dp))
-                    .width(250.dp),
-                textAlign = TextAlign.Center
-            )
+            Row {
+                Text(
+                    text = "E-Librarium",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = FontFamily.Serif,
+                    color = Color.Blue,
+                    modifier = Modifier
+                        .background(color = Color.Green, shape = CutCornerShape(10.dp))
+                        .width(250.dp),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.width(20.dp))
+                Column(
+                    modifier = Modifier
+                        .background(color = Color.Black, shape = RoundedCornerShape(10.dp))
+                        .padding(5.dp)
+                ){
+                    IconButton(
+                        onClick = { navController.navigate(ROUTE_ADMIN_LOGIN) },
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Face,
+                            contentDescription = "Admin",
+                            tint = Color.Blue
+                        )
+                    }
+                    Text(
+                        text = "Admin",
+                        modifier = Modifier.background(color = Color.Blue),
+                        color = Color.White
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedCard(
 //            onClick = { navController.navigate(ROUTE_STAFF_HOME)},

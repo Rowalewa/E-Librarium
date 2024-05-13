@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.borrowing
+package com.example.e_librarium.ui.theme.screens.admin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -40,7 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,21 +46,15 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.data.BooksViewModel
+import com.example.e_librarium.models.Admin
 import com.example.e_librarium.models.Clients
-import com.example.e_librarium.models.Staff
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
-import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
-import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 
 @Composable
-fun ViewClientsScreen(navController: NavHostController, staffId: String){
+fun AdminClientEdit(navController: NavHostController, adminId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.view_clients),
+        Image(painter = painterResource(id = R.drawable.admin_client_edit_screen),
             contentDescription = "View Clients Image",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
@@ -85,7 +77,7 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                StaffAppTopBar(navController, staffId)
+                AdminAppTopBar(navController, adminId)
                 Text(
                     text = "CLIENTS",
                     fontSize = 30.sp,
@@ -147,7 +139,7 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                                 it.email.contains(searchText, ignoreCase = true)
                     }
                     items(filteredClients) {
-                        ClientInstance(
+                        ClientInstanceAdmin(
                             fullName = it.fullName,
                             gender = it.gender,
                             maritalStatus = it.maritalStatus,
@@ -157,7 +149,6 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
                             clientStatus = it.clientStatus,
                             clientId = it.clientId,
-                            staffId = staffId,
                             navController = navController,
                             clientRepository = clientsRepository
                         )
@@ -169,13 +160,13 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            StaffBottomAppBar(navController, staffId)
+            AdminBottomAppBar(navController, adminId)
         }
     }
 }
 
 @Composable
-fun ClientInstance(
+fun ClientInstanceAdmin(
     fullName: String,
     gender: String,
     maritalStatus: String,
@@ -185,7 +176,6 @@ fun ClientInstance(
     clientProfilePictureUrl: String,
     clientStatus: String,
     clientId: String,
-    staffId: String,
     navController: NavHostController,
     clientRepository: AuthViewModel
 ) {
@@ -254,7 +244,7 @@ fun ClientInstance(
                         clientRepository.deleteClient(clientId)
                     },
                     modifier = Modifier
-                        .width(150.dp)
+                        .fillMaxWidth()
                         .padding(
                             start = 20.dp,
                             end = 0.dp,
@@ -265,40 +255,6 @@ fun ClientInstance(
                 ) {
                     Text(text = "Delete")
                 }
-                Spacer(modifier = Modifier.width(30.dp))
-                Button(
-                    onClick = {
-                        navController.navigate("$ROUTE_VIEW_BOOKS/$clientId/$staffId")
-                    },
-                    modifier = Modifier
-                        .width(200.dp)
-                        .padding(
-                            start = 0.dp,
-                            end = 20.dp,
-                            top = 0.dp,
-                            bottom = 0.dp
-                        ),
-                    colors = ButtonDefaults.buttonColors(Color.Blue)
-                ) {
-                    Text(text = "Choose Book")
-                }
-            }
-            Button(
-                onClick = {
-                    val viewModel = BooksViewModel(navController, context )
-                    viewModel.payFine(clientId)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    ),
-                colors = ButtonDefaults.buttonColors(Color.Magenta)
-            ) {
-                Text(text = "Fine Paid")
             }
         }
     }

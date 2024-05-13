@@ -1,6 +1,7 @@
 package com.example.e_librarium.ui.theme.screens.feedback
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.e_librarium.data.FeedbackViewModel
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -53,53 +56,65 @@ fun FeedbackScreenClient(navController: NavHostController, clientId: String) {
             Toast.makeText(context, "Database Error: ${error.message}", Toast.LENGTH_SHORT).show()
         }
     })
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
-    ) {
-        Text(
-            text = "We'd love to hear your feedback!",
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-        TextField(
-            value = feedbackName,
-            onValueChange = { feedbackName = it },
-            label = { Text("Enter your name here *") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = feedbackEmailAddress,
-            onValueChange = { feedbackEmailAddress = it },
-            label = { Text("Enter your email here (Optional)") },
-            modifier = Modifier.fillMaxWidth()
-        )
+    Box{
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            ClientAppTopBar(navController, clientId)
+            Text(
+                text = "We'd love to hear your feedback!",
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            TextField(
+                value = feedbackName,
+                onValueChange = { feedbackName = it },
+                label = { Text("Enter your name here *") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            TextField(
+                value = feedbackEmailAddress,
+                onValueChange = { feedbackEmailAddress = it },
+                label = { Text("Enter your email here (Optional)") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        TextField(
-            value = feedbackText,
-            onValueChange = { feedbackText = it },
-            label = { Text("Enter your feedback here *") },
-            modifier = Modifier.fillMaxWidth()
-                .height(100.dp)
-        )
+            TextField(
+                value = feedbackText,
+                onValueChange = { feedbackText = it },
+                label = { Text("Enter your feedback here *") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                val feedbackRepository = FeedbackViewModel(navController, context)
-                feedbackRepository.saveFeedbackToFirebaseClient(
-                    feedbackName.text.trim(),
-                    feedbackEmailAddress.text.trim(),
-                    feedbackText.text.trim()
-                )
+            Button(
+                onClick = {
+                    val feedbackRepository = FeedbackViewModel(navController, context)
+                    feedbackRepository.saveFeedbackToFirebaseClient(
+                        feedbackName.text.trim(),
+                        feedbackEmailAddress.text.trim(),
+                        feedbackText.text.trim()
+                    )
 //                feedbackText = TextFieldValue()
 //                feedbackEmailAddress = TextFieldValue()
 //                feedbackName = TextFieldValue()
-            },
-            modifier = Modifier.align(Alignment.End)
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Submit")
+            }
+            Spacer(modifier = Modifier.height(70.dp))
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Text("Submit")
+            ClientBottomAppBar(navController, clientId)
         }
     }
+
 }

@@ -53,6 +53,7 @@ import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun ViewAllBooksScreen(navController: NavHostController, staffId: String){
@@ -303,7 +304,7 @@ fun ViewAllBooksScreen(navController: NavHostController, staffId: String){
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(70.dp))
                 }
 
                 LazyColumn(
@@ -345,6 +346,12 @@ fun ViewAllBooksScreen(navController: NavHostController, staffId: String){
                     }
                 }
             }
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }

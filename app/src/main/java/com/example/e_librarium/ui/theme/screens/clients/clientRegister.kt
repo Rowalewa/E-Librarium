@@ -447,8 +447,8 @@ fun ImagePicker(
             }
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
-                val productRepository = AuthViewModel(navController,context)
-                productRepository.clientsignup(
+                val clientRepository = AuthViewModel(navController,context)
+                clientRepository.clientsignup(
                     fullName,
                     gender,
                     maritalStatus,

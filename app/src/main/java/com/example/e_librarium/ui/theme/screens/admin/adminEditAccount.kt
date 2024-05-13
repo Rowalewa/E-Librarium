@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.clients
+package com.example.e_librarium.ui.theme.screens.admin
 
 import android.content.Context
 import android.net.Uri
@@ -32,8 +32,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.e_librarium.data.AuthViewModel
+import com.example.e_librarium.models.Admin
 import com.example.e_librarium.models.Clients
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -41,7 +41,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 @Composable
-fun EditClientInfo(navController: NavHostController, clientId: String){
+fun AdminEditAccount(navController: NavHostController, adminId: String){
     val context = LocalContext.current
     val fullName by remember {
         mutableStateOf("")
@@ -67,9 +67,6 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
     var confpass by remember {
         mutableStateOf("")
     }
-    val clientStatus by remember {
-        mutableStateOf("")
-    }
 
     var mFullName by remember {
         mutableStateOf(TextFieldValue(fullName))
@@ -92,21 +89,17 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
     var mPass by remember {
         mutableStateOf(TextFieldValue(pass))
     }
-    var mClientStatus by remember {
-        mutableStateOf(TextFieldValue(clientStatus))
-    }
-    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
+    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Admin/$adminId")
     currentDataRef.addValueEventListener(object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            val client = snapshot.getValue(Clients::class.java)
-            mFullName = TextFieldValue(client!!.fullName)
-            mGender = TextFieldValue(client.gender)
-            mMaritalStatus = TextFieldValue(client.maritalStatus)
-            mPhoneNumber = TextFieldValue(client.phoneNumber)
-            mDateOfBirth = TextFieldValue(client.dateOfBirth)
-            mEmail = TextFieldValue(client.email)
-            pass = client.pass
-            mClientStatus = TextFieldValue(client.clientStatus)
+            val admin = snapshot.getValue(Admin::class.java)
+            mFullName = TextFieldValue(admin!!.fullName)
+            mGender = TextFieldValue(admin.gender)
+            mMaritalStatus = TextFieldValue(admin.maritalStatus)
+            mPhoneNumber = TextFieldValue(admin.phoneNumber)
+            mDateOfBirth = TextFieldValue(admin.dateOfBirth)
+            mEmail = TextFieldValue(admin.email)
+            pass = admin.pass
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -117,7 +110,7 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ClientAppTopBar(navController, clientId)
+            AdminAppTopBar(navController, adminId)
             OutlinedTextField(
                 value = mEmail,
                 onValueChange = { mEmail = it },
@@ -139,7 +132,7 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
 
-            ClientUploader(
+            AdminUploader(
                 context = context,
                 navController = navController,
                 fullName = mFullName.text.trim(),
@@ -150,21 +143,20 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
                 email = mEmail.text.trim(),
                 pass = mPass.text.trim(),
                 confpass = confpass.trim(),
-                clientStatus = mClientStatus.text.trim(),
-                clientId = clientId
+                adminId = adminId
             )
         }
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            ClientBottomAppBar(navController, clientId)
+            ClientBottomAppBar(navController, adminId)
         }
     }
 }
 
 @Composable
-fun ClientUploader(
+fun AdminUploader(
     modifier: Modifier = Modifier,
     context: Context,
     navController: NavHostController,
@@ -176,8 +168,7 @@ fun ClientUploader(
     email: String,
     pass: String,
     confpass: String,
-    clientStatus: String,
-    clientId: String
+    adminId: String
 ) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -224,8 +215,8 @@ fun ClientUploader(
             }
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
-                val clientRepository = AuthViewModel(navController, context)
-                clientRepository.updateClient(
+                val adminRepository = AuthViewModel(navController, context)
+                adminRepository.updateAdmin(
                     fullName,
                     gender,
                     maritalStatus,
@@ -234,8 +225,7 @@ fun ClientUploader(
                     email,
                     pass,
                     confpass,
-                    clientStatus,
-                    clientId,
+                    adminId,
                     imageUri
                 )
 

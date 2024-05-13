@@ -1,4 +1,6 @@
-package com.example.e_librarium.ui.theme.screens.staff
+@file:Suppress("DEPRECATION")
+
+package com.example.e_librarium.ui.theme.screens.admin
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -58,11 +61,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
+import com.example.e_librarium.navigation.ROUTE_CLIENT_LOGIN
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -70,7 +72,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StaffRegisterScreen(navController: NavController){
+fun AdminRegisterScreen(navController: NavController){
     var fullName by remember {
         mutableStateOf(TextFieldValue(""))
     }
@@ -107,8 +109,7 @@ fun StaffRegisterScreen(navController: NavController){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        Image(
-            painter = painterResource(id = R.drawable.staff_register),
+        Image(painter = painterResource(id = R.drawable.admin_register_screen),
             contentDescription = "View Clients Image",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
@@ -121,13 +122,15 @@ fun StaffRegisterScreen(navController: NavController){
                 .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = true)
         ) {
             Text(
-                text = " REGISTER ",
+                text = "REGISTER ",
                 fontFamily = FontFamily.Serif,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color.Blue,
+                color = Color.Black,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.background(color = Color.Red, shape = CutCornerShape(10.dp))
+                modifier = Modifier
+                    .background(color = Color.Red, shape = CutCornerShape(10.dp))
+                    .width(200.dp)
             )
             OutlinedTextField(
                 value = fullName,
@@ -308,7 +311,6 @@ fun StaffRegisterScreen(navController: NavController){
                     today.get(Calendar.DAY_OF_MONTH)
                 ).show()
             }
-
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -363,28 +365,6 @@ fun StaffRegisterScreen(navController: NavController){
 
                 )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Already have an account?")
-            Button(
-                onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    ),
-                colors = ButtonDefaults.buttonColors(Color.Cyan)
-            ) {
-                Text(
-                    text = "Log In",
-                    color = Color.Black,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif
-                )
-
-            }
         }
     }
 
@@ -446,7 +426,7 @@ fun ImagePicker(
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 val productRepository = AuthViewModel(navController,context)
-                productRepository.staffsignup(
+                productRepository.adminSignup(
                     fullName,
                     gender,
                     maritalStatus,
@@ -455,8 +435,7 @@ fun ImagePicker(
                     email,
                     pass,
                     confpass,
-                    imageUri!!,
-                    staffStatus = "Pending Verification"
+                    imageUri!!
                 )
 
             },
@@ -468,7 +447,7 @@ fun ImagePicker(
                         top = 0.dp,
                         bottom = 0.dp
                     ),
-            colors = ButtonDefaults.buttonColors(Color.Cyan)
+                colors = ButtonDefaults.buttonColors(Color.Cyan)
             ) {
                 Text(
                     text = "Register",
@@ -478,29 +457,19 @@ fun ImagePicker(
                     fontFamily = FontFamily.Serif
                 )
             }
-//            Button(onClick = {
-//                //-----------WRITE THE UPLOAD LOGIC HERE---------------//
-//
-////                navController.navigate(ROUTE_VIEW_UPLOAD_SCREEN)
-//
-//            }) {
-//                Text(text = "view uploads")
-//            }
-
         }
     }
 
 }
 
-
 @Preview(
     showSystemUi = true,
     showBackground = true,
-    name = "Staff Register Screen Preview \uD83E\uDE77"
+    name = "Client Register Screen Preview"
 )
 @Composable
-fun StaffRegisterPreview(){
+fun ClientRegisterScreenPreview(){
     ELibrariumTheme {
-        StaffRegisterScreen(navController = rememberNavController())
+        AdminRegisterScreen(navController = rememberNavController())
     }
 }

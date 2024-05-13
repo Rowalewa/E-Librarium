@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.clients
+package com.example.e_librarium.ui.theme.screens.admin
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -40,18 +40,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
-import com.example.e_librarium.models.Clients
+import com.example.e_librarium.models.Admin
 import com.example.e_librarium.models.Staff
-import com.example.e_librarium.navigation.ROUTE_EDIT_CLIENT_INFO
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
+import com.example.e_librarium.navigation.ROUTE_ADMIN_EDIT_ACCOUNT
+import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 @Composable
-fun ViewClientInfo(navController: NavHostController, clientId: String) {
+fun AdminViewAccount(navController: NavHostController, adminId: String){
     val context = LocalContext.current
     val fullName by remember {
         mutableStateOf("")
@@ -71,62 +70,54 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
     val email by remember {
         mutableStateOf("")
     }
-    val clientProfilePictureUrl by remember {
-        mutableStateOf("")
-    }
-    val clientStatus by remember {
+    val adminProfilePictureUrl by remember {
         mutableStateOf("")
     }
 
-    var clientFullName by remember {
+    var adminFullName by remember {
         mutableStateOf(TextFieldValue(fullName))
     }
-    var clientGender by remember {
+    var adminGender by remember {
         mutableStateOf(TextFieldValue(gender))
     }
-    var clientMaritalStatus by remember {
+    var adminMaritalStatus by remember {
         mutableStateOf(TextFieldValue(maritalStatus))
     }
-    var clientPhoneNumber by remember {
+    var adminPhoneNumber by remember {
         mutableStateOf(TextFieldValue(phoneNumber))
     }
-    var clientDateOfBirth by remember {
+    var adminDateOfBirth by remember {
         mutableStateOf(TextFieldValue(dateOfBirth))
     }
-    var clientEmail by remember {
+    var adminEmail by remember {
         mutableStateOf(TextFieldValue(email))
     }
-    var mClientProfilePictureUrl by remember {
-        mutableStateOf(clientProfilePictureUrl)
+    var mAdminProfilePictureUrl by remember {
+        mutableStateOf(adminProfilePictureUrl)
     }
-    var mClientStatus by remember {
-        mutableStateOf(clientStatus)
-    }
-    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
-    currentDataRef.addValueEventListener(object : ValueEventListener {
+    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Admin/$adminId")
+    currentDataRef.addValueEventListener(object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            val client = snapshot.getValue(Clients::class.java)
-            clientFullName = TextFieldValue(client!!.fullName)
-            clientGender = TextFieldValue(client.gender)
-            clientMaritalStatus = TextFieldValue(client.maritalStatus)
-            clientPhoneNumber = TextFieldValue(client.phoneNumber)
-            clientDateOfBirth = TextFieldValue(client.dateOfBirth)
-            clientEmail = TextFieldValue(client.email)
-            mClientStatus = TextFieldValue(client.clientStatus).text
-            mClientProfilePictureUrl = client.clientProfilePictureUrl
+            val admin = snapshot.getValue(Admin::class.java)
+            adminFullName = TextFieldValue(admin!!.fullName)
+            adminGender = TextFieldValue(admin.gender)
+            adminMaritalStatus = TextFieldValue(admin.maritalStatus)
+            adminPhoneNumber = TextFieldValue(admin.phoneNumber)
+            adminDateOfBirth = TextFieldValue(admin.dateOfBirth)
+            adminEmail = TextFieldValue(admin.email)
+            mAdminProfilePictureUrl = admin.adminProfilePictureUrl
         }
 
         override fun onCancelled(error: DatabaseError) {
-            Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,error.message, Toast.LENGTH_SHORT).show()
         }
-    })
+    } )
 
     Box(
         modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.view_client_info),
-            contentDescription = "View Client Wallpaper",
+    ){
+        Image(painter = painterResource(id = R.drawable.view_staff_info),
+            contentDescription = "View Staff Wallpaper",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()
         )
@@ -134,9 +125,9 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
         ) {
-            ClientAppTopBar(navController, clientId)
+            AdminAppTopBar(navController, adminId)
             Image(
-                painter = rememberAsyncImagePainter(mClientProfilePictureUrl),
+                painter = rememberAsyncImagePainter(mAdminProfilePictureUrl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -149,9 +140,9 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
                     .padding(20.dp)
                     .border(width = 5.dp, color = Color.Magenta, shape = RoundedCornerShape(20.dp))
                     .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
-            ) {
+            ){
                 Text(
-                    text = "Name:\n ${clientFullName.text}",
+                    text = "Name:\n ${adminFullName.text}",
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
                     color = Color.Black,
@@ -165,9 +156,19 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
                             end = 0.dp,
                             start = 0.dp
                         )
+                        .background(color = Color.Yellow)
                 )
                 Text(
-                    text = "Gender:\n ${clientGender.text}",
+                    text = "Gender:\n ${adminGender.text}",
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "Marital Status: \n ${adminMaritalStatus.text}",
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
                     color = Color.Black,
@@ -178,38 +179,16 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
                         .background(color = Color.Yellow)
                 )
                 Text(
-                    text = "Marital Status: \n ${clientMaritalStatus.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = "Phone Number: \n ${clientPhoneNumber.text}",
+                    text = "Phone Number: \n ${adminPhoneNumber.text}",
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Monospace,
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "Date of Birth: \n ${clientDateOfBirth.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = "Status: \n $mClientStatus",
+                    text = "Date of Birth: \n ${adminDateOfBirth.text}",
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
                     color = Color.Black,
@@ -220,7 +199,7 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
                         .background(color = Color.Yellow)
                 )
                 Text(
-                    text = "Email Address: \n ${clientEmail.text}",
+                    text = "Email Address: \n ${adminEmail.text}",
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
                     color = Color.Black,
@@ -237,7 +216,7 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
                 )
             }
             Button(
-                onClick = { navController.navigate("$ROUTE_EDIT_CLIENT_INFO/$clientId") },
+                onClick = { navController.navigate("$ROUTE_ADMIN_EDIT_ACCOUNT/$adminId") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -268,7 +247,7 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            ClientBottomAppBar(navController, clientId)
+            AdminBottomAppBar(navController, adminId)
         }
     }
 }

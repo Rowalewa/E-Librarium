@@ -23,16 +23,16 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.e_librarium.data.FeedbackViewModel
-import com.example.e_librarium.models.Staff
-import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
-import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
+import com.example.e_librarium.ui.theme.screens.admin.AdminAppTopBar
+import com.example.e_librarium.ui.theme.screens.admin.AdminBottomAppBar
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 @Composable
-fun FeedbackScreenStaff(navController: NavHostController, staffId: String) {
+fun FeedbackScreenAdmin(navController: NavHostController, adminId: String) {
     val context = LocalContext.current
     var feedbackName by remember {
         mutableStateOf(TextFieldValue())
@@ -43,12 +43,12 @@ fun FeedbackScreenStaff(navController: NavHostController, staffId: String) {
     var feedbackText by remember {
         mutableStateOf(TextFieldValue())
     }
-    val staffFullNameRef = FirebaseDatabase.getInstance().getReference("Staff").child(staffId).child("fullName")
-    staffFullNameRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    val adminFullNameRef = FirebaseDatabase.getInstance().getReference("Admin").child(adminId).child("fullName")
+    adminFullNameRef.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            val staffFullName = snapshot.getValue(String::class.java)
-            if (staffFullName != null) {
-                feedbackName = TextFieldValue(staffFullName)
+            val adminFullName = snapshot.getValue(String::class.java)
+            if (adminFullName != null) {
+                feedbackName = TextFieldValue(adminFullName)
             }
         }
 
@@ -63,7 +63,7 @@ fun FeedbackScreenStaff(navController: NavHostController, staffId: String) {
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            StaffAppTopBar(navController, staffId)
+            AdminAppTopBar(navController, adminId)
             Text(
                 text = "We'd love to hear your feedback!",
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -95,7 +95,7 @@ fun FeedbackScreenStaff(navController: NavHostController, staffId: String) {
             Button(
                 onClick = {
                     val feedbackRepository = FeedbackViewModel(navController, context)
-                    feedbackRepository.saveFeedbackToFirebaseStaff(
+                    feedbackRepository.saveFeedbackToFirebaseAdmin(
                         feedbackName.text.trim(),
                         feedbackEmailAddress.text.trim(),
                         feedbackText.text.trim()
@@ -114,7 +114,8 @@ fun FeedbackScreenStaff(navController: NavHostController, staffId: String) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            StaffBottomAppBar(navController, staffId)
+            AdminBottomAppBar(navController, adminId)
         }
     }
+
 }

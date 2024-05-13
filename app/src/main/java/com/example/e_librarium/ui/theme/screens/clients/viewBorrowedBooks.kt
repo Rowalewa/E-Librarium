@@ -3,8 +3,10 @@ package com.example.e_librarium.ui.theme.screens.clients
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.BorrowingBook
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
@@ -44,26 +47,34 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
         }
     }
 
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        ClientAppTopBar(navController, clientId)
-        Spacer(modifier = Modifier.height(5.dp))
-        LazyColumn {
-            items(borrowedBooks) { book ->
-                BookItems(
-                    bookId = book.bookId,
-                    bookTitle = book.bookTitle,
-                    bookAuthor = book.bookAuthor,
-                    bookISBNNumber = book.bookISBNNumber,
-                    bookGenre = book.bookGenre,
-                    bookPublisher = book.bookPublisher,
-                    bookSynopsis = book.bookSynopsis,
-                    bookImageUrl = book.bookImageUrl,
-                    borrowDate = book.borrowDate,
-                    returnDate = book.returnDate
-                )
+    Box{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ClientAppTopBar(navController, clientId)
+            Spacer(modifier = Modifier.height(5.dp))
+            LazyColumn {
+                items(borrowedBooks) { book ->
+                    BookItems(
+                        bookId = book.bookId,
+                        bookTitle = book.bookTitle,
+                        bookAuthor = book.bookAuthor,
+                        bookISBNNumber = book.bookISBNNumber,
+                        bookGenre = book.bookGenre,
+                        bookPublisher = book.bookPublisher,
+                        bookSynopsis = book.bookSynopsis,
+                        bookImageUrl = book.bookImageUrl,
+                        borrowDate = book.borrowDate,
+                        returnDate = book.returnDate
+                    )
+                }
             }
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            ClientBottomAppBar(navController, clientId)
         }
     }
 }
@@ -98,6 +109,7 @@ fun BookItems(
             modifier = Modifier
                 .background(color = Color.Green)
                 .fillMaxWidth()
+                .padding(16.dp)
         ) {
             Image(
                 painter = rememberAsyncImagePainter(bookImageUrl),
@@ -144,5 +156,5 @@ fun BookItems(
             )
         }
     }
-    Spacer(modifier = Modifier.height(40.dp))
+    Spacer(modifier = Modifier.height(80.dp))
 }

@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -36,6 +38,7 @@ import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
+import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -243,6 +246,13 @@ fun BorrowBooksScreen(navController: NavHostController, bookId: String, clientId
                     Text("Borrow Book")
                 }
             }
+            Spacer(modifier = Modifier.height(70.dp))
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }

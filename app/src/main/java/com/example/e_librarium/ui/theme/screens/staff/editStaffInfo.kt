@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +37,7 @@ import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
+import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -64,6 +67,9 @@ fun EditStaffInfo(navController: NavHostController, staffId: String){
     var pass by remember {
         mutableStateOf("")
     }
+    var staffStatus by remember {
+        mutableStateOf("")
+    }
     var confpass by remember {
         mutableStateOf("")
     }
@@ -89,6 +95,9 @@ fun EditStaffInfo(navController: NavHostController, staffId: String){
     var mPass by remember {
         mutableStateOf(TextFieldValue(pass))
     }
+    var mStaffStatus by remember {
+        mutableStateOf(TextFieldValue(staffStatus))
+    }
     val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Staff/$staffId")
     currentDataRef.addValueEventListener(object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -100,52 +109,61 @@ fun EditStaffInfo(navController: NavHostController, staffId: String){
             mDateOfBirth = TextFieldValue(staff.dateOfBirth)
             mEmail = TextFieldValue(staff.email)
             pass = staff.pass
+            mStaffStatus = TextFieldValue(staff.staffStatus)
         }
 
         override fun onCancelled(error: DatabaseError) {
             Toast.makeText(context,error.message, Toast.LENGTH_SHORT).show()
         }
     } )
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        StaffAppTopBar(navController, staffId)
-        OutlinedTextField(
-            value = mEmail,
-            onValueChange = {mEmail = it},
-            label = { Text(text = "Email Address") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
+    Box{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            StaffAppTopBar(navController, staffId)
+            OutlinedTextField(
+                value = mEmail,
+                onValueChange = { mEmail = it },
+                label = { Text(text = "Email Address") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
 
-        OutlinedTextField(
-            value = mPass,
-            onValueChange = {mPass = it},
-            label = { Text(text = "Password") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
+            OutlinedTextField(
+                value = mPass,
+                onValueChange = { mPass = it },
+                label = { Text(text = "Password") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
 
-        OutlinedTextField(
-            value = confpass,
-            onValueChange = {confpass = it},
-            label = { Text(text = "Confirm Password") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
+            OutlinedTextField(
+                value = confpass,
+                onValueChange = { confpass = it },
+                label = { Text(text = "Confirm Password") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
 
-        StaffUploader(
-            context = context,
-            navController = navController,
-            fullName = mFullName.text.trim(),
-            gender = mGender.text.trim(),
-            maritalStatus = mMaritalStatus.text.trim(),
-            phoneNumber = mPhoneNumber.text.trim(),
-            dateOfBirth = mDateOfBirth.text.trim(),
-            email = mEmail.text.trim(),
-            pass = mPass.text.trim(),
-            confpass = confpass.trim(),
-            staffId = staffId
-        )
+            StaffUploader(
+                context = context,
+                navController = navController,
+                fullName = mFullName.text.trim(),
+                gender = mGender.text.trim(),
+                maritalStatus = mMaritalStatus.text.trim(),
+                phoneNumber = mPhoneNumber.text.trim(),
+                dateOfBirth = mDateOfBirth.text.trim(),
+                email = mEmail.text.trim(),
+                pass = mPass.text.trim(),
+                confpass = confpass.trim(),
+                staffId = staffId,
+                staffStatus = mStaffStatus.text.trim()
+            )
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
+        }
     }
-
 }
 
 @Composable
@@ -161,6 +179,7 @@ fun StaffUploader(
     email: String,
     pass: String,
     confpass: String,
+    staffStatus: String,
     staffId: String
 ) {
     var hasImage by remember { mutableStateOf(false) }
@@ -198,7 +217,8 @@ fun StaffUploader(
                 onClick = {
                     imagePicker.launch("image/*")
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(20.dp)
             ) {
                 Text(
@@ -218,11 +238,13 @@ fun StaffUploader(
                     pass,
                     confpass,
                     staffId,
-                    imageUri
+                    imageUri,
+                    staffStatus
 
                 )
             },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
                         start = 10.dp,
                         end = 10.dp,
@@ -232,7 +254,7 @@ fun StaffUploader(
             ) {
                 Text(text = "Update Changes")
             }
-
         }
     }
+    Spacer(modifier = Modifier.height(70.dp))
 }

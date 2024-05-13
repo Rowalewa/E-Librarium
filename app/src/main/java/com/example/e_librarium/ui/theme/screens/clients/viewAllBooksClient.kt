@@ -48,6 +48,7 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun ViewAllBooksClient(navController: NavHostController, clientId: String){
@@ -261,7 +262,7 @@ fun ViewAllBooksClient(navController: NavHostController, clientId: String){
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(70.dp))
                 }
 
                 LazyColumn(
@@ -300,6 +301,12 @@ fun ViewAllBooksClient(navController: NavHostController, clientId: String){
                     }
                 }
             }
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            ClientBottomAppBar(navController, clientId)
         }
     }
 }

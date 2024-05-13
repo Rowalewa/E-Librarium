@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.borrowing
+package com.example.e_librarium.ui.theme.screens.admin
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,8 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,7 +31,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -50,99 +51,102 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_CLIENT
+import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_ADMIN
 import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_STAFF
+import com.example.e_librarium.navigation.ROUTE_ADMIN_CLIENT_EDIT
+import com.example.e_librarium.navigation.ROUTE_ADMIN_EDIT_HOME
+import com.example.e_librarium.navigation.ROUTE_ADMIN_FEEDBACK
+import com.example.e_librarium.navigation.ROUTE_ADMIN_STAFF_EDIT
+import com.example.e_librarium.navigation.ROUTE_ADMIN_VIEW_ACCOUNT
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_HOME
-import com.example.e_librarium.navigation.ROUTE_CLIENT_FEEDBACK
-import com.example.e_librarium.navigation.ROUTE_EULA_CLIENT
+import com.example.e_librarium.navigation.ROUTE_EULA_ADMIN
 import com.example.e_librarium.navigation.ROUTE_EULA_STAFF
-import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_CLIENT
+import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_ADMIN
 import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_STAFF
-import com.example.e_librarium.navigation.ROUTE_STAFF_CONTACT_AS_CLIENT
+import com.example.e_librarium.navigation.ROUTE_STAFF_CONTACT_AS_ADMIN
 import com.example.e_librarium.navigation.ROUTE_STAFF_CONTACT_AS_STAFF
 import com.example.e_librarium.navigation.ROUTE_STAFF_FEEDBACK
-import com.example.e_librarium.navigation.ROUTE_USER_MANUAL_CLIENT
+import com.example.e_librarium.navigation.ROUTE_USER_MANUAL_ADMIN
 import com.example.e_librarium.navigation.ROUTE_USER_MANUAL_STAFF
-import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS_CLIENT
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS_GUEST
-import com.example.e_librarium.navigation.ROUTE_VIEW_BORROWED_BOOKS
-import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENT_INFO
 import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun BorrowHomeScreen(navController: NavHostController, clientId: String){
-    val context = LocalContext.current
-
-    Box(
+fun AdminEditHome(navController: NavController, adminId: String){
+    Box (
         modifier = Modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.borrow_home),
-            contentDescription = "Borrow Home",
+        Image(painter = painterResource(id = R.drawable.admin_edit_home_screen),
+            contentDescription = "View Clients Image",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column {
-            ClientAppTopBar(navController, clientId)
-            Button(
-                onClick = {
-                    val myClientLogout = AuthViewModel(navController, context)
-                    myClientLogout.clientlogout()
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            AdminAppTopBar(navController, adminId)
+            Text(
+                text = "ACTIONS",
+                color = Color.Red,
+                fontSize = 30.sp,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.ExtraBold
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Card (
+                colors = CardDefaults.cardColors(Color.Blue)
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.staff_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
                 )
-            ) {
-                Text(text = "Sign Out")
+                Button(onClick = { navController.navigate("$ROUTE_ADMIN_STAFF_EDIT/$adminId") },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Edit Staff")
+                }
             }
-            Button(
-                onClick = {
-                    navController.navigate("$ROUTE_VIEW_BORROWED_BOOKS/$clientId")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow
+            Spacer(modifier = Modifier.height(30.dp))
+            Card (
+                colors = CardDefaults.cardColors(Color.Red)
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.client_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
                 )
-            ) {
-                Text(text = "View My Borrowed Books")
+                Button(onClick = { navController.navigate("$ROUTE_ADMIN_CLIENT_EDIT/$adminId") },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Edit Client")
+                }
             }
-            Button(
-                onClick = {
-                    navController.navigate("$ROUTE_VIEW_ALL_BOOKS_CLIENT/$clientId")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow
-                )
-            ) {
-                Text(text = "View Library Books")
-            }
-            Spacer(modifier = Modifier.height(70.dp))
         }
-        Box(
+        Box (
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
-        ) {
-            ClientBottomAppBar(navController, clientId)
+        ){
+            AdminBottomAppBar(navController, adminId)
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClientAppTopBar(navController: NavController, clientId: String){
+fun AdminAppTopBar(navController: NavController, adminId: String){
     val context = LocalContext.current
     var expanded by remember {
         mutableStateOf(false)
     }
-    val client = FirebaseAuth.getInstance().currentUser
-    val clientProfilePictureUrl = client?.photoUrl?.toString()
+    val staff = FirebaseAuth.getInstance().currentUser
+    val staffProfilePictureUrl = staff?.photoUrl?.toString()
     TopAppBar(
         title = {
             Text(
@@ -155,7 +159,7 @@ fun ClientAppTopBar(navController: NavController, clientId: String){
         },
         navigationIcon ={
             IconButton(onClick = {
-                navController.navigate("$ROUTE_BORROW_HOME/$clientId")
+                navController.navigate("$ROUTE_ADMIN_EDIT_HOME/$adminId")
                 Toast.makeText(context, "You are at Home Screen", Toast.LENGTH_LONG).show()}
             ) {
                 Icon(
@@ -166,7 +170,7 @@ fun ClientAppTopBar(navController: NavController, clientId: String){
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Red,
+            containerColor = Color.Blue,
             titleContentColor = Color.Black,
             navigationIconContentColor = Color.White
         ),
@@ -184,7 +188,7 @@ fun ClientAppTopBar(navController: NavController, clientId: String){
             IconButton(
                 onClick = { expanded = true }
             ) {
-                clientProfilePictureUrl?.let {
+                staffProfilePictureUrl?.let {
                     Image(
                         painter = rememberAsyncImagePainter(it),
                         contentDescription = null,
@@ -206,45 +210,45 @@ fun ClientAppTopBar(navController: NavController, clientId: String){
                     text = { Text(text = "My Account") },
                     onClick = {
                         Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
-                        navController.navigate("$ROUTE_VIEW_CLIENT_INFO/$clientId")
+                        navController.navigate("$ROUTE_ADMIN_VIEW_ACCOUNT/$adminId")
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Sign Out") },
                     onClick = {
                         val myLogout = AuthViewModel(navController, context)
-                        myLogout.clientlogout()
-                        Toast.makeText(context, "You have clicked sign out option: $clientId", Toast.LENGTH_LONG).show()
+                        myLogout.adminLogout()
                     }
                 )
                 // Add more DropdownMenuItem for other account options
             }
         }
+
     )
 }
 @Composable
-fun ClientBottomAppBar(navController: NavController, clientId: String){
+fun AdminBottomAppBar(navController: NavController, adminId: String){
     var expanded by remember {
         mutableStateOf(false)
     }
     val context = LocalContext.current
     BottomAppBar(
         actions = {
-            IconButton(onClick = { navController.navigate("$ROUTE_CLIENT_FEEDBACK/$clientId") }) {
+            IconButton(onClick = { navController.navigate("$ROUTE_ADMIN_FEEDBACK/$adminId") }) {
                 Icon(
                     Icons.Filled.MailOutline,
                     contentDescription = "Feedback"
                 )
             }
             Spacer(modifier = Modifier.width(40.dp))
-            IconButton(onClick = { navController.navigate("$ROUTE_ABOUT_SCREEN_CLIENT/$clientId")}) {
+            IconButton(onClick = { navController.navigate("$ROUTE_ABOUT_SCREEN_ADMIN/$adminId") }) {
                 Icon(
                     Icons.Filled.Info,
                     contentDescription = "About",
                 )
             }
             Spacer(modifier = Modifier.width(40.dp))
-            IconButton(onClick = { navController.navigate("$ROUTE_STAFF_CONTACT_AS_CLIENT/$clientId") }) {
+            IconButton(onClick = { navController.navigate("$ROUTE_STAFF_CONTACT_AS_ADMIN/$adminId") }) {
                 Icon(
                     Icons.Filled.Phone,
                     contentDescription = "Phone Numbers",
@@ -278,14 +282,14 @@ fun ClientBottomAppBar(navController: NavController, clientId: String){
                         text = { Text(text = "Privacy Policy") },
                         onClick = {
                             Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
-                            navController.navigate("$ROUTE_PRIVACY_POLICY_CLIENT/$clientId")
+                            navController.navigate("$ROUTE_PRIVACY_POLICY_ADMIN/$adminId")
                         }
                     )
                     DropdownMenuItem(
                         text = { Text(text = "EULA") },
                         onClick = {
                             Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
-                            navController.navigate("$ROUTE_EULA_CLIENT/$clientId")
+                            navController.navigate("$ROUTE_EULA_ADMIN/$adminId")
 
                         }
                     )
@@ -293,7 +297,7 @@ fun ClientBottomAppBar(navController: NavController, clientId: String){
                         text = { Text(text = "User Manual") },
                         onClick = {
                             Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
-                            navController.navigate("$ROUTE_USER_MANUAL_CLIENT/$clientId")
+                            navController.navigate("$ROUTE_USER_MANUAL_ADMIN/$adminId")
                         }
                     )
                     // Add more DropdownMenuItem for other account options

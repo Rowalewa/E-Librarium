@@ -1,6 +1,6 @@
 package com.example.e_librarium.models
 
-class Staff {
+class Admin {
     var fullName: String = ""
     var gender: String = ""
     var maritalStatus: String = ""
@@ -8,9 +8,8 @@ class Staff {
     var dateOfBirth: String = ""
     var email: String = ""
     var pass: String = ""
-    var staffProfilePictureUrl: String = ""
-    var staffStatus: String = ""
-    var staffId: String = ""
+    var adminProfilePictureUrl: String = ""
+    var adminId: String = ""
 
     constructor(
         fullName: String,
@@ -20,9 +19,8 @@ class Staff {
         dateOfBirth: String,
         email: String,
         pass: String,
-        staffProfilePictureUrl: String,
-        staffStatus: String,
-        staffId: String
+        adminProfilePictureUrl: String,
+        staffid: String
     ){
         this.fullName = fullName
         this.gender = gender
@@ -31,9 +29,8 @@ class Staff {
         this.dateOfBirth = dateOfBirth
         this.email = email
         this.pass = pass
-        this.staffProfilePictureUrl = staffProfilePictureUrl
-        this.staffStatus = staffStatus
-        this.staffId = staffId
+        this.adminProfilePictureUrl = adminProfilePictureUrl
+        this.adminId = staffid
     }
 
     constructor()

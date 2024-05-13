@@ -65,6 +65,7 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -692,6 +693,13 @@ fun AddBooksScreen(navController: NavHostController, staffId: String){
                 bookQuantity.text.toIntOrNull() ?: 0,
                 staffId
             )
+            Spacer(modifier = Modifier.height(70.dp))
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }

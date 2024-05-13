@@ -2,7 +2,6 @@ package com.example.e_librarium.ui.theme.screens.books
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,18 +12,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -65,14 +64,19 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Staff
+import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_STAFF
 import com.example.e_librarium.navigation.ROUTE_ADD_BOOKS
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_CLIENT_FEEDBACK
+import com.example.e_librarium.navigation.ROUTE_EULA_STAFF
+import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_STAFF
+import com.example.e_librarium.navigation.ROUTE_STAFF_CONTACT_AS_STAFF
 import com.example.e_librarium.navigation.ROUTE_STAFF_FEEDBACK
+import com.example.e_librarium.navigation.ROUTE_USER_MANUAL_STAFF
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENTS
 import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -112,7 +116,8 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
             contentScale = ContentScale.FillBounds
         )
         Column (
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
         ){
             StaffAppTopBar(navController, staffId)
             val visible by remember { mutableStateOf(true) }
@@ -291,7 +296,8 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                             val myStaffLogout = AuthViewModel(navController, context)
                             myStaffLogout.stafflogout()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .padding(
                                 start = 5.dp,
                                 end = 5.dp,
@@ -306,6 +312,13 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(70.dp))
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }
@@ -401,40 +414,81 @@ fun StaffAppTopBar(navController: NavController, staffId: String){
 }
 
 @Composable
-fun StaffBottomAppBar(navController: NavController){
+fun StaffBottomAppBar(navController: NavController, staffId: String){
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+    val context = LocalContext.current
     BottomAppBar(
         actions = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { navController.navigate("$ROUTE_STAFF_FEEDBACK/$staffId") }) {
                 Icon(
                     Icons.Filled.MailOutline,
                     contentDescription = "Feedback"
                 )
             }
             Spacer(modifier = Modifier.width(40.dp))
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { navController.navigate("$ROUTE_ABOUT_SCREEN_STAFF/$staffId") }) {
                 Icon(
                     Icons.Filled.Info,
                     contentDescription = "About",
                 )
             }
             Spacer(modifier = Modifier.width(40.dp))
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { navController.navigate("$ROUTE_STAFF_CONTACT_AS_STAFF/$staffId") }) {
                 Icon(
                     Icons.Filled.Phone,
                     contentDescription = "Phone Numbers",
                 )
             }
+            Spacer(modifier = Modifier.width(40.dp))
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Back",
+                )
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.popBackStack() },
-                containerColor = Color.White,
+                onClick = { expanded = true },
+                containerColor = Color.Black,
                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Localized description")
+                    Icons.Filled.Settings,
+                    contentDescription = "Localized description",
+                    tint = Color.Yellow
+                )
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(text = "Privacy Policy") },
+                        onClick = {
+                            Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
+                            navController.navigate("$ROUTE_PRIVACY_POLICY_STAFF/$staffId")
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = "EULA") },
+                        onClick = {
+                            Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
+                            navController.navigate("$ROUTE_EULA_STAFF/$staffId")
+
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = "User Manual") },
+                        onClick = {
+                            Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
+                            navController.navigate("$ROUTE_USER_MANUAL_STAFF/$staffId")
+                        }
+                    )
+                    // Add more DropdownMenuItem for other account options
+                }
             }
         }
     )

@@ -6,12 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +43,7 @@ import com.example.e_librarium.R
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_EDIT_STAFF_INFO
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
+import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -65,6 +70,9 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
     val email by remember {
         mutableStateOf("")
     }
+    val staffStatus by remember {
+        mutableStateOf("")
+    }
     val staffProfilePictureUrl by remember {
         mutableStateOf("")
     }
@@ -87,6 +95,9 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
     var staffEmail by remember {
         mutableStateOf(TextFieldValue(email))
     }
+    var mStaffStatus by remember {
+        mutableStateOf(TextFieldValue(staffStatus))
+    }
     var mStaffProfilePictureUrl by remember {
         mutableStateOf(staffProfilePictureUrl)
     }
@@ -101,6 +112,7 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
             staffDateOfBirth = TextFieldValue(staff.dateOfBirth)
             staffEmail = TextFieldValue(staff.email)
             mStaffProfilePictureUrl = staff.staffProfilePictureUrl
+            mStaffStatus = TextFieldValue(staff.staffStatus)
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -117,7 +129,8 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
             modifier = Modifier.matchParentSize()
         )
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
         ) {
             StaffAppTopBar(navController, staffId)
             Image(
@@ -125,11 +138,13 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
+                    .padding(16.dp)
                     .size(200.dp)
                     .clip(shape = CircleShape)
             )
             Column(
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier
+                    .padding(20.dp)
                     .border(width = 5.dp, color = Color.Magenta, shape = RoundedCornerShape(20.dp))
                     .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
             ){
@@ -140,7 +155,8 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(
                             top = 15.dp,
                             bottom = 0.dp,
@@ -165,7 +181,8 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .background(color = Color.Yellow)
                 )
                 Text(
@@ -184,8 +201,19 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .background(color = Color.Yellow)
+                )
+                Text(
+                    text = "Account Status: \n ${mStaffStatus.text}",
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
                 Text(
                     text = "Email Address: \n ${staffEmail.text}",
@@ -194,13 +222,15 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
                     color = Color.Black,
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(
                             top = 0.dp,
                             bottom = 15.dp,
                             end = 0.dp,
                             start = 0.dp
                         )
+                        .background(color = Color.Yellow)
                 )
             }
             Button(
@@ -229,6 +259,13 @@ fun ViewStaffInfo(navController: NavHostController, staffId: String){
             ) {
                 Text(text = "Back")
             }
+            Spacer(modifier = Modifier.height(80.dp))
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }

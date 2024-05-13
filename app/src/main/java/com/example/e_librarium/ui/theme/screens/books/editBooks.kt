@@ -61,6 +61,7 @@ import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -801,9 +802,14 @@ fun EditBooksScreen(navController: NavHostController, bookId: String, staffId: S
                 mBookSynopsis.text.trim(),
                 bookId,
                 mBookQuantity.text.toIntOrNull() ?: 0
-
             )
-
+            Spacer(modifier = Modifier.height(70.dp))
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }
@@ -829,7 +835,7 @@ fun ImageUploader(
     bookShelfNumber: String,
     bookSynopsis: String,
     bookId: String,
-    bookQuantity: Int
+    bookQuantity: Int,
 ) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -866,7 +872,8 @@ fun ImageUploader(
                 onClick = {
                     imagePicker.launch("image/*")
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(10.dp)
             ) {
                 Text(
@@ -899,7 +906,8 @@ fun ImageUploader(
                 )
 
             },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
                         start = 10.dp,
                         end = 10.dp,
@@ -913,7 +921,8 @@ fun ImageUploader(
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 navController.navigate(ROUTE_VIEW_BOOKS)
             },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
                         start = 10.dp,
                         end = 10.dp,
