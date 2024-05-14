@@ -42,7 +42,6 @@ fun ReturnBooksScreen(navController: NavHostController, clientId: String, bookId
                 StaffAppTopBar(navController, staffId)
             }
             Column {
-                StaffAppTopBar(navController, staffId)
                 OutlinedTextField(
                     value = clientId,
                     onValueChange = {},

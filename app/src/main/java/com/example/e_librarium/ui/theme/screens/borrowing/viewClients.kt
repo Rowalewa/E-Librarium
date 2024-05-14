@@ -80,7 +80,7 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
             }
             val context = LocalContext.current
             val clientsRepository = AuthViewModel(navController, context)
-            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
+            val emptyClientState = remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "", 0.0)) }
             val emptyClientListState = remember { mutableStateListOf<Clients>() }
 
             val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
@@ -161,6 +161,7 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
                             clientStatus = it.clientStatus,
                             clientId = it.clientId,
+                            clientFine = it.fine,
                             staffId = staffId,
                             navController = navController,
                             clientRepository = clientsRepository
@@ -189,6 +190,7 @@ fun ClientInstance(
     clientProfilePictureUrl: String,
     clientStatus: String,
     clientId: String,
+    clientFine: Double,
     staffId: String,
     navController: NavHostController,
     clientRepository: AuthViewModel
@@ -248,6 +250,10 @@ fun ClientInstance(
             )
             Text(
                 text = "Client Id: $clientId",
+                color = Color.Black
+            )
+            Text(
+                text = "Client Fine: $clientFine",
                 color = Color.Black
             )
             Row(

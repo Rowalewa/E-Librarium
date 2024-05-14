@@ -31,15 +31,20 @@ class BooksViewModel (
     var navController: NavHostController,
     var context: Context
 ){
-//    private var authRepository: AuthViewModel = AuthViewModel(navController, context)
-//        if (!authRepository.isloggedin()) {
-//            navController.navigate(ROUTE_BOOKS_HOME)
-//        } This one checks first if user is logged in or not for him or she to use services
-private var progress: ProgressDialog = ProgressDialog(context)
+    private var progress: ProgressDialog = ProgressDialog(context)
+    private  var progressUpdate: ProgressDialog = ProgressDialog(context)
+    private  var progressDelete: ProgressDialog = ProgressDialog(context)
+    private  var progressLoad: ProgressDialog = ProgressDialog(context)
 
     init {
         progress.setTitle("Saving \uD83D\uDCBE")
         progress.setMessage("Please wait...")
+        progressUpdate.setTitle("Updating")
+        progressUpdate.setTitle("Please wait...")
+        progressDelete.setTitle("Deleting")
+        progressDelete.setTitle("Please wait...")
+        progressLoad.setTitle("Loading")
+        progressLoad.setTitle("Please wait...")
     }
     fun saveBook(
         bookTitle: String,
@@ -122,10 +127,10 @@ private var progress: ProgressDialog = ProgressDialog(context)
         books: SnapshotStateList<Books>
     ): SnapshotStateList<Books> {
         val ref = FirebaseDatabase.getInstance().getReference().child("Books")
-//        progress.show()
+        progressLoad.show()
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-//                progress.dismiss()
+                progressLoad.dismiss()
                 books.clear()
                 for (snap in snapshot.children) {
                     val value = snap.getValue(Books::class.java)
@@ -189,8 +194,8 @@ private var progress: ProgressDialog = ProgressDialog(context)
         bookQuantity: Int,
         filePath: Uri?
     ) {
+        progressUpdate.show()
         val storageReference = FirebaseStorage.getInstance().getReference().child("Books/$bookId")
-
         val updateData = Books(
             bookTitle,
             bookAuthor,
@@ -221,27 +226,32 @@ private var progress: ProgressDialog = ProgressDialog(context)
                     filePath.let { fileUri ->
                         storageReference.putFile(fileUri).addOnCompleteListener { storageTask ->
                             if (storageTask.isSuccessful) {
+                                progressUpdate.dismiss()
                                 storageReference.downloadUrl.addOnSuccessListener { uri ->
                                     val imageUrl = uri.toString()
                                     updateData.bookImageUrl = imageUrl
                                     dbRef.setValue(updateData) // Update the book entry with the image URL
                                 }
                             } else {
+                                progressUpdate.dismiss()
                                 Toast.makeText(context, "Upload Failure", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
 
                     // Show success message
+                    progressUpdate.dismiss()
                     Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
                     navController.navigateUp()
                 } else {
                     // Handle database update error
+                    progressUpdate.dismiss()
                     Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
         } else{
+            progressUpdate.show()
             val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
             dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -272,21 +282,25 @@ private var progress: ProgressDialog = ProgressDialog(context)
                     dbRef.setValue(updateData).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             // Show success message
+                            progressUpdate.dismiss()
                             Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
                             navController.navigateUp()
                         } else {
                             // Handle database update error
+                            progressUpdate.dismiss()
                             Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    progressUpdate.dismiss()
                     // Handle database error
                     Toast.makeText(context, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             }
             )
+            progressUpdate.dismiss()
             Toast.makeText(context, "Success with Image Retained", Toast.LENGTH_LONG).show()
         }
     }
@@ -295,13 +309,14 @@ private var progress: ProgressDialog = ProgressDialog(context)
 
     fun deleteBook(bookId: String) {
         val delRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
-//        progress.show()
+        progressDelete.show()
         delRef.removeValue().addOnCompleteListener {task ->
-//            progress.dismiss()
             if (task.isSuccessful) {
+                progressDelete.dismiss()
                 Log.d("DeleteBook", "Book deleted")
                 Toast.makeText(context, "Book deleted", Toast.LENGTH_SHORT).show()
             } else {
+                progressDelete.dismiss()
                 Log.e("DeleteBook", "Error deleting book", task.exception)
                 Toast.makeText(context, "Error deleting book: ${task.exception?.message}", Toast.LENGTH_LONG).show()
             }
@@ -321,6 +336,7 @@ private var progress: ProgressDialog = ProgressDialog(context)
         borrowDate: String,
         returnDate: String
     ) {
+        progressLoad.show()
         val bookRef = FirebaseDatabase.getInstance().getReference("Books").child(bookId)
         val clientRef = FirebaseDatabase.getInstance().getReference("Client").child(clientId)
 
@@ -330,6 +346,7 @@ private var progress: ProgressDialog = ProgressDialog(context)
                 val clientStatus = clientSnapshot.child("clientStatus").getValue(String::class.java)
 
                 if (clientStatus == "Fined") {
+                    progressLoad.dismiss()
                     Toast.makeText(context, "Cannot borrow, client fined.", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -344,6 +361,7 @@ private var progress: ProgressDialog = ProgressDialog(context)
                         val maxBooksToBorrow = 3 // Change this to your desired maximum
 
                         if (currentBorrowedCount >= maxBooksToBorrow) {
+                            progressLoad.dismiss()
                             Toast.makeText(context, "Cannot borrow, maximum books borrowed.", Toast.LENGTH_SHORT).show()
 //                            return
                             navController.popBackStack()
@@ -382,25 +400,31 @@ private var progress: ProgressDialog = ProgressDialog(context)
                                                             .setValue("Borrowed")
                                                             .addOnCompleteListener {
                                                                 if (it.isSuccessful) {
+                                                                    progressLoad.dismiss()
                                                                     Toast.makeText(context, "Book successfully borrowed", Toast.LENGTH_SHORT).show()
                                                                     navController.navigateUp()
                                                                 } else {
+                                                                    progressLoad.dismiss()
                                                                     Toast.makeText(context, "Failed to update book status", Toast.LENGTH_SHORT).show()
                                                                 }
                                                             }
                                                     } else {
+                                                        progressLoad.dismiss()
                                                         Toast.makeText(context, "Failed to borrow book", Toast.LENGTH_SHORT).show()
                                                     }
                                                 }
                                         } else {
+                                            progressLoad.dismiss()
                                             Toast.makeText(context, "Book is out of stock", Toast.LENGTH_SHORT).show()
                                         }
                                     } else {
+                                        progressLoad.dismiss()
                                         Toast.makeText(context, "Failed to fetch book details", Toast.LENGTH_SHORT).show()
                                     }
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
+                                    progressLoad.dismiss()
                                     Toast.makeText(context, "Failed to fetch book details", Toast.LENGTH_SHORT).show()
                                 }
                             })
@@ -408,12 +432,14 @@ private var progress: ProgressDialog = ProgressDialog(context)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
+                        progressLoad.dismiss()
                         Toast.makeText(context, "Failed to fetch borrowed books", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
 
             override fun onCancelled(error: DatabaseError) {
+                progressLoad.dismiss()
                 Toast.makeText(context, "Failed to fetch client status", Toast.LENGTH_SHORT).show()
             }
         })
@@ -424,6 +450,7 @@ private var progress: ProgressDialog = ProgressDialog(context)
         clientId: String,
         bookId: String
     ) {
+        progressLoad.show()
         val borrowedRef = FirebaseDatabase.getInstance().getReference().child("BorrowedBooks").child(clientId)
         borrowedRef.orderByChild("bookId").equalTo(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -453,57 +480,67 @@ private var progress: ProgressDialog = ProgressDialog(context)
                                         override fun onDataChange(snapshot: DataSnapshot) {
                                             val client = snapshot.getValue(Clients::class.java)
                                             if (client != null) {
+                                                val newFine = client.fine + fine
                                                 val newClientStatus = if (fine > 0) {
                                                     "Fined"
                                                 } else {
                                                     "Active"
                                                 }
+
+                                                clientRef.child("fine").setValue(newFine)
+
                                                 if (client.clientStatus != newClientStatus) {
+                                                    progressLoad.dismiss()
                                                     clientRef.child("clientStatus").setValue(newClientStatus)
-                                                    Toast.makeText(context, "Client Status changed", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(context, "Client Status changed to Fined", Toast.LENGTH_LONG).show()
                                                 }
                                             } else {
+                                                progressLoad.dismiss()
                                                 Log.e(TAG, "Client not found for ID: $clientId")
                                                 Toast.makeText(context, "Client not found for id: $clientId", Toast.LENGTH_LONG).show()
                                             }
                                         }
 
                                         override fun onCancelled(error: DatabaseError) {
+                                            progressLoad.dismiss()
+                                            Toast.makeText(context, "Failed to read client data", Toast.LENGTH_LONG).show()
                                             Log.e(TAG, "Failed to read client data.", error.toException())
                                         }
                                     })
 
                                     childSnapshot.ref.removeValue()
+                                    progressLoad.dismiss()
                                     Toast.makeText(context, "Book successfully returned. Fine: Ksh.$fine", Toast.LENGTH_LONG).show()
                                     navController.navigateUp()
                                 } else {
+                                    progressLoad.dismiss()
                                     Toast.makeText(context, "Failed to return book: Book details not found", Toast.LENGTH_LONG).show()
                                 }
                             }
 
                             override fun onCancelled(error: DatabaseError) {
+                                progressLoad.dismiss()
                                 Toast.makeText(context, "Failed to return book: ${error.message}", Toast.LENGTH_SHORT).show()
                             }
                         })
                         return
                     }
                 }
+                progressLoad.dismiss()
                 Toast.makeText(context, "Failed to return book: Book not borrowed by client", Toast.LENGTH_SHORT).show()
             }
 
             override fun onCancelled(error: DatabaseError) {
+                progressLoad.dismiss()
                 Toast.makeText(context, "Failed to return book: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-
-
     fun payFine(clientId: String) {
         val clientRef = FirebaseDatabase.getInstance().getReference("Client").child(clientId)
         clientRef.child("clientStatus").setValue("Active")
+        clientRef.child("fine").setValue(0.0)
+        Toast.makeText(context, "Fine Paid Successfully", Toast.LENGTH_SHORT).show()
     }
-
-
-
 }

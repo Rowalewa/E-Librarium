@@ -8,6 +8,7 @@ class Clients {
     var dateOfBirth: String = ""
     var email: String = ""
     var pass: String = ""
+    var fine: Double = 0.0
     var clientProfilePictureUrl: String = ""
     var clientStatus: String = ""
     var clientId: String = ""
@@ -24,6 +25,7 @@ class Clients {
         clientProfilePictureUrl: String,
         clientStatus: String,
         clientId: String,
+        fine: Double
 
     ){
         this.fullName = fullName
@@ -36,6 +38,7 @@ class Clients {
         this.clientProfilePictureUrl = clientProfilePictureUrl
         this.clientStatus = clientStatus
         this.clientId = clientId
+        this.fine = fine
 
     }
 

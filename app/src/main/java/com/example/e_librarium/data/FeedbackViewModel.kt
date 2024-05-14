@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.e_librarium.data
 
 import android.app.ProgressDialog

@@ -41,7 +41,6 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.models.Clients
-import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_EDIT_CLIENT_INFO
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
@@ -77,6 +76,9 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
     val clientStatus by remember {
         mutableStateOf("")
     }
+    val fine by remember {
+        mutableStateOf("")
+    }
 
     var clientFullName by remember {
         mutableStateOf(TextFieldValue(fullName))
@@ -102,6 +104,9 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
     var mClientStatus by remember {
         mutableStateOf(clientStatus)
     }
+    var clientFine by remember {
+        mutableStateOf(TextFieldValue(fine))
+    }
     val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
     currentDataRef.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -114,6 +119,7 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
             clientEmail = TextFieldValue(client.email)
             mClientStatus = TextFieldValue(client.clientStatus).text
             mClientProfilePictureUrl = client.clientProfilePictureUrl
+            clientFine = TextFieldValue(client.fine.toString())
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -248,6 +254,17 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
                                 end = 0.dp,
                                 start = 0.dp
                             )
+                            .background(color = Color.Magenta)
+                    )
+                    Text(
+                        text = "Fine: \n ${clientFine.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
                     )
                 }
                 Button(

@@ -46,7 +46,6 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.models.Admin
 import com.example.e_librarium.models.Clients
 
 @Composable
@@ -76,7 +75,7 @@ fun AdminClientEdit(navController: NavHostController, adminId: String){
                 val context = LocalContext.current
                 val clientsRepository = AuthViewModel(navController, context)
                 val emptyClientState =
-                    remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "")) }
+                    remember { mutableStateOf(Clients("", "", "", "", "", "", "", "", "", "", 0.0)) }
                 val emptyClientListState = remember { mutableStateListOf<Clients>() }
 
                 val clients = clientsRepository.viewClients(emptyClientState, emptyClientListState)
@@ -151,7 +150,7 @@ fun AdminClientEdit(navController: NavHostController, adminId: String){
                             clientProfilePictureUrl = it.clientProfilePictureUrl,
                             clientStatus = it.clientStatus,
                             clientId = it.clientId,
-                            navController = navController,
+                            clientFine = it.fine,
                             clientRepository = clientsRepository
                         )
                     }
@@ -178,10 +177,9 @@ fun ClientInstanceAdmin(
     clientProfilePictureUrl: String,
     clientStatus: String,
     clientId: String,
-    navController: NavHostController,
+    clientFine: Double,
     clientRepository: AuthViewModel
 ) {
-    val context = LocalContext.current
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(
@@ -232,6 +230,10 @@ fun ClientInstanceAdmin(
             )
             Text(
                 text = "Client Status: $clientStatus",
+                color = Color.Black
+            )
+            Text(
+                text = "Client Fine: $clientFine",
                 color = Color.Black
             )
             Text(

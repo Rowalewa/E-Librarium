@@ -467,7 +467,8 @@ fun ImagePicker(
                     pass,
                     confpass,
                     imageUri!!,
-                    clientStatus = "Active"
+                    clientStatus = "Active",
+                    fine = 0.0
                 )
 
             },

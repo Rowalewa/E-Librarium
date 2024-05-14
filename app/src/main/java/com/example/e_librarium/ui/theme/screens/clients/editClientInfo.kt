@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.e_librarium.ui.theme.screens.clients
 
 import android.content.Context
@@ -73,7 +75,9 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
     val clientStatus by remember {
         mutableStateOf("")
     }
-
+    val fine by remember {
+        mutableStateOf("")
+    }
     var mFullName by remember {
         mutableStateOf(TextFieldValue(fullName))
     }
@@ -98,6 +102,9 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
     var mClientStatus by remember {
         mutableStateOf(TextFieldValue(clientStatus))
     }
+    var clientFine by remember {
+        mutableStateOf(TextFieldValue(fine))
+    }
     val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Client/$clientId")
     currentDataRef.addValueEventListener(object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -110,6 +117,7 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
             mEmail = TextFieldValue(client.email)
             pass = client.pass
             mClientStatus = TextFieldValue(client.clientStatus)
+            clientFine = TextFieldValue(client.fine.toString())
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -166,7 +174,8 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
                     pass = mPass.text.trim(),
                     confpass = confpass.trim(),
                     clientStatus = mClientStatus.text.trim(),
-                    clientId = clientId
+                    clientId = clientId,
+                    fine = clientFine.text.trim().toDouble()
                 )
             }
         }
@@ -193,7 +202,8 @@ fun ClientUploader(
     pass: String,
     confpass: String,
     clientStatus: String,
-    clientId: String
+    clientId: String,
+    fine: Double
 ) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -252,7 +262,8 @@ fun ClientUploader(
                     confpass,
                     clientStatus,
                     clientId,
-                    imageUri
+                    imageUri,
+                    fine
                 )
 
             },

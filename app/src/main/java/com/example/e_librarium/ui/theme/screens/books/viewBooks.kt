@@ -114,7 +114,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String, staffId:
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    StaffAppTopBar(navController, staffId)
                     Text(
                         text = "BOOKS",
                         fontSize = 30.sp,
