@@ -64,7 +64,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.navigation.ROUTE_CLIENT_LOGIN
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 import java.text.SimpleDateFormat
@@ -359,7 +358,6 @@ fun AdminRegisterScreen(navController: NavController){
                         .padding(8.dp)
                 )
                 ImagePicker(
-                    Modifier,
                     context,
                     navController,
                     fullName.text.trim(),
@@ -380,7 +378,6 @@ fun AdminRegisterScreen(navController: NavController){
 }
 @Composable
 fun ImagePicker(
-    modifier: Modifier,
     context: Context,
     navController: NavController,
     fullName: String,

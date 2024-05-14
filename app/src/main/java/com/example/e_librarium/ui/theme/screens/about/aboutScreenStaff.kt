@@ -26,12 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.ui.theme.ELibrariumTheme
-import com.example.e_librarium.ui.theme.screens.admin.AdminAppTopBar
-import com.example.e_librarium.ui.theme.screens.admin.AdminBottomAppBar
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun AboutScreenStaff(navController: NavController, staffId: String) {

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.e_librarium.ui.theme.screens.admin
 
 import android.content.Context
@@ -36,8 +38,6 @@ import androidx.navigation.NavHostController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Admin
-import com.example.e_librarium.models.Clients
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -173,7 +173,6 @@ fun AdminEditAccount(navController: NavHostController, adminId: String){
 
 @Composable
 fun AdminUploader(
-    modifier: Modifier = Modifier,
     context: Context,
     navController: NavHostController,
     fullName: String,

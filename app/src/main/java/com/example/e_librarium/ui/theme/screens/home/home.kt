@@ -59,7 +59,6 @@ import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS_GUEST
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController){
     Box (

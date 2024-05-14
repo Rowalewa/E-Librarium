@@ -22,8 +22,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun EndUserLicenceAgreementScreenStaff(navController: NavController, staffId: String){

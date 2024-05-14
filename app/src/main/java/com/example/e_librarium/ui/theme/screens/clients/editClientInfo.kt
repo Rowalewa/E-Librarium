@@ -190,7 +190,6 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
 
 @Composable
 fun ClientUploader(
-    modifier: Modifier = Modifier,
     context: Context,
     navController: NavHostController,
     fullName: String,

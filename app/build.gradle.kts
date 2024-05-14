@@ -68,7 +68,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
     implementation(libs.coil.compose.v200rc01)
-    implementation("androidx.compose.runtime:runtime-livedata:1.1.0-alpha01")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

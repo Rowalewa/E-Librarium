@@ -359,7 +359,6 @@ fun ClientRegisterScreen(navController: NavController){
                         .padding(8.dp)
                 )
                 ImagePicker(
-                    Modifier,
                     context,
                     navController,
                     fullName.text.trim(),
@@ -402,7 +401,6 @@ fun ClientRegisterScreen(navController: NavController){
 }
 @Composable
 fun ImagePicker(
-    modifier: Modifier,
     context: Context,
     navController: NavController,
     fullName: String,

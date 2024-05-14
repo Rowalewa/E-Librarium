@@ -76,7 +76,6 @@ import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENTS
 import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
 import com.example.e_librarium.ui.theme.ELibrariumTheme
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

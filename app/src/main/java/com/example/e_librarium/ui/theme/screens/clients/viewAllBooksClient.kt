@@ -17,8 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -38,7 +36,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -280,7 +277,13 @@ fun ViewAllBooksClient(navController: NavHostController, clientId: String){
                 ) {
                     val filteredBooks = books.filter {
                         it.bookTitle.contains(searchText, ignoreCase = true) ||
-                                it.bookAuthor.contains(searchText, ignoreCase = true)
+                                it.bookAuthor.contains(searchText, ignoreCase = true) ||
+                                it.bookGenre.contains(searchText, ignoreCase = true) ||
+                                it.bookPublisher.contains(searchText, ignoreCase = true) ||
+                                it.bookCondition.contains(searchText, ignoreCase = true) ||
+                                it.bookAcquisitionMethod.contains(searchText, ignoreCase = true) ||
+                                it.bookEdition.contains(searchText, ignoreCase = true) ||
+                                it.bookISBNNumber.contains(searchText, ignoreCase = true)
                     }
                     items(filteredBooks){
                         BookItem(

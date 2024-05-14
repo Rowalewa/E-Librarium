@@ -292,7 +292,14 @@ fun ViewBooksGuest(navController: NavHostController){
                 ) {
                     val filteredBooks = books.filter {
                         it.bookTitle.contains(searchText, ignoreCase = true) ||
-                                it.bookAuthor.contains(searchText, ignoreCase = true)
+                                it.bookAuthor.contains(searchText, ignoreCase = true) ||
+                                it.bookGenre.contains(searchText, ignoreCase = true) ||
+                                it.bookPublisher.contains(searchText, ignoreCase = true) ||
+                                it.bookCondition.contains(searchText, ignoreCase = true) ||
+                                it.bookAcquisitionMethod.contains(searchText, ignoreCase = true) ||
+                                it.bookEdition.contains(searchText, ignoreCase = true) ||
+                                it.bookISBNNumber.contains(searchText, ignoreCase = true
+                                )
                     }
                     items(filteredBooks){
                         BookItem(

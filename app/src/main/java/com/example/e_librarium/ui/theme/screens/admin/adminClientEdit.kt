@@ -137,7 +137,10 @@ fun AdminClientEdit(navController: NavHostController, adminId: String){
                 ) {
                     val filteredClients = clients.filter {
                         it.fullName.contains(searchText, ignoreCase = true) ||
-                                it.email.contains(searchText, ignoreCase = true)
+                                it.email.contains(searchText, ignoreCase = true) ||
+                                it.clientStatus.contains(searchText, ignoreCase = true) ||
+                                it.gender.contains(searchText, ignoreCase = true) ||
+                                it.maritalStatus.contains(searchText, ignoreCase = true)
                     }
                     items(filteredClients) {
                         ClientInstanceAdmin(

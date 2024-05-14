@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,14 +28,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
-import com.example.e_librarium.navigation.ROUTE_CLIENT_LOGIN
-import com.example.e_librarium.navigation.ROUTE_CLIENT_REGISTER
 import com.example.e_librarium.navigation.ROUTE_HOME
 import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
 import com.example.e_librarium.navigation.ROUTE_STAFF_REGISTER
 import com.example.e_librarium.ui.theme.ELibrariumTheme
 import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
-import java.util.Calendar
 
 @Composable
 fun StaffHomeScreen(navController: NavController){

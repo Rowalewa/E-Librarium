@@ -797,7 +797,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String, staffId: S
 //        )
 
                 ImageUploader(
-                    Modifier,
                     context,
                     navController,
                     mBookTitle.text.trim(),
@@ -832,7 +831,6 @@ fun EditBooksScreen(navController: NavHostController, bookId: String, staffId: S
 
 @Composable
 fun ImageUploader(
-    modifier: Modifier = Modifier,
     context: Context,
     navController: NavHostController,
     bookTitle: String,

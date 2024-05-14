@@ -15,8 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MailOutline
@@ -59,7 +59,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Admin
-import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_ADMIN
 import com.example.e_librarium.navigation.ROUTE_ADMIN_CLIENT_EDIT
 import com.example.e_librarium.navigation.ROUTE_ADMIN_EDIT_HOME
@@ -254,7 +253,7 @@ fun AdminAppTopBar(navController: NavController, adminId: String){
             }
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription ="Back",
                     tint = Color.Magenta
                 )
@@ -331,7 +330,7 @@ fun AdminBottomAppBar(navController: NavController, adminId: String){
             Spacer(modifier = Modifier.width(40.dp))
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                 )
             }

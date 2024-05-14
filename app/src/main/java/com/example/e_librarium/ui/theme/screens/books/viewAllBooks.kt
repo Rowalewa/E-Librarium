@@ -39,21 +39,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
-import com.example.e_librarium.ui.theme.ELibrariumTheme
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun ViewAllBooksScreen(navController: NavHostController, staffId: String){
@@ -325,7 +319,13 @@ fun ViewAllBooksScreen(navController: NavHostController, staffId: String){
                     ) {
                         val filteredBooks = books.filter {
                             it.bookTitle.contains(searchText, ignoreCase = true) ||
-                                    it.bookAuthor.contains(searchText, ignoreCase = true)
+                                    it.bookAuthor.contains(searchText, ignoreCase = true) ||
+                                    it.bookGenre.contains(searchText, ignoreCase = true) ||
+                                    it.bookPublisher.contains(searchText, ignoreCase = true) ||
+                                    it.bookCondition.contains(searchText, ignoreCase = true) ||
+                                    it.bookAcquisitionMethod.contains(searchText, ignoreCase = true) ||
+                                    it.bookEdition.contains(searchText, ignoreCase = true) ||
+                                    it.bookISBNNumber.contains(searchText, ignoreCase = true)
                         }
                         items(filteredBooks) {
                             BookItem(

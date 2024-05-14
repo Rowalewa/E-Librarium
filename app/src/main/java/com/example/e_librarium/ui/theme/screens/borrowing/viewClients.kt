@@ -40,7 +40,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,10 +49,8 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Clients
-import com.example.e_librarium.models.Staff
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
-import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
+import com.example.e_librarium.navigation.ROUTE_VIEW_CLIENT_BORROWS
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 
@@ -148,7 +145,10 @@ fun ViewClientsScreen(navController: NavHostController, staffId: String){
                 ) {
                     val filteredClients = clients.filter {
                         it.fullName.contains(searchText, ignoreCase = true) ||
-                                it.email.contains(searchText, ignoreCase = true)
+                                it.email.contains(searchText, ignoreCase = true) ||
+                                it.clientStatus.contains(searchText, ignoreCase = true) ||
+                                it.gender.contains(searchText, ignoreCase = true) ||
+                                it.maritalStatus.contains(searchText, ignoreCase = true)
                     }
                     items(filteredClients) {
                         ClientInstance(
@@ -293,6 +293,24 @@ fun ClientInstance(
                     Text(text = "Choose Book")
                 }
             }
+            Spacer(modifier = Modifier.height(5.dp))
+            Button(
+                onClick = {
+                    navController.navigate("$ROUTE_VIEW_CLIENT_BORROWS/$clientId/$staffId")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Magenta)
+            ) {
+                Text(text = "Borrowed Books")
+            }
+            Spacer(modifier = Modifier.height(5.dp))
             Button(
                 onClick = {
                     val viewModel = BooksViewModel(navController, context )
@@ -309,6 +327,46 @@ fun ClientInstance(
                 colors = ButtonDefaults.buttonColors(Color.Magenta)
             ) {
                 Text(text = "Fine Paid")
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row (
+                modifier = Modifier.background(color = Color.Black)
+            ){
+                Button(
+                    onClick = {
+                        val viewModel = BooksViewModel(navController, context )
+                        viewModel.suspendClient(clientId)
+                    },
+                    modifier = Modifier
+                        .width(160.dp)
+                        .padding(
+                            start = 10.dp,
+                            end = 0.dp,
+                            top = 10.dp,
+                            bottom = 10.dp
+                        ),
+                    colors = ButtonDefaults.buttonColors(Color.Red)
+                ) {
+                    Text(text = "Suspend")
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Button(
+                    onClick = {
+                        val viewModel = BooksViewModel(navController, context )
+                        viewModel.activateClient(clientId)
+                    },
+                    modifier = Modifier
+                        .width(160.dp)
+                        .padding(
+                            start = 0.dp,
+                            end = 10.dp,
+                            top = 10.dp,
+                            bottom = 10.dp
+                        ),
+                    colors = ButtonDefaults.buttonColors(Color.Blue)
+                ) {
+                    Text(text = "Activate")
+                }
             }
         }
     }

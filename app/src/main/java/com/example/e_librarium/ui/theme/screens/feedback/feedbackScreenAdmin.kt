@@ -37,7 +37,6 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.FeedbackViewModel
 import com.example.e_librarium.ui.theme.screens.admin.AdminAppTopBar
 import com.example.e_librarium.ui.theme.screens.admin.AdminBottomAppBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

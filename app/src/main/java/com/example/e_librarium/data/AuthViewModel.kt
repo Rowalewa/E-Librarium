@@ -1117,7 +1117,7 @@ class AuthViewModel (
 
     fun deleteStaff(staffId: String) {
         val delRef = FirebaseDatabase.getInstance().getReference().child("Client/$staffId")
-            progressDelete.show()
+        progressDelete.show()
         delRef.removeValue().addOnCompleteListener {task ->
             if (task.isSuccessful) {
                 progressDelete.dismiss()

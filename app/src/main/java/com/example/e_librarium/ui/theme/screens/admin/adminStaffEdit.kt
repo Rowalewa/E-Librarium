@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -47,10 +46,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Staff
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
-import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 
 @Composable
 fun AdminStaffEdit(navController: NavHostController, adminId: String){
@@ -139,7 +135,10 @@ fun AdminStaffEdit(navController: NavHostController, adminId: String){
                 ) {
                     val filteredStaff = staff.filter {
                         it.fullName.contains(searchText, ignoreCase = true) ||
-                                it.email.contains(searchText, ignoreCase = true)
+                                it.email.contains(searchText, ignoreCase = true) ||
+                                it.gender.contains(searchText, ignoreCase = true) ||
+                                it.staffStatus.contains(searchText, ignoreCase = true) ||
+                                it.maritalStatus.contains(searchText, ignoreCase = true)
                     }
                     items(filteredStaff) {
                         StaffInstance(

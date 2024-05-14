@@ -1,7 +1,5 @@
 package com.example.e_librarium.models
 
-import java.util.Date
-
 class Books {
     var bookTitle: String = ""
     var bookAuthor: String = ""

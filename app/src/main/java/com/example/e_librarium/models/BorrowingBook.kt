@@ -1,5 +1,6 @@
 package com.example.e_librarium.models
 
+@Suppress("unused")
 class BorrowingBook {
     var clientId: String = ""
     var bookId: String = ""

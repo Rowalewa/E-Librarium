@@ -32,13 +32,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Staff
-import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS
 import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
 import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 import com.google.firebase.database.DataSnapshot
@@ -184,7 +181,6 @@ fun EditStaffInfo(navController: NavHostController, staffId: String){
 
 @Composable
 fun StaffUploader(
-    modifier: Modifier = Modifier,
     context: Context,
     navController: NavHostController,
     fullName: String,

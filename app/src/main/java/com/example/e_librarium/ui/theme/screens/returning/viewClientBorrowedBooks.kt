@@ -1,4 +1,4 @@
-package com.example.e_librarium.ui.theme.screens.clients
+package com.example.e_librarium.ui.theme.screens.returning
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,16 +31,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.BorrowingBook
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
+import com.example.e_librarium.navigation.ROUTE_RETURN_BOOKS
+import com.example.e_librarium.ui.theme.screens.books.StaffAppTopBar
+import com.example.e_librarium.ui.theme.screens.books.StaffBottomAppBar
 
 @Composable
-fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
+fun ViewClientBorrowedBooks(navController: NavHostController, clientId: String, staffId: String){
     val context = LocalContext.current
     val booksViewModel = remember { BooksViewModel(navController, context) }
     var borrowedBooks by remember { mutableStateOf<List<BorrowingBook>>(emptyList()) }
@@ -61,7 +65,7 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
             ){
-                ClientAppTopBar(navController, clientId)
+                StaffAppTopBar(navController, staffId)
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -79,7 +83,10 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
                             bookSynopsis = book.bookSynopsis,
                             bookImageUrl = book.bookImageUrl,
                             borrowDate = book.borrowDate,
-                            returnDate = book.returnDate
+                            returnDate = book.returnDate,
+                            navController,
+                            clientId,
+                            staffId
                         )
                     }
                 }
@@ -89,7 +96,7 @@ fun ViewBorrowedBooks(navController: NavHostController, clientId: String){
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            ClientBottomAppBar(navController, clientId)
+            StaffBottomAppBar(navController, staffId)
         }
     }
 }
@@ -105,7 +112,10 @@ fun BookItems(
     bookSynopsis: String,
     bookImageUrl: String,
     borrowDate: String,
-    returnDate: String
+    returnDate: String,
+    navController: NavController,
+    clientId: String,
+    staffId: String
 ) {
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -169,6 +179,21 @@ fun BookItems(
                 text = "Book Return Date: $returnDate",
                 color = Color.Black
             )
+            Button(onClick = {
+                navController.navigate("$ROUTE_RETURN_BOOKS/$clientId/$bookId/$staffId")
+            },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 0.dp,
+                        top = 0.dp,
+                        bottom = 0.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Red)
+            ) {
+                Text(text = "Return")
+            }
         }
     }
     Spacer(modifier = Modifier.height(80.dp))

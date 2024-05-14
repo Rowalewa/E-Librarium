@@ -42,12 +42,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.data.AuthViewModel
-import com.example.e_librarium.models.Admin
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.ui.theme.screens.admin.AdminAppTopBar
 import com.example.e_librarium.ui.theme.screens.admin.AdminBottomAppBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
-import com.example.e_librarium.ui.theme.screens.borrowing.ClientBottomAppBar
 
 @Composable
 fun ContactStaffAsAdmin(navController: NavHostController, adminId: String){

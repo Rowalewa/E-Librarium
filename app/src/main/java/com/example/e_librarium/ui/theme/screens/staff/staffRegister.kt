@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION", "DEPRECATION", "DEPRECATION")
+
 package com.example.e_librarium.ui.theme.screens.staff
 
 import android.app.DatePickerDialog
@@ -58,7 +60,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
@@ -357,7 +358,6 @@ fun StaffRegisterScreen(navController: NavController){
                         .padding(8.dp)
                 )
                 ImagePicker(
-                    Modifier,
                     context,
                     navController,
                     fullName.text.trim(),
@@ -400,7 +400,6 @@ fun StaffRegisterScreen(navController: NavController){
 }
 @Composable
 fun ImagePicker(
-    modifier: Modifier,
     context: Context,
     navController: NavController,
     fullName: String,

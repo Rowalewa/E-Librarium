@@ -39,21 +39,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.BooksViewModel
 import com.example.e_librarium.models.Books
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_BORROW_BOOKS
 import com.example.e_librarium.navigation.ROUTE_EDIT_BOOKS
-import com.example.e_librarium.navigation.ROUTE_RETURN_BOOKS
-import com.example.e_librarium.ui.theme.ELibrariumTheme
 
 @Composable
 fun ViewBooksScreen(navController: NavHostController, clientId: String, staffId: String){
@@ -325,20 +320,6 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String, staffId:
                                 ) {
                                     Text(text = "Borrow")
                                 }
-                                Button(
-                                    onClick = { navController.navigate("$ROUTE_RETURN_BOOKS/$clientId/$bookId/$staffId") },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(
-                                            start = 20.dp,
-                                            end = 0.dp,
-                                            top = 0.dp,
-                                            bottom = 0.dp
-                                        ),
-                                    colors = ButtonDefaults.buttonColors(Color.Red)
-                                ) {
-                                    Text(text = "Return")
-                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(70.dp))
@@ -355,7 +336,13 @@ fun ViewBooksScreen(navController: NavHostController, clientId: String, staffId:
                     ) {
                         val filteredBooks = books.filter {
                             it.bookTitle.contains(searchText, ignoreCase = true) ||
-                                    it.bookAuthor.contains(searchText, ignoreCase = true)
+                                    it.bookAuthor.contains(searchText, ignoreCase = true) ||
+                                    it.bookGenre.contains(searchText, ignoreCase = true) ||
+                                    it.bookPublisher.contains(searchText, ignoreCase = true) ||
+                                    it.bookCondition.contains(searchText, ignoreCase = true) ||
+                                    it.bookAcquisitionMethod.contains(searchText, ignoreCase = true) ||
+                                    it.bookEdition.contains(searchText, ignoreCase = true) ||
+                                    it.bookISBNNumber.contains(searchText, ignoreCase = true)
                         }
                         items(filteredBooks) {
                             BookItem(
