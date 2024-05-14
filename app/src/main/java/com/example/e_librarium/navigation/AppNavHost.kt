@@ -51,7 +51,6 @@ import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScree
 import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScreenGuest
 import com.example.e_librarium.ui.theme.screens.privacyPolicy.PrivacyPolicyScreenStaff
 import com.example.e_librarium.ui.theme.screens.returning.ReturnBooksScreen
-import com.example.e_librarium.ui.theme.screens.returning.ReturningHomeScreen
 import com.example.e_librarium.ui.theme.screens.staff.EditStaffInfo
 import com.example.e_librarium.ui.theme.screens.staff.StaffHomeScreen
 import com.example.e_librarium.ui.theme.screens.staff.StaffLogInScreen
@@ -176,9 +175,6 @@ fun AppNavHost(modifier: Modifier = Modifier,
                 passedData.arguments?.getString("bookId")!!,
                 passedData.arguments?.getString("staffId")!!
             )  //need for edit
-        }
-        composable(ROUTE_RETURN_HOME){
-            ReturningHomeScreen(navController)
         }
         composable(ROUTE_STAFF_HOME){
             StaffHomeScreen(navController)

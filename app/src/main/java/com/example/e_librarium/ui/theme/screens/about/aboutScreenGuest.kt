@@ -95,7 +95,7 @@ fun AboutScreenGuest(navController: NavController) {
                     .verticalScroll(
                         state = rememberScrollState(),
                         enabled = true,
-                        reverseScrolling = true
+                        reverseScrolling = false
                     )
                     .background(color = Color.Red)
                     .padding(bottom = 100.dp),
@@ -202,6 +202,17 @@ fun AboutScreenGuest(navController: NavController) {
                         .padding(8.dp)
                         .fillMaxWidth()
                         .background(color = Color.Cyan, shape = RoundedCornerShape(10.dp)),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Serif
+                )
+                Text(
+                    text = "Admin Privileges and Functions: \n Verifying staff account \n Manage Staff Accounts \n Manage User Accounts \n View and Edit their Account Information \n Interact with library staff \n Provide feedback",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.Magenta, shape = CutCornerShape(10.dp)),
                     textAlign = TextAlign.Center,
                     color = Color.Black,
                     fontSize = 20.sp,

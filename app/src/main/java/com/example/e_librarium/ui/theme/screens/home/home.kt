@@ -57,6 +57,7 @@ import com.example.e_librarium.navigation.ROUTE_STAFF_REGISTER
 import com.example.e_librarium.navigation.ROUTE_VIEW_ALL_BOOKS
 import com.example.e_librarium.navigation.ROUTE_VIEW_BOOKS_GUEST
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,64 +74,77 @@ fun HomeScreen(navController: NavController){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
-
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Row {
-                Text(
-                    text = "E-Librarium",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Blue,
-                    modifier = Modifier
-                        .background(color = Color.Green, shape = CutCornerShape(10.dp))
-                        .width(250.dp),
-                    textAlign = TextAlign.Center
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                DashTopBar(navController)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(
+                    state = rememberScrollState(),
+                    enabled = true,
+                    reverseScrolling = false
                 )
-                Spacer(modifier = Modifier.width(20.dp))
-                Column(
-                    modifier = Modifier
-                        .background(color = Color.Black, shape = RoundedCornerShape(10.dp))
-                        .padding(5.dp)
+
+            ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Row (
+                    verticalAlignment = Alignment.CenterVertically
                 ){
-                    IconButton(
-                        onClick = { navController.navigate(ROUTE_ADMIN_LOGIN) },
-                        colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red)
+                    Text(
+                        text = "E-Librarium",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Blue,
+                        modifier = Modifier
+                            .background(color = Color.Green, shape = CutCornerShape(10.dp))
+                            .width(250.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Column(
+                        modifier = Modifier
+                            .background(color = Color.Black, shape = RoundedCornerShape(10.dp))
+                            .padding(5.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Face,
-                            contentDescription = "Admin",
-                            tint = Color.Blue
+                        IconButton(
+                            onClick = { navController.navigate(ROUTE_ADMIN_LOGIN) },
+                            colors = IconButtonDefaults.iconButtonColors(containerColor = Color.Red)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Face,
+                                contentDescription = "Admin",
+                                tint = Color.Blue
+                            )
+                        }
+                        Text(
+                            text = "Admin",
+                            modifier = Modifier.background(color = Color.Blue),
+                            color = Color.White
                         )
                     }
-                    Text(
-                        text = "Admin",
-                        modifier = Modifier.background(color = Color.Blue),
-                        color = Color.White
-                    )
                 }
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            OutlinedCard(
+                Spacer(modifier = Modifier.height(20.dp))
+                OutlinedCard(
 //            onClick = { navController.navigate(ROUTE_STAFF_HOME)},
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.Red,
-                    contentColor = Color.Blue
-                ),
-                border = BorderStroke(1.dp, Color.Black),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.Blue
+                    ),
+                    border = BorderStroke(1.dp, Color.Black),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 10.dp,
+                            end = 10.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
 //            Box {
 //                Image(
 //                    painter = painterResource(id = R.drawable.library_image_alpha),
@@ -138,12 +152,65 @@ fun HomeScreen(navController: NavController){
 //                    modifier = Modifier.fillMaxSize()
 //                )
 //            }
-                Column {
+                    Column {
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.staff_icon),
+                                contentDescription = "Staff Icon",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = 0.dp,
+                                        top = 10.dp,
+                                        bottom = 0.dp,
+                                        end = 0.dp
+                                    )
+                                    .size(120.dp)
+                            )
+                        }
+                        Button(
+                            onClick = { navController.navigate(ROUTE_STAFF_HOME) },
+                            colors = ButtonDefaults.buttonColors(Color.Cyan),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    start = 10.dp,
+                                    end = 10.dp,
+                                    top = 10.dp,
+                                    bottom = 10.dp
+                                )
+                        ) {
+                            Text(
+                                text = "Staff",
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                OutlinedCard(
+//            onClick = { navController.navigate(ROUTE_STAFF_HOME)},
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.Blue,
+                        contentColor = Color.Blue
+                    ),
+                    border = BorderStroke(1.dp, Color.Black),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 10.dp,
+                            end = 10.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
                     Box(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.staff_icon),
+                            painter = painterResource(id = R.drawable.client_icon),
                             contentDescription = "Staff Icon",
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -155,10 +222,11 @@ fun HomeScreen(navController: NavController){
                                 )
                                 .size(120.dp)
                         )
+
                     }
                     Button(
-                        onClick = { navController.navigate(ROUTE_STAFF_HOME) },
-                        colors = ButtonDefaults.buttonColors(Color.Cyan),
+                        onClick = { navController.navigate(ROUTE_CLIENT_HOME) },
+                        colors = ButtonDefaults.buttonColors(Color.Black),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -169,106 +237,53 @@ fun HomeScreen(navController: NavController){
                             )
                     ) {
                         Text(
-                            text = "Staff",
-                            color = Color.Black
+                            text = "Client",
+                            color = Color.Cyan
                         )
                     }
                 }
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            OutlinedCard(
-//            onClick = { navController.navigate(ROUTE_STAFF_HOME)},
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.Blue,
-                    contentColor = Color.Blue
-                ),
-                border = BorderStroke(1.dp, Color.Black),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxWidth()
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color.Green),
+                    shape = RoundedCornerShape(10.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.client_icon),
-                        contentDescription = "Staff Icon",
+                        painter = painterResource(id = R.drawable.view_book_btn),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .size(120.dp)
+                    )
+                    Button(
+                        onClick = { navController.navigate(ROUTE_VIEW_BOOKS_GUEST) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 0.dp,
                                 top = 10.dp,
-                                bottom = 0.dp,
-                                end = 0.dp
-                            )
-                            .size(120.dp)
-                    )
-
-                }
-                Button(
-                    onClick = { navController.navigate(ROUTE_CLIENT_HOME) },
-                    colors = ButtonDefaults.buttonColors(Color.Black),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 10.dp,
-                            bottom = 10.dp
+                                start = 5.dp,
+                                end = 5.dp,
+                                bottom = 0.dp
+                            ),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Blue
                         )
-                ) {
+                    ) {
+                        Text(
+                            text = "View Books",
+                            color = Color.Red
+                        )
+                    }
                     Text(
-                        text = "Client",
-                        color = Color.Cyan
+                        text = "With this option you can only view books available",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        color = Color.Black,
+                        fontFamily = FontFamily.Serif
                     )
                 }
-            }
-            Card (
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.Green),
-                shape = RoundedCornerShape(10.dp)
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.view_book_btn),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
-                        .size(120.dp)
-                )
-                Button(
-                    onClick = { navController.navigate(ROUTE_VIEW_BOOKS_GUEST) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 10.dp,
-                            start = 5.dp,
-                            end = 5.dp,
-                            bottom = 0.dp
-                        ),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Blue
-                    )
-                ) {
-                    Text(
-                        text = "View Books",
-                        color = Color.Red
-                    )
-                }
-                Text(
-                    text = "With this option you can only view books available",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    color = Color.Black,
-                    fontFamily = FontFamily.Serif
-                )
             }
         }
     }

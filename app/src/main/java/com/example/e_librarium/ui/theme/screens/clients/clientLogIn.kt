@@ -45,6 +45,7 @@ import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_CLIENT_REGISTER
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @Composable
 fun ClientLogInScreen(navController: NavController){
@@ -60,114 +61,122 @@ fun ClientLogInScreen(navController: NavController){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = " LOG IN ",
-                fontSize = 30.sp,
-                color = Color.Red,
-                fontWeight = FontWeight.ExtraBold,
-                fontFamily = FontFamily.Monospace,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .width(150.dp)
-                    .background(color = Color.Black, shape = CutCornerShape(10.dp))
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(text = "Enter Email") },
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,
-                    unfocusedTextColor = Color.Red,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-
-                )
-            Spacer(modifier = Modifier.height(20.dp))
-
-            OutlinedTextField(
-                value = pass, onValueChange = { pass = it },
-                label = { Text(text = "Enter Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
-                ),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,
-                    unfocusedTextColor = Color.Red,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                onClick = {
-                    val myLogin = AuthViewModel(navController, context)
-                    myLogin.clientlogin(
-                        email.text.trim(),
-                        pass.text.trim()
-                    )
-
-                }, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(
-                    text = "Log In",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Magenta
-                )
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                DashTopBar(navController)
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = "Don't have account? Click to Register",
-                color = Color.White
-            )
-            Button(
-                onClick = {
-                    navController.navigate(ROUTE_CLIENT_REGISTER)
-                }, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+            ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = " LOG IN ",
+                    fontSize = 30.sp,
+                    color = Color.Red,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = FontFamily.Monospace,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .width(150.dp)
+                        .background(color = Color.Black, shape = CutCornerShape(10.dp))
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text(text = "Enter Email") },
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = Color.Blue,
+                        unfocusedTextColor = Color.Red,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                     ),
-                colors = ButtonDefaults.buttonColors(Color.Blue)
-            ) {
-                Text(
-                    text = "Register",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Magenta
-                )
-            }
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
 
+                    )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedTextField(
+                    value = pass, onValueChange = { pass = it },
+                    label = { Text(text = "Enter Password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Done
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = Color.Blue,
+                        unfocusedTextColor = Color.Red,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        val myLogin = AuthViewModel(navController, context)
+                        myLogin.clientlogin(
+                            email.text.trim(),
+                            pass.text.trim()
+                        )
+
+                    }, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Log In",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Magenta
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Don't have account? Click to Register",
+                    color = Color.White
+                )
+                Button(
+                    onClick = {
+                        navController.navigate(ROUTE_CLIENT_REGISTER)
+                    }, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        ),
+                    colors = ButtonDefaults.buttonColors(Color.Blue)
+                ) {
+                    Text(
+                        text = "Register",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Magenta
+                    )
+                }
+
+            }
         }
     }
 }

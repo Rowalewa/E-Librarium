@@ -119,13 +119,15 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
-            ){ StaffAppTopBar(navController, staffId) }
+            ){
+                StaffAppTopBar(navController, staffId)
+            }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.verticalScroll(
                     state = rememberScrollState(),
                     enabled = true,
-                    reverseScrolling = true
+                    reverseScrolling = false
                 )
             ) {
                 val visible by remember { mutableStateOf(true) }
@@ -160,17 +162,6 @@ fun BooksHomeScreen(navController: NavController, staffId: String){
                                 fontFamily = FontFamily.Serif,
                                 color = Color.Red
                             )
-                            Button(
-                                onClick = {
-                                    navController.navigate("$ROUTE_STAFF_FEEDBACK/$staffId")
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Yellow
-                                )
-                            ) {
-                                Text(text = "Submit Feedback")
-                            }
                         }
                     }
                     LaunchedEffect(key1 = true) {
@@ -354,7 +345,7 @@ fun StaffAppTopBar(navController: NavController, staffId: String){
         navigationIcon ={
             IconButton(onClick = {
                 navController.navigate("$ROUTE_BOOKS_HOME/$staffId")
-                Toast.makeText(context, "You are at Home Screen", Toast.LENGTH_LONG).show()}
+                Toast.makeText(context, "You are at Home Screen", Toast.LENGTH_SHORT).show()}
             ) {
                 Icon(
                     imageVector = Icons.Filled.Home,

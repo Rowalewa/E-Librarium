@@ -29,6 +29,7 @@ import com.example.e_librarium.navigation.ROUTE_CLIENT_LOGIN
 import com.example.e_librarium.navigation.ROUTE_CLIENT_REGISTER
 import com.example.e_librarium.navigation.ROUTE_HOME
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 
 @Composable
 fun ClientHomeScreen(navController: NavController){
@@ -41,85 +42,94 @@ fun ClientHomeScreen(navController: NavController){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box {
-                Image(
-                    painter = painterResource(id = R.drawable.client_home_image_alpha),
-                    contentDescription = null,
-                    modifier = Modifier.size(400.dp)
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                DashTopBar(navController)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box {
+                    Image(
+                        painter = painterResource(id = R.drawable.client_home_image_alpha),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(400.dp)
+                            .padding(
+                                start = 0.dp,
+                                end = 0.dp,
+                                top = 20.dp,
+                                bottom = 20.dp
+                            )
+                    )
+                }
+                Button(
+                    onClick = { navController.navigate(ROUTE_CLIENT_LOGIN) },
+                    colors = ButtonDefaults.buttonColors(Color.Blue),
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(
-                            start = 0.dp,
-                            end = 0.dp,
-                            top = 20.dp,
-                            bottom = 20.dp
+                            start = 10.dp,
+                            end = 10.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
                         )
-                )
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_CLIENT_LOGIN) },
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(
-                    text = "Log In",
-                    color = Color.Green,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
+                ) {
+                    Text(
+                        text = "Log In",
+                        color = Color.Green,
+                        fontSize = 20.sp,
+                        fontStyle = FontStyle.Normal,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
 
-                )
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_CLIENT_REGISTER) },
-                colors = ButtonDefaults.buttonColors(Color.Green),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
                     )
-            ) {
-                Text(
-                    text = "Sign Up",
-                    color = Color.Blue,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
-                )
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_HOME) },
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
+                }
+                Button(
+                    onClick = { navController.navigate(ROUTE_CLIENT_REGISTER) },
+                    colors = ButtonDefaults.buttonColors(Color.Green),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 10.dp,
+                            end = 10.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Sign Up",
+                        color = Color.Blue,
+                        fontSize = 20.sp,
+                        fontStyle = FontStyle.Normal,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
                     )
-            ) {
-                Text(
-                    text = "Back to Home Screen",
-                    color = Color.Green,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
-                )
+                }
+                Button(
+                    onClick = { navController.navigate(ROUTE_HOME) },
+                    colors = ButtonDefaults.buttonColors(Color.Blue),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Back to Home Screen",
+                        color = Color.Green,
+                        fontSize = 20.sp,
+                        fontStyle = FontStyle.Normal,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
+                    )
+                }
             }
         }
     }

@@ -116,7 +116,7 @@ fun AdminViewAccount(navController: NavHostController, adminId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        Image(painter = painterResource(id = R.drawable.view_staff_info),
+        Image(painter = painterResource(id = R.drawable.admin_view_account),
             contentDescription = "View Staff Wallpaper",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()

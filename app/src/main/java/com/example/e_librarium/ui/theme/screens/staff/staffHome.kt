@@ -37,17 +37,11 @@ import com.example.e_librarium.navigation.ROUTE_HOME
 import com.example.e_librarium.navigation.ROUTE_STAFF_LOGIN
 import com.example.e_librarium.navigation.ROUTE_STAFF_REGISTER
 import com.example.e_librarium.ui.theme.ELibrariumTheme
+import com.example.e_librarium.ui.theme.screens.dashboard.DashTopBar
 import java.util.Calendar
 
 @Composable
 fun StaffHomeScreen(navController: NavController){
-//    val currentTime = Calendar.getInstance().time
-//    val currentHour = currentTime.hours
-//    var greeting = when (currentHour){
-//        in 0..11 -> "Good Morning"
-//        in 12..17 -> "Good afternoon"
-//        else -> "Good evening!"
-//    }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -57,91 +51,92 @@ fun StaffHomeScreen(navController: NavController){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-//        Spacer(modifier = Modifier.height(20.dp))
-//        TextField(value = greeting,
-//            onValueChange = {greeting=it},
-//            enabled = true,
-//            readOnly = true,
-//            modifier = Modifier.align(Alignment.CenterHorizontally)
-//                .wrapContentWidth(),
-//
-//        )
-            Spacer(modifier = Modifier.height(20.dp))
-            Box {
-                Image(
-                    painter = painterResource(id = R.drawable.library_desk),
-                    contentDescription = null,
-                    modifier = Modifier.height(400.dp)
-                        .clip(shape = CutCornerShape(20.dp))
-                )
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                DashTopBar(navController)
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },
-                colors = ButtonDefaults.buttonColors(Color.Yellow),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(10.dp)
             ) {
-                Text(
-                    text = "Log In",
-                    color = Color.Red,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
+                Spacer(modifier = Modifier.height(20.dp))
+                Box {
+                    Image(
+                        painter = painterResource(id = R.drawable.library_desk),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(400.dp)
+                            .clip(shape = CutCornerShape(20.dp))
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = { navController.navigate(ROUTE_STAFF_LOGIN) },
+                    colors = ButtonDefaults.buttonColors(Color.Yellow),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Log In",
+                        color = Color.Red,
+                        fontSize = 20.sp,
+                        fontStyle = FontStyle.Normal,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
 
-                )
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_STAFF_REGISTER) },
-                colors = ButtonDefaults.buttonColors(Color.Magenta),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
                     )
-            ) {
-                Text(
-                    text = "Sign Up",
-                    color = Color.Black,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
-                )
-            }
-            Button(
-                onClick = { navController.navigate(ROUTE_HOME) },
-                colors = ButtonDefaults.buttonColors(Color.Blue),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
+                }
+                Button(
+                    onClick = { navController.navigate(ROUTE_STAFF_REGISTER) },
+                    colors = ButtonDefaults.buttonColors(Color.Magenta),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Sign Up",
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                        fontStyle = FontStyle.Normal,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
                     )
-            ) {
-                Text(
-                    text = "Back to Home Screen",
-                    color = Color.Green,
-                    fontSize = 20.sp,
-                    fontStyle = FontStyle.Normal,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif
-                )
+                }
+                Button(
+                    onClick = { navController.navigate(ROUTE_HOME) },
+                    colors = ButtonDefaults.buttonColors(Color.Blue),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(
+                        text = "Back to Home Screen",
+                        color = Color.Green,
+                        fontSize = 20.sp,
+                        fontStyle = FontStyle.Normal,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif
+                    )
+                }
             }
         }
     }

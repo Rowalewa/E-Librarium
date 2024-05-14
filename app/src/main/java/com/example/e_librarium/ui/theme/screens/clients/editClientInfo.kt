@@ -26,11 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Clients
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
@@ -114,6 +117,12 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
         }
     } )
     Box{
+        Image(
+            painter = painterResource(id = R.drawable.edit_client_info),
+            contentDescription = "View Clients Image",
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.FillBounds
+        )
         Column{
             Box(
                 modifier = Modifier.fillMaxWidth(),

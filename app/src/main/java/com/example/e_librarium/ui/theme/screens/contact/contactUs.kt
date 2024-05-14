@@ -82,7 +82,7 @@ fun ContactUsScreen(navController: NavHostController) {
             DashTopBar(navController)
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "We'd love to hear your feedback! \n *-> Indicates required field.",
+                text = "We'd love to hear your feedback! \n * Indicates required field.",
                 modifier = Modifier
                     .padding(bottom = 16.dp)
                     .align(Alignment.CenterHorizontally)

@@ -171,7 +171,7 @@ fun AddBooksScreen(navController: NavHostController, staffId: String){
                     .verticalScroll(
                         rememberScrollState(),
                         enabled = true,
-                        reverseScrolling = true
+                        reverseScrolling = false
                     )
             ) {
                 Text(

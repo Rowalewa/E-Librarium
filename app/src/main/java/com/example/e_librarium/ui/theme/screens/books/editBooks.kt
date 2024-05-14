@@ -88,7 +88,7 @@ fun EditBooksScreen(navController: NavHostController, bookId: String, staffId: S
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = true),
+                    .verticalScroll(rememberScrollState(), enabled = true, reverseScrolling = false),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val context = LocalContext.current

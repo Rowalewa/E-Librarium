@@ -60,7 +60,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_GUEST
+import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_CONTACT_US
+import com.example.e_librarium.navigation.ROUTE_DASHBOARD
 import com.example.e_librarium.navigation.ROUTE_EULA_GUEST
 import com.example.e_librarium.navigation.ROUTE_HOME
 import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_GUEST
@@ -121,7 +123,8 @@ fun DashboardScreen(navController: NavController){
                 Row {
                     Text(
                         text = "Get Started",
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        color = Color.Yellow
                     )
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowRight,
@@ -309,6 +312,18 @@ fun DashTopBar(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 color = Color.Green
             )
+        },
+        navigationIcon ={
+            IconButton(onClick = {
+                navController.navigate(ROUTE_DASHBOARD)
+                Toast.makeText(context, "You are at Home Screen", Toast.LENGTH_SHORT).show()}
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Home,
+                    contentDescription ="Home",
+                    tint = Color.Yellow
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Blue,

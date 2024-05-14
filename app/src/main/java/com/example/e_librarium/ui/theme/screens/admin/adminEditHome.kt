@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
@@ -35,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,34 +51,53 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
+import com.example.e_librarium.models.Admin
+import com.example.e_librarium.models.Staff
 import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_ADMIN
-import com.example.e_librarium.navigation.ROUTE_ABOUT_SCREEN_STAFF
 import com.example.e_librarium.navigation.ROUTE_ADMIN_CLIENT_EDIT
 import com.example.e_librarium.navigation.ROUTE_ADMIN_EDIT_HOME
 import com.example.e_librarium.navigation.ROUTE_ADMIN_FEEDBACK
 import com.example.e_librarium.navigation.ROUTE_ADMIN_STAFF_EDIT
 import com.example.e_librarium.navigation.ROUTE_ADMIN_VIEW_ACCOUNT
-import com.example.e_librarium.navigation.ROUTE_BOOKS_HOME
 import com.example.e_librarium.navigation.ROUTE_EULA_ADMIN
-import com.example.e_librarium.navigation.ROUTE_EULA_STAFF
 import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_ADMIN
-import com.example.e_librarium.navigation.ROUTE_PRIVACY_POLICY_STAFF
 import com.example.e_librarium.navigation.ROUTE_STAFF_CONTACT_AS_ADMIN
-import com.example.e_librarium.navigation.ROUTE_STAFF_CONTACT_AS_STAFF
-import com.example.e_librarium.navigation.ROUTE_STAFF_FEEDBACK
 import com.example.e_librarium.navigation.ROUTE_USER_MANUAL_ADMIN
-import com.example.e_librarium.navigation.ROUTE_USER_MANUAL_STAFF
-import com.example.e_librarium.navigation.ROUTE_VIEW_STAFF_INFO
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.delay
+import java.util.Calendar
 
 @Composable
 fun AdminEditHome(navController: NavController, adminId: String){
+    val context = LocalContext.current
+    val fullName by remember {
+        mutableStateOf("")
+    }
+    var adminFullName by remember {
+        mutableStateOf(TextFieldValue(fullName))
+    }
+    val currentDataRef = FirebaseDatabase.getInstance().getReference().child("Admin/$adminId")
+    currentDataRef.addValueEventListener(object: ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val admin = snapshot.getValue(Admin::class.java)
+            adminFullName = TextFieldValue(admin!!.fullName)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(context,error.message, Toast.LENGTH_SHORT).show()
+        }
+    } )
     Box (
         modifier = Modifier.fillMaxSize()
     ){
@@ -84,50 +106,102 @@ fun AdminEditHome(navController: NavController, adminId: String){
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.FillBounds
         )
-        Column (
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            AdminAppTopBar(navController, adminId)
-            Text(
-                text = "ACTIONS",
-                color = Color.Red,
-                fontSize = 30.sp,
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.ExtraBold
-            )
-            Spacer(modifier = Modifier.height(15.dp))
-            Card (
-                colors = CardDefaults.cardColors(Color.Blue)
+        Column {
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
             ){
-                Image(
-                    painter = painterResource(id = R.drawable.staff_icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
-                )
-                Button(onClick = { navController.navigate("$ROUTE_ADMIN_STAFF_EDIT/$adminId") },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Edit Staff")
-                }
+                AdminAppTopBar(navController, adminId)
             }
-            Spacer(modifier = Modifier.height(30.dp))
-            Card (
-                colors = CardDefaults.cardColors(Color.Red)
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.client_icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = false)
+            ) {
+                Text(
+                    text = "ACTIONS",
+                    color = Color.Red,
+                    fontSize = 30.sp,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.ExtraBold
                 )
-                Button(onClick = { navController.navigate("$ROUTE_ADMIN_CLIENT_EDIT/$adminId") },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Edit Client")
+                Spacer(modifier = Modifier.height(15.dp))
+                val visible by remember { mutableStateOf(true) }
+
+                if (visible) {
+                    val timeOfDay = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+                        in 0..11 -> "morning"
+                        in 12..16 -> "afternoon"
+                        else -> "evening"
+                    }
+
+                    Card(
+                        modifier = Modifier.padding(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.Cyan),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 5.dp,
+                            focusedElevation = 10.dp,
+                            pressedElevation = 20.dp,
+                            hoveredElevation = 15.dp
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                text = "Good $timeOfDay",
+                                color = Color.Magenta
+                            )
+                            Text(
+                                text = adminFullName.text,
+                                fontSize = 25.sp,
+                                fontFamily = FontFamily.Serif,
+                                color = Color.Red
+                            )
+                        }
+                    }
+                    LaunchedEffect(key1 = true) {
+                        delay(250000) // Dismiss after 250 seconds
+//                    visible = false
+                    }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                Card(
+                    colors = CardDefaults.cardColors(Color.Blue)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.staff_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                    )
+                    Button(
+                        onClick = { navController.navigate("$ROUTE_ADMIN_STAFF_EDIT/$adminId") },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Edit Staff")
+                    }
+                }
+                Spacer(modifier = Modifier.height(15.dp))
+                Card(
+                    colors = CardDefaults.cardColors(Color.Red)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.client_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                    )
+                    Button(
+                        onClick = { navController.navigate("$ROUTE_ADMIN_CLIENT_EDIT/$adminId") },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Edit Client")
+                    }
+                }
+                Spacer(modifier = Modifier.height(70.dp))
+
             }
         }
         Box (
@@ -160,7 +234,7 @@ fun AdminAppTopBar(navController: NavController, adminId: String){
         navigationIcon ={
             IconButton(onClick = {
                 navController.navigate("$ROUTE_ADMIN_EDIT_HOME/$adminId")
-                Toast.makeText(context, "You are at Home Screen", Toast.LENGTH_LONG).show()}
+                Toast.makeText(context, "You are at Home Screen", Toast.LENGTH_SHORT).show()}
             ) {
                 Icon(
                     imageVector = Icons.Filled.Home,

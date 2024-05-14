@@ -130,144 +130,154 @@ fun ViewClientInfo(navController: NavHostController, clientId: String) {
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize()
         )
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = true)
-        ) {
-            Box (
+        Column {
+            Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.TopCenter
-            ){
+            ) {
                 ClientAppTopBar(navController, clientId)
             }
-            Image(
-                painter = rememberAsyncImagePainter(mClientProfilePictureUrl),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(200.dp)
-                    .clip(shape = CircleShape)
-            )
             Column(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .border(width = 5.dp, color = Color.Magenta, shape = RoundedCornerShape(20.dp))
-                    .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(
+                    state = rememberScrollState(),
+                    enabled = true,
+                    reverseScrolling = true
+                )
             ) {
-                Text(
-                    text = "Name:\n ${clientFullName.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
+                Image(
+                    painter = rememberAsyncImagePainter(mClientProfilePictureUrl),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 15.dp,
-                            bottom = 0.dp,
-                            end = 0.dp,
-                            start = 0.dp
+                        .padding(16.dp)
+                        .size(200.dp)
+                        .clip(shape = CircleShape)
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .border(
+                            width = 5.dp,
+                            color = Color.Magenta,
+                            shape = RoundedCornerShape(20.dp)
                         )
-                )
-                Text(
-                    text = "Gender:\n ${clientGender.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Marital Status: \n ${clientMaritalStatus.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = "Phone Number: \n ${clientPhoneNumber.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Monospace,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Date of Birth: \n ${clientDateOfBirth.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = "Status: \n $mClientStatus",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Yellow)
-                )
-                Text(
-                    text = "Email Address: \n ${clientEmail.text}",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    color = Color.Black,
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Center,
+                        .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
+                ) {
+                    Text(
+                        text = "Name:\n ${clientFullName.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 15.dp,
+                                bottom = 0.dp,
+                                end = 0.dp,
+                                start = 0.dp
+                            )
+                    )
+                    Text(
+                        text = "Gender:\n ${clientGender.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.Yellow)
+                    )
+                    Text(
+                        text = "Marital Status: \n ${clientMaritalStatus.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Text(
+                        text = "Phone Number: \n ${clientPhoneNumber.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Monospace,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.Yellow)
+                    )
+                    Text(
+                        text = "Date of Birth: \n ${clientDateOfBirth.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Text(
+                        text = "Status: \n $mClientStatus",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.Yellow)
+                    )
+                    Text(
+                        text = "Email Address: \n ${clientEmail.text}",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        color = Color.Black,
+                        fontStyle = FontStyle.Italic,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 0.dp,
+                                bottom = 15.dp,
+                                end = 0.dp,
+                                start = 0.dp
+                            )
+                    )
+                }
+                Button(
+                    onClick = { navController.navigate("$ROUTE_EDIT_CLIENT_INFO/$clientId") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
+                            start = 20.dp,
+                            end = 20.dp,
                             top = 0.dp,
-                            bottom = 15.dp,
-                            end = 0.dp,
-                            start = 0.dp
+                            bottom = 0.dp
                         )
-                )
+                ) {
+                    Text(text = "Edit")
+                }
+                Button(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 0.dp
+                        )
+                ) {
+                    Text(text = "Back")
+                }
+                Spacer(modifier = Modifier.height(80.dp))
             }
-            Button(
-                onClick = { navController.navigate("$ROUTE_EDIT_CLIENT_INFO/$clientId") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(text = "Edit")
-            }
-            Button(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 0.dp,
-                        bottom = 0.dp
-                    )
-            ) {
-                Text(text = "Back")
-            }
-            Spacer(modifier = Modifier.height(80.dp))
         }
         Box(
             modifier = Modifier.fillMaxSize(),
