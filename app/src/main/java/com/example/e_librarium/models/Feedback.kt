@@ -1,9 +1,9 @@
 package com.example.e_librarium.models
 
 class Feedback {
-    private var feedbackName: String = ""
-    private var feedbackEmailAddress: String = ""
-    private var feedbackText: String = ""
+    var feedbackName: String = ""
+    var feedbackEmailAddress: String = ""
+    var feedbackText: String = ""
 
     constructor(
         feedBackName: String,

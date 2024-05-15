@@ -1,12 +1,12 @@
 package com.example.e_librarium.models
 
 class Contact {
-    private var guestName: String = ""
-    private var guestEmail: String = ""
-    private var guestPhoneNumber: String = ""
-    private var guestComment: String = ""
-    private var guestCallback: String = ""
-    private var guestId: String = ""
+    var guestName: String = ""
+    var guestEmail: String = ""
+    var guestPhoneNumber: String = ""
+    var guestComment: String = ""
+    var guestCallback: String = ""
+    var guestId: String = ""
 
     constructor(
         guestName: String,
