@@ -62,77 +62,98 @@ class BooksViewModel (
         bookCondition: String,
         bookShelfNumber: String,
         bookSynopsis: String,
-        filePath: Uri,
+        filePath: Uri?,
         bookQuantity: Int // Add quantity as an integer parameter
     ) {
         val id = System.currentTimeMillis().toString()
         val storageReference = FirebaseStorage.getInstance().getReference().child("Books/$id")
-        storageReference.putFile(filePath).addOnCompleteListener { task ->
-            progress.show()
-            if (bookTitle.isBlank() || bookAuthor.isBlank() || bookCondition.isBlank() || bookPrice.isBlank() ||
-                bookISBNNumber.isBlank() || bookPublisher.isBlank() || bookPublicationDate.isBlank() ||
-                bookEdition.isBlank()|| bookLanguage.isBlank()|| bookNumberOfPages.isBlank()|| bookAcquisitionMethod.isBlank()||
-                bookYearOfPublication.isBlank()|| bookShelfNumber.isBlank()|| bookSynopsis.isBlank()
-            ) {
-                progress.dismiss()
-                Toast.makeText(context, "Fill all the fields please", Toast.LENGTH_LONG).show()
-                navController.popBackStack()
-            } else if (bookISBNNumber.length != 10 && bookISBNNumber.length != 13) {
-                progress.dismiss()
-                Toast.makeText(context, "Invalid ISBN Number", Toast.LENGTH_LONG).show()
-                navController.popBackStack()
-            } else if (task.isSuccessful) {
-                val dbRef = FirebaseDatabase.getInstance().getReference().child("Books")
-                // Check if ISBN Number already exists
-                dbRef.orderByChild("bookISBNNumber").equalTo(bookISBNNumber).addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            progress.dismiss()
-                            Toast.makeText(context, "ISBN Number already exists", Toast.LENGTH_LONG).show()
-                            navController.popBackStack()
-                        } else {
-                            progress.dismiss()
-                            storageReference.downloadUrl.addOnSuccessListener { uri ->
-                                val bookImageUrl = uri.toString()
-                                val houseData = Books(
-                                    bookTitle,
-                                    bookAuthor,
-                                    bookCondition,
-                                    bookPrice,
-                                    bookISBNNumber,
-                                    bookPublisher,
-                                    bookPublicationDate,
-                                    bookGenre,
-                                    bookEdition,
-                                    bookLanguage,
-                                    bookNumberOfPages,
-                                    bookAcquisitionMethod,
-                                    bookYearOfPublication,
-                                    bookShelfNumber,
-                                    bookSynopsis,
-                                    bookImageUrl,
-                                    bookQuantity,
-                                    id // Pass quantity to the Books constructor
-                                )
-                                val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$id")
-                                dbRef.setValue(houseData)
-                                val toast = Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT)
-                                toast.setGravity(Gravity.CENTER, 0, 0)
-                                toast.show()
-                                navController.navigateUp()
+        if (filePath != null) {
+            storageReference.putFile(filePath).addOnCompleteListener { task ->
+                progress.show()
+                if (bookTitle.isBlank() || bookAuthor.isBlank() || bookCondition.isBlank() || bookPrice.isBlank() ||
+                    bookISBNNumber.isBlank() || bookPublisher.isBlank() || bookPublicationDate.isBlank() ||
+                    bookEdition.isBlank() || bookLanguage.isBlank() || bookNumberOfPages.isBlank() || bookAcquisitionMethod.isBlank() ||
+                    bookYearOfPublication.isBlank() || bookShelfNumber.isBlank() || bookSynopsis.isBlank()
+                ) {
+                    progress.dismiss()
+                    Toast.makeText(context, "Fill all the fields please", Toast.LENGTH_LONG).show()
+                    navController.popBackStack()
+                } else if (bookISBNNumber.length != 10 && bookISBNNumber.length != 13) {
+                    progress.dismiss()
+                    Toast.makeText(context, "Invalid ISBN Number", Toast.LENGTH_LONG).show()
+                    navController.popBackStack()
+                } else if (task.isSuccessful) {
+                    val dbRef = FirebaseDatabase.getInstance().getReference().child("Books")
+                    // Check if ISBN Number already exists
+                    dbRef.orderByChild("bookISBNNumber").equalTo(bookISBNNumber)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    progress.dismiss()
+                                    Toast.makeText(
+                                        context,
+                                        "ISBN Number already exists",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    navController.popBackStack()
+                                } else {
+                                    progress.dismiss()
+                                    storageReference.downloadUrl.addOnSuccessListener { uri ->
+                                        val bookImageUrl = uri.toString()
+                                        val houseData = Books(
+                                            bookTitle,
+                                            bookAuthor,
+                                            bookCondition,
+                                            bookPrice,
+                                            bookISBNNumber,
+                                            bookPublisher,
+                                            bookPublicationDate,
+                                            bookGenre,
+                                            bookEdition,
+                                            bookLanguage,
+                                            bookNumberOfPages,
+                                            bookAcquisitionMethod,
+                                            bookYearOfPublication,
+                                            bookShelfNumber,
+                                            bookSynopsis,
+                                            bookImageUrl,
+                                            bookQuantity,
+                                            id // Pass quantity to the Books constructor
+                                        )
+                                        val dbRef = FirebaseDatabase.getInstance().getReference()
+                                            .child("Books/$id")
+                                        dbRef.setValue(houseData)
+                                        val toast = Toast.makeText(
+                                            context,
+                                            "Upload successful",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        toast.setGravity(Gravity.CENTER, 0, 0)
+                                        toast.show()
+                                        navController.navigateUp()
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        progress.dismiss()
-                        Toast.makeText(context, "Error checking ISBN Number: ${databaseError.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            } else {
-                progress.dismiss()
-                Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                progress.dismiss()
+                                Toast.makeText(
+                                    context,
+                                    "Error checking ISBN Number: ${databaseError.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                } else {
+                    progress.dismiss()
+                    Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
+        }else{
+            progress.dismiss()
+            Toast.makeText(context, "You have to choose an image", Toast.LENGTH_LONG).show()
+            return
         }
     }
 
@@ -180,6 +201,7 @@ class BooksViewModel (
                     }
                 }
                 Log.d("BorrowedBooks", "Fetched ${borrowedBooks.size} books for client $clientId")
+                Toast.makeText(context, "${borrowedBooks.size} books are borrowed", Toast.LENGTH_LONG).show()
                 callback(borrowedBooks) // Invoke the callback with the fetched data
             }
 
@@ -357,110 +379,128 @@ class BooksViewModel (
         val clientRef = FirebaseDatabase.getInstance().getReference("Client").child(clientId)
 
         // Fetch the current status of the client
-        clientRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(clientSnapshot: DataSnapshot) {
-                val clientStatus = clientSnapshot.child("clientStatus").getValue(String::class.java)
+        if (borrowDate.isBlank() || returnDate.isBlank()) {
+            clientRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(clientSnapshot: DataSnapshot) {
+                    val clientStatus =
+                        clientSnapshot.child("clientStatus").getValue(String::class.java)
 
-                if (clientStatus == "Fined" || clientStatus == "Suspended") {
-                    progressLoad.dismiss()
-                    Toast.makeText(context, "Cannot borrow, client $clientStatus.", Toast.LENGTH_LONG).show()
-                    return
-                } else {
+                    if (clientStatus == "Fined" || clientStatus == "Suspended") {
+                        progressLoad.dismiss()
+                        Toast.makeText(
+                            context,
+                            "Cannot borrow, client $clientStatus.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return
+                    } else {
 
-                    // Fetch the current borrowed books count of the client
-                    val borrowedBooksRef =
-                        FirebaseDatabase.getInstance().getReference("BorrowedBooks")
-                    borrowedBooksRef.orderByChild("clientId").equalTo(clientId)
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(borrowedSnapshot: DataSnapshot) {
-                                val currentBorrowedCount = borrowedSnapshot.childrenCount.toInt()
+                        // Fetch the current borrowed books count of the client
+                        val borrowedBooksRef =
+                            FirebaseDatabase.getInstance().getReference("BorrowedBooks")
+                        borrowedBooksRef.orderByChild("clientId").equalTo(clientId)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(borrowedSnapshot: DataSnapshot) {
+                                    val currentBorrowedCount =
+                                        borrowedSnapshot.childrenCount.toInt()
 
-                                // Define the maximum number of books a client can borrow
-                                val maxBooksToBorrow = 3 // Change this to your desired maximum
+                                    // Define the maximum number of books a client can borrow
+                                    val maxBooksToBorrow = 3 // Change this to your desired maximum
 
-                                if (currentBorrowedCount >= maxBooksToBorrow) {
-                                    progressLoad.dismiss()
-                                    Toast.makeText(
-                                        context,
-                                        "Cannot borrow, maximum books borrowed.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    if (currentBorrowedCount >= maxBooksToBorrow) {
+                                        progressLoad.dismiss()
+                                        Toast.makeText(
+                                            context,
+                                            "Cannot borrow, maximum books borrowed.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 //                            return
-                                    navController.popBackStack()
-                                } else {
+                                        navController.popBackStack()
+                                    } else {
 
 
-                                    // Fetch the current status and quantity of the book
-                                    bookRef.addListenerForSingleValueEvent(object :
-                                        ValueEventListener {
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            val book = snapshot.getValue(Books::class.java)
-                                            if (book != null) {
-                                                if (book.bookQuantity > 0) {
-                                                    val borrowedBookData = BorrowingBook(
-                                                        clientId,
-                                                        bookId,
-                                                        bookTitle,
-                                                        bookAuthor,
-                                                        bookISBNNumber,
-                                                        bookGenre,
-                                                        bookPublisher,
-                                                        bookSynopsis,
-                                                        bookImageUrl,
-                                                        borrowDate,
-                                                        returnDate
-                                                    )
+                                        // Fetch the current status and quantity of the book
+                                        bookRef.addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
+                                            override fun onDataChange(snapshot: DataSnapshot) {
+                                                val book = snapshot.getValue(Books::class.java)
+                                                if (book != null) {
+                                                    if (book.bookQuantity > 0) {
+                                                        val borrowedBookData = BorrowingBook(
+                                                            clientId,
+                                                            bookId,
+                                                            bookTitle,
+                                                            bookAuthor,
+                                                            bookISBNNumber,
+                                                            bookGenre,
+                                                            bookPublisher,
+                                                            bookSynopsis,
+                                                            bookImageUrl,
+                                                            borrowDate,
+                                                            returnDate
+                                                        )
 
-                                                    val borrowedRef = FirebaseDatabase.getInstance()
-                                                        .getReference("BorrowedBooks")
-                                                        .child(clientId).push()
+                                                        val borrowedRef =
+                                                            FirebaseDatabase.getInstance()
+                                                                .getReference("BorrowedBooks")
+                                                                .child(clientId).push()
 
-                                                    borrowedRef.setValue(borrowedBookData)
-                                                        .addOnCompleteListener { task ->
-                                                            if (task.isSuccessful) {
-                                                                // Update the book quantity and status
-                                                                val newQuantity =
-                                                                    book.bookQuantity - 1
-                                                                bookRef.child("bookQuantity")
-                                                                    .setValue(newQuantity)
-                                                                bookRef.child("bookStatus")
-                                                                    .setValue("Borrowed")
-                                                                    .addOnCompleteListener {
-                                                                        if (it.isSuccessful) {
-                                                                            progressLoad.dismiss()
-                                                                            Toast.makeText(
-                                                                                context,
-                                                                                "Book successfully borrowed",
-                                                                                Toast.LENGTH_SHORT
-                                                                            ).show()
-                                                                            navController.navigateUp()
-                                                                        } else {
-                                                                            progressLoad.dismiss()
-                                                                            Toast.makeText(
-                                                                                context,
-                                                                                "Failed to update book status",
-                                                                                Toast.LENGTH_SHORT
-                                                                            ).show()
+                                                        borrowedRef.setValue(borrowedBookData)
+                                                            .addOnCompleteListener { task ->
+                                                                if (task.isSuccessful) {
+                                                                    // Update the book quantity and status
+                                                                    val newQuantity =
+                                                                        book.bookQuantity - 1
+                                                                    bookRef.child("bookQuantity")
+                                                                        .setValue(newQuantity)
+                                                                    bookRef.child("bookStatus")
+                                                                        .setValue("Borrowed")
+                                                                        .addOnCompleteListener {
+                                                                            if (it.isSuccessful) {
+                                                                                progressLoad.dismiss()
+                                                                                Toast.makeText(
+                                                                                    context,
+                                                                                    "Book successfully borrowed",
+                                                                                    Toast.LENGTH_SHORT
+                                                                                ).show()
+                                                                                navController.navigateUp()
+                                                                            } else {
+                                                                                progressLoad.dismiss()
+                                                                                Toast.makeText(
+                                                                                    context,
+                                                                                    "Failed to update book status",
+                                                                                    Toast.LENGTH_SHORT
+                                                                                ).show()
+                                                                            }
                                                                         }
-                                                                    }
-                                                            } else {
-                                                                progressLoad.dismiss()
-                                                                Toast.makeText(
-                                                                    context,
-                                                                    "Failed to borrow book",
-                                                                    Toast.LENGTH_SHORT
-                                                                ).show()
+                                                                } else {
+                                                                    progressLoad.dismiss()
+                                                                    Toast.makeText(
+                                                                        context,
+                                                                        "Failed to borrow book",
+                                                                        Toast.LENGTH_SHORT
+                                                                    ).show()
+                                                                }
                                                             }
-                                                        }
+                                                    } else {
+                                                        progressLoad.dismiss()
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Book is out of stock",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
                                                 } else {
                                                     progressLoad.dismiss()
                                                     Toast.makeText(
                                                         context,
-                                                        "Book is out of stock",
+                                                        "Failed to fetch book details",
                                                         Toast.LENGTH_SHORT
                                                     ).show()
                                                 }
-                                            } else {
+                                            }
+
+                                            override fun onCancelled(error: DatabaseError) {
                                                 progressLoad.dismiss()
                                                 Toast.makeText(
                                                     context,
@@ -468,37 +508,33 @@ class BooksViewModel (
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                             }
-                                        }
-
-                                        override fun onCancelled(error: DatabaseError) {
-                                            progressLoad.dismiss()
-                                            Toast.makeText(
-                                                context,
-                                                "Failed to fetch book details",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    })
+                                        })
+                                    }
                                 }
-                            }
 
-                            override fun onCancelled(error: DatabaseError) {
-                                progressLoad.dismiss()
-                                Toast.makeText(
-                                    context,
-                                    "Failed to fetch borrowed books",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        })
+                                override fun onCancelled(error: DatabaseError) {
+                                    progressLoad.dismiss()
+                                    Toast.makeText(
+                                        context,
+                                        "Failed to fetch borrowed books",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
+                    }
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                progressLoad.dismiss()
-                Toast.makeText(context, "Failed to fetch client status", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    progressLoad.dismiss()
+                    Toast.makeText(context, "Failed to fetch client status", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+        }else{
+            progressLoad.dismiss()
+            Toast.makeText(context, "You have to fill in both the return and borrow dates", Toast.LENGTH_LONG).show()
+            return
+        }
     }
 
 

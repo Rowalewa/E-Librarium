@@ -808,7 +808,7 @@ fun ImagePicker(
                     bookYearOfPublication,
                     bookShelfNumber,
                     bookSynopsis,
-                    imageUri!!,
+                    imageUri,
                     bookQuantity
                 )
 

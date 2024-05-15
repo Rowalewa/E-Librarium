@@ -464,7 +464,7 @@ fun ImagePicker(
                     email,
                     pass,
                     confpass,
-                    imageUri!!,
+                    imageUri,
                     clientStatus = "Active",
                     fine = 0.0
                 )

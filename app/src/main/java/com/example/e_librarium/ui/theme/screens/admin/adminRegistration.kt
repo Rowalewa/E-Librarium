@@ -441,7 +441,7 @@ fun ImagePicker(
                     email,
                     pass,
                     confpass,
-                    imageUri!!
+                    imageUri
                 )
 
             },
