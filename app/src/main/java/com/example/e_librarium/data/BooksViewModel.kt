@@ -258,36 +258,54 @@ class BooksViewModel (
         // Update book details in Firebase Realtime Database
         if (filePath != null) {
         val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
-        dbRef.setValue(updateData).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // If an image file is provided, update the image in Firebase Storage
-                    filePath.let { fileUri ->
-                        storageReference.putFile(fileUri).addOnCompleteListener { storageTask ->
-                            if (storageTask.isSuccessful) {
-                                progressUpdate.dismiss()
-                                storageReference.downloadUrl.addOnSuccessListener { uri ->
-                                    val imageUrl = uri.toString()
-                                    updateData.bookImageUrl = imageUrl
-                                    dbRef.setValue(updateData) // Update the book entry with the image URL
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val book = snapshot.getValue(Books::class.java)
+                dbRef.setValue(updateData).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // If an image file is provided, update the image in Firebase Storage
+                        filePath.let { fileUri ->
+                            storageReference.putFile(fileUri).addOnCompleteListener { storageTask ->
+                                if (storageTask.isSuccessful) {
+                                    progressUpdate.dismiss()
+                                    storageReference.downloadUrl.addOnSuccessListener { uri ->
+                                        val imageUrl = uri.toString()
+                                        updateData.bookImageUrl = imageUrl
+                                        val newBookQuantity = (book?.bookQuantity ?: 0) + bookQuantity
+                                        dbRef.setValue(updateData) // Update the book entry with the image URL
+                                        dbRef.child("bookQuantity").setValue(newBookQuantity)
+                                    }
+                                } else {
+                                    progressUpdate.dismiss()
+                                    Toast.makeText(context, "Upload Failure", Toast.LENGTH_LONG)
+                                        .show()
                                 }
-                            } else {
-                                progressUpdate.dismiss()
-                                Toast.makeText(context, "Upload Failure", Toast.LENGTH_LONG).show()
                             }
                         }
-                    }
 
-                    // Show success message
-                    progressUpdate.dismiss()
-                    Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
-                    navController.navigateUp()
-                } else {
-                    // Handle database update error
-                    progressUpdate.dismiss()
-                    Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT)
-                        .show()
+                        // Show success message
+                        progressUpdate.dismiss()
+                        Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+                        navController.navigateUp()
+                    } else {
+                        // Handle database update error
+                        progressUpdate.dismiss()
+                        Toast.makeText(
+                            context,
+                            "ERROR: ${task.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 }
             }
+            override fun onCancelled(error: DatabaseError) {
+                progressUpdate.dismiss()
+                // Handle database error
+                Toast.makeText(context, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
         } else{
             progressUpdate.show()
             val dbRef = FirebaseDatabase.getInstance().getReference().child("Books/$bookId")
@@ -321,7 +339,10 @@ class BooksViewModel (
                         if (task.isSuccessful) {
                             // Show success message
                             progressUpdate.dismiss()
+                            val newBookQuantity = (book?.bookQuantity ?: 0) + bookQuantity
+                            dbRef.child("bookQuantity").setValue(newBookQuantity)
                             Toast.makeText(context, "Update successful", Toast.LENGTH_SHORT).show()
+
                             navController.navigateUp()
                         } else {
                             // Handle database update error
@@ -379,7 +400,7 @@ class BooksViewModel (
         val clientRef = FirebaseDatabase.getInstance().getReference("Client").child(clientId)
 
         // Fetch the current status of the client
-        if (borrowDate.isBlank() || returnDate.isBlank()) {
+        if (borrowDate.isNotBlank() || returnDate.isNotBlank()) {
             clientRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(clientSnapshot: DataSnapshot) {
                     val clientStatus =
