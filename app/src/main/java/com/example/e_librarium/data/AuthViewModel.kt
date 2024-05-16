@@ -739,75 +739,66 @@ class AuthViewModel (
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.updatePassword(pass)?.addOnCompleteListener { passwordUpdateTask ->
                     if (passwordUpdateTask.isSuccessful) {
-                        if (fine > 0) {
-                            if (pass == confpass) {
-                                if (isStrongPassword(pass)) {
-                                    val dbRef = FirebaseDatabase.getInstance().getReference()
-                                        .child("Client/$clientId")
-                                    dbRef.setValue(updateData).addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            // If an image file is provided, update the image in Firebase Storage
-                                            filePath.let { fileUri ->
-                                                storageReference.putFile(fileUri)
-                                                    .addOnCompleteListener { storageTask ->
-                                                        if (storageTask.isSuccessful) {
-                                                            progressUpdate.dismiss()
-                                                            storageReference.downloadUrl.addOnSuccessListener { uri ->
-                                                                val imageUrl = uri.toString()
-                                                                updateData.clientProfilePictureUrl =
-                                                                    imageUrl
-                                                                dbRef.setValue(updateData) // Update the book entry with the image URL
-                                                            }
-                                                        } else {
-                                                            progressUpdate.dismiss()
-                                                            Toast.makeText(
-                                                                context,
-                                                                "Upload Failure",
-                                                                Toast.LENGTH_LONG
-                                                            ).show()
+                        if (pass == confpass) {
+                            if (isStrongPassword(pass)) {
+                                val dbRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("Client/$clientId")
+                                dbRef.setValue(updateData).addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        // If an image file is provided, update the image in Firebase Storage
+                                        filePath.let { fileUri ->
+                                            storageReference.putFile(fileUri)
+                                                .addOnCompleteListener { storageTask ->
+                                                    if (storageTask.isSuccessful) {
+                                                        progressUpdate.dismiss()
+                                                        storageReference.downloadUrl.addOnSuccessListener { uri ->
+                                                            val imageUrl = uri.toString()
+                                                            updateData.clientProfilePictureUrl =
+                                                                imageUrl
+                                                            dbRef.setValue(updateData) // Update the book entry with the image URL
                                                         }
+                                                    } else {
+                                                        progressUpdate.dismiss()
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Upload Failure",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
                                                     }
-                                            }
-
-                                            // Show success message
-                                            progressUpdate.dismiss()
-                                            Toast.makeText(
-                                                context,
-                                                "Update successful",
-                                                Toast.LENGTH_SHORT
-                                            )
-                                                .show()
-                                            navController.popBackStack()
-                                        } else {
-                                            progressUpdate.dismiss()
-                                            // Handle database update error
-                                            Toast.makeText(
-                                                context,
-                                                "ERROR: ${task.exception?.message}",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                                }
                                         }
+
+                                        // Show success message
+                                        progressUpdate.dismiss()
+                                        Toast.makeText(
+                                            context,
+                                            "Update successful",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                        navController.popBackStack()
+                                    } else {
+                                        progressUpdate.dismiss()
+                                        // Handle database update error
+                                        Toast.makeText(
+                                            context,
+                                            "ERROR: ${task.exception?.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
-                                } else {
-                                    progressUpdate.dismiss()
-                                    Toast.makeText(
-                                        context,
-                                        "Your password strength is weak, pattern requires at least 8 characters including at least one uppercase letter, one lowercase letter, one digit, and one special character.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
                                 }
                             } else {
                                 progressUpdate.dismiss()
-                                Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG)
-                                    .show()
+                                Toast.makeText(
+                                    context,
+                                    "Your password strength is weak, pattern requires at least 8 characters including at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         } else {
                             progressUpdate.dismiss()
-                            Toast.makeText(
-                                context,
-                                "You cannot make changes, you owe the library: Ksh.$fine",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG)
+                                .show()
                         }
                     } else {
                         progressUpdate.dismiss()
@@ -825,91 +816,82 @@ class AuthViewModel (
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.updatePassword(pass)?.addOnCompleteListener { passwordUpdateTask ->
                     if (passwordUpdateTask.isSuccessful) {
-                        if (fine > 0) {
-                            if (pass == confpass) {
-                                if (isStrongPassword(pass)) {
-                                    val dbRef = FirebaseDatabase.getInstance().getReference()
-                                        .child("Client/$clientId")
-                                    dbRef.addListenerForSingleValueEvent(object :
-                                        ValueEventListener {
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            val client = snapshot.getValue(Clients::class.java)
-                                            val existingImageUrl =
-                                                client?.clientProfilePictureUrl ?: ""
+                        if (pass == confpass) {
+                            if (isStrongPassword(pass)) {
+                                val dbRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("Client/$clientId")
+                                dbRef.addListenerForSingleValueEvent(object :
+                                    ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val client = snapshot.getValue(Clients::class.java)
+                                        val existingImageUrl =
+                                            client?.clientProfilePictureUrl ?: ""
 
-                                            val updateData = Clients(
-                                                fullName,
-                                                gender,
-                                                maritalStatus,
-                                                phoneNumber,
-                                                dateOfBirth,
-                                                email,
-                                                pass,
-                                                clientStatus,
-                                                existingImageUrl,
-                                                clientId,
-                                                fine
-                                            )
+                                        val updateData = Clients(
+                                            fullName,
+                                            gender,
+                                            maritalStatus,
+                                            phoneNumber,
+                                            dateOfBirth,
+                                            email,
+                                            pass,
+                                            clientStatus,
+                                            existingImageUrl,
+                                            clientId,
+                                            fine
+                                        )
 
-                                            dbRef.setValue(updateData)
-                                                .addOnCompleteListener { task ->
-                                                    if (task.isSuccessful) {
-                                                        progressUpdate.dismiss()
-                                                        // Show success message
-                                                        Toast.makeText(
-                                                            context,
-                                                            "Update successful",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                        navController.popBackStack()
-                                                    } else {
-                                                        // Handle database update error
-                                                        progressUpdate.dismiss()
-                                                        Toast.makeText(
-                                                            context,
-                                                            "ERROR: ${task.exception?.message}",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    }
+                                        dbRef.setValue(updateData)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    progressUpdate.dismiss()
+                                                    // Show success message
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Update successful",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                    navController.popBackStack()
+                                                } else {
+                                                    // Handle database update error
+                                                    progressUpdate.dismiss()
+                                                    Toast.makeText(
+                                                        context,
+                                                        "ERROR: ${task.exception?.message}",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
                                                 }
-                                        }
+                                            }
+                                    }
 
-                                        override fun onCancelled(error: DatabaseError) {
-                                            progressUpdate.dismiss()
-                                            // Handle database error
-                                            Toast.makeText(
-                                                context,
-                                                "ERROR: ${error.message}",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    })
-                                    progressUpdate.dismiss()
-                                    Toast.makeText(
-                                        context,
-                                        "Success with Image Retained",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                } else {
-                                    progressUpdate.dismiss()
-                                    Toast.makeText(
-                                        context,
-                                        "Your password strength is weak, pattern requires at least 8 characters including at least one uppercase letter, one lowercase letter, one digit, and one special character.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
+                                    override fun onCancelled(error: DatabaseError) {
+                                        progressUpdate.dismiss()
+                                        // Handle database error
+                                        Toast.makeText(
+                                            context,
+                                            "ERROR: ${error.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                })
+                                progressUpdate.dismiss()
+                                Toast.makeText(
+                                    context,
+                                    "Success with Image Retained",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             } else {
                                 progressUpdate.dismiss()
-                                Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG)
-                                    .show()
+                                Toast.makeText(
+                                    context,
+                                    "Your password strength is weak, pattern requires at least 8 characters including at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         } else {
                             progressUpdate.dismiss()
-                            Toast.makeText(
-                                context,
-                                "You cannot make changes, you owe the library: Ksh.$fine",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG)
+                                .show()
                         }
                     } else {
                         progressUpdate.dismiss()

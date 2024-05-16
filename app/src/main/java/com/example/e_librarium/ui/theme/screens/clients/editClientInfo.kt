@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -139,7 +141,8 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
                 ClientAppTopBar(navController, clientId)
             }
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true, reverseScrolling = false)
             ) {
                 OutlinedTextField(
                     value = mEmail,
@@ -175,7 +178,7 @@ fun EditClientInfo(navController: NavHostController, clientId: String){
                     confpass = confpass.trim(),
                     clientStatus = mClientStatus.text.trim(),
                     clientId = clientId,
-                    fine = clientFine.text.trim().toDouble()
+                    fine = clientFine.text.toDoubleOrNull() ?: 0.0
                 )
             }
         }
