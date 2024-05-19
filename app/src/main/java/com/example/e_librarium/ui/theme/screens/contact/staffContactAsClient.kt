@@ -35,13 +35,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.example.e_librarium.R
 import com.example.e_librarium.data.AuthViewModel
 import com.example.e_librarium.models.Staff
 import com.example.e_librarium.ui.theme.screens.borrowing.ClientAppTopBar
@@ -52,11 +55,11 @@ fun ContactStaffAsClient(navController: NavHostController, clientId: String){
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-//        Image(painter = painterResource(id = R.drawable.view_clients),
-//            contentDescription = "View Clients Image",
-//            modifier = Modifier.matchParentSize(),
-//            contentScale = ContentScale.FillBounds
-//        )
+        Image(painter = painterResource(id = R.drawable.view_staff_contact),
+            contentDescription = "View Clients Image",
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.FillBounds
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize(),
